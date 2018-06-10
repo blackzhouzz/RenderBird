@@ -1,0 +1,6 @@
+*.suo
+*.opendb
+*.db
+RenderBird/RenderBird/Debug
+RenderBird/Debug
+RenderBird/.vs
