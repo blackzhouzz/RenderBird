@@ -17,6 +17,8 @@ namespace MathLib
 		TVector2<T>& operator -= (const TVector2<T>& val);
 		TVector2<T> operator * (const TVector2<T>& val)const;
 		TVector2<T>& operator *= (const TVector2<T>& val);
+		TVector2<T> operator * (Float val)const;
+		TVector2<T>& operator *= (Float val);
 		TVector2<T> operator / (const TVector2<T>& val)const;
 		TVector2<T>& operator /= (const TVector2<T>& val);
 		bool operator == (const TVector2<T>& val)const;
@@ -103,6 +105,20 @@ namespace MathLib
 	}
 
 	template<typename T>
+	inline TVector2<T> TVector2<T>::operator * (Float val)const
+	{
+		return TVector2<T>(x * val, y * val);
+	}
+
+	template<typename T>
+	inline TVector2<T>& TVector2<T>::operator *= (Float val)
+	{
+		x *= val;
+		y *= val;
+		return *this;
+	}
+
+	template<typename T>
 	inline TVector2<T> TVector2<T>::operator / (const TVector2<T>& val)const
 	{
 		return TVector2<T>(x / val.x, y / val.y);
@@ -160,7 +176,7 @@ namespace MathLib
 		Float len = Length();
 		if (len == 0)
 			return *this;
-		len = 1.0f / len;
+		len = 1.0 / len;
 		x *= len;
 		y *= len;
 		return *this;
@@ -199,6 +215,14 @@ namespace MathLib
 	{
 		return (v1.x * v2.y - v1.y * v2.x);
 	}
+
+	template <typename T>
+	inline bool IsEqual(const TVector2<T>& v1, const TVector2<T>& v2, Float epsilon = C_FLOAT_EPSILON_HIGH)
+	{
+		return ((std::abs(v1.x - v2.x) < epsilon)
+			&& (std::abs(v1.y - v2.y) < epsilon)
+			);
+	}
 #pragma endregion TVector2
 
 #pragma region
@@ -215,6 +239,8 @@ namespace MathLib
 		TVector3<T>& operator -= (const TVector3<T>& val);
 		TVector3<T> operator * (const TVector3<T>& val)const;
 		TVector3<T>& operator *= (const TVector3<T>& val);
+		TVector3<T> operator * (Float val)const;
+		TVector3<T>& operator *= (Float val);
 		TVector3<T> operator / (const TVector3<T>& val)const;
 		TVector3<T>& operator /= (const TVector3<T>& val);
 		bool operator == (const TVector3<T>& val)const;
@@ -319,6 +345,21 @@ namespace MathLib
 	}
 
 	template<typename T>
+	inline TVector3<T> TVector3<T>::operator * (Float val)const
+	{
+		return TVector3<T>(x * val, y * val, z * val);
+	}
+
+	template<typename T>
+	inline TVector3<T>& TVector3<T>::operator *= (Float val)
+	{
+		x *= val;
+		y *= val;
+		z *= val;
+		return *this;
+	}
+
+	template<typename T>
 	inline TVector3<T> TVector3<T>::operator / (const TVector3<T>& val)const
 	{
 		return TVector3<T>(x / val.x, y / val.y, z / val.z);
@@ -377,7 +418,7 @@ namespace MathLib
 		Float len = Length();
 		if (len == 0)
 			return *this;
-		len = 1.0f / len;
+		len = 1.0 / len;
 		x *= len;
 		y *= len;
 		z *= len;
@@ -391,7 +432,7 @@ namespace MathLib
 		Float len = Length();
 		if (len == 0)
 			return v;
-		len = 1.0f / len;
+		len = 1.0 / len;
 		v.x = x * len;
 		v.y = y * len;
 		v.z = z * len;
@@ -493,12 +534,28 @@ namespace MathLib
 		}
 		else
 		{
-			ret[0] = (std::sin((1.0f - t)*angle) / std::sin(angle))*a[0] + (std::sin(t*angle) / std::sin(angle))*b[0];
-			ret[1] = (std::sin((1.0f - t)*angle) / std::sin(angle))*a[1] + (std::sin(t*angle) / std::sin(angle))*b[1];
-			ret[2] = (std::sin((1.0f - t)*angle) / std::sin(angle))*a[2] + (std::sin(t*angle) / std::sin(angle))*b[2];
+			ret[0] = (std::sin((1.0 - t)*angle) / std::sin(angle))*a[0] + (std::sin(t*angle) / std::sin(angle))*b[0];
+			ret[1] = (std::sin((1.0 - t)*angle) / std::sin(angle))*a[1] + (std::sin(t*angle) / std::sin(angle))*b[1];
+			ret[2] = (std::sin((1.0 - t)*angle) / std::sin(angle))*a[2] + (std::sin(t*angle) / std::sin(angle))*b[2];
 		}
 		return ret;
 	}
+
+	template <typename T>
+	inline bool IsEqual(const TVector3<T>& v1, const TVector3<T>& v2, Float epsilon = C_FLOAT_EPSILON_HIGH)
+	{
+		return ((std::abs(v1.x - v2.x) < epsilon)
+			&& (std::abs(v1.y - v2.y) < epsilon)
+			&& (std::abs(v1.z - v2.z) < epsilon)
+			);
+	}
+
+	template <typename T>
+	inline TVector3<T> AbsVector(const TVector3<T>& vec)
+	{
+		return TVector3<T>(std::abs(vec.x), std::abs(vec.y), std::abs(vec.z));
+	}
+
 #pragma endregion TVector3
 
 #pragma region
@@ -515,6 +572,8 @@ namespace MathLib
 		TVector4<T>& operator -= (const TVector4<T>& val);
 		TVector4<T> operator * (const TVector4<T>& val)const;
 		TVector4<T>& operator *= (const TVector4<T>& val);
+		TVector4<T> operator * (Float val)const;
+		TVector4<T>& operator *= (Float val);
 		TVector4<T> operator / (const TVector4<T>& val)const;
 		TVector4<T>& operator /= (const TVector4<T>& val);
 		bool operator == (const TVector4<T>& val)const;
@@ -603,6 +662,22 @@ namespace MathLib
 	}
 
 	template<typename T>
+	inline TVector4<T> TVector4<T>::operator * (Float val)const
+	{
+		return TVector4<T>(x * val, y * val, z * val, w * val);
+	}
+
+	template<typename T>
+	inline TVector4<T>& TVector4<T>::operator *= (Float val)
+	{
+		x *= val;
+		y *= val;
+		z *= val;
+		w *= val;
+		return *this;
+	}
+
+	template<typename T>
 	inline TVector4<T> TVector4<T>::operator / (const TVector4<T>& val)const
 	{
 		return TVector4<T>(x / val.x, y / val.y, z / val.z, w / val.w);
@@ -650,7 +725,15 @@ namespace MathLib
 		return std::isnan(x) || std::isnan(y) || std::isnan(z) || std::isnan(w);
 	}
 
-
+	template <typename T>
+	inline bool IsEqual(const TVector4<T>& v1, const TVector4<T>& v2, Float epsilon = C_FLOAT_EPSILON_HIGH)
+	{
+		return ((std::abs(v1.x - v2.x) < epsilon)
+			&& (std::abs(v1.y - v2.y) < epsilon)
+			&& (std::abs(v1.z - v2.z) < epsilon)
+			&& (std::abs(v1.w - v2.w) < epsilon)
+			);
+	}
 #pragma endregion TVector4
 
 }

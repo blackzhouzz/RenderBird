@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{84DAB19F-C46A-4995-B5F9-D9D76A23EE3A}</ProjectGuid>
     <RootNamespace>RenderBird</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -41,8 +41,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -115,13 +115,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="eulerrotation.h" />
     <ClInclude Include="intersection.h" />
+    <ClInclude Include="mathext.h" />
+    <ClInclude Include="mathutils.h" />
+    <ClInclude Include="matrix.h" />
+    <ClInclude Include="quaternion.h" />
     <ClInclude Include="tilerenderer.h" />
     <ClInclude Include="vector.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="eulerrotation.cpp" />
     <ClCompile Include="intersection.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="mathext.cpp" />
+    <ClCompile Include="mathutils.cpp" />
+    <ClCompile Include="matrix.cpp" />
+    <ClCompile Include="quaternion.cpp" />
     <ClCompile Include="tilerenderer.cpp" />
     <ClCompile Include="vector.cpp" />
   </ItemGroup>
