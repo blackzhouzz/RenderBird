@@ -2,7 +2,7 @@
 
 namespace MathLib
 {
-	class MathExt
+	class RenderBird
 	{
 
 	};

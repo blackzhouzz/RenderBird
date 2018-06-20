@@ -253,6 +253,8 @@ namespace MathLib
 		TVector3<T> GetNormalized()const;
 		bool IsNaN()const;
 		bool IsNormalized()const;
+		void Floor(const TVector3<T>& v);
+		void Ceil(const TVector3<T>& v);
 
 		T x, y, z;
 		static const TVector3<T> ZERO;
@@ -449,6 +451,22 @@ namespace MathLib
 	inline bool TVector3<T>::IsNormalized()const
 	{
 		return std::abs(LengthSQ() - 1.0) < C_FLOAT_EPSILON;
+	}
+
+	template<typename T>
+	inline void TVector3<T>::Floor(const TVector3<T>& v)
+	{
+		x = v.x < x ? v.x : x;
+		y = v.y < y ? v.y : y;
+		y = v.z < z ? v.z : z;
+	}
+
+	template<typename T>
+	inline void TVector3<T>::Ceil(const TVector3<T>& v)
+	{
+		x = v.x > x ? v.x : x;
+		y = v.y > y ? v.y : y;
+		y = v.z > z ? v.z : z;
 	}
 
 	template <typename T>

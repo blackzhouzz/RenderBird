@@ -1,7 +1,6 @@
-#include "LNCorePrivate.h"
-#include "LNRay.h"
+#include "ray.h"
 
-namespace Luna
+namespace MathLib
 {
 
 }

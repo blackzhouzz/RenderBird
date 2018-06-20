@@ -4,6 +4,7 @@
 #include "quaternion.h"
 #include "eulerrotation.h"
 #include "vector.h"
+#include "boundingbox.h"
 
 namespace MathLib
 {
@@ -23,7 +24,7 @@ namespace MathLib
 		static Matrix4f LookAtMatrixLH(const Vector3f& eyePos, const Vector3f& at, const Vector3f& up);
 		static Matrix4f LookAtMatrix(const Vector3f& eyePos, const Vector3f& axisX, const Vector3f& axisY, const Vector3f& axisZ);
 		static Quaternion Slerp(Float t, const Quaternion& p, const Quaternion& quat, bool shortestPath = false);
-		static Quaternion ExtraRotation(const Matrix4f mat);
+		static Quaternion ExtraRotation(const Matrix4f& mat);
 		static Quaternion RotationMatrixToQuaternion(const Matrix3f& mat);
 		static Matrix3f EulerAnglesYXZToRotationMatrix(Float pitch, Float yaw, Float roll);
 		static bool RotationMatrixToEulerAnglesYXZ(const Matrix3f& rotate, Float& pitch, Float& yaw, Float& roll);
@@ -40,6 +41,6 @@ namespace MathLib
 		static void CalcBinormalTangent(Vector3f normal, Vector3f& binormal, Vector3f& tangent);
 		static void VectorToRotation(const Vector3f& vec, Float& pitch, Float& yaw, Float& roll);
 		static Vector3f RotateVector(const Quaternion& q, const Vector3f& vec);
-
+		static BoundingBox TransformBoundingBox(const BoundingBox& boundingBox, const Matrix4f& mat);
 	};
 }

@@ -1,234 +1,218 @@
-#include "LNCorePrivate.h"
-#include "LNBoundingBox.h"
+#include "boundingbox.h"
+#include <limits>
 
-namespace Luna
+namespace MathLib
 {
 	const BoundingBox BoundingBox::INVALID(
-		Vector3Float(POS_INFINITY_FLOAT, POS_INFINITY_FLOAT, POS_INFINITY_FLOAT),
-		Vector3Float(NEG_INFINITY_FLOAT, NEG_INFINITY_FLOAT, NEG_INFINITY_FLOAT)
-		);
+		Vector3f(std::numeric_limits<Float>::max(), std::numeric_limits<Float>::max(), std::numeric_limits<Float>::max()),
+		Vector3f(std::numeric_limits<Float>::lowest(), std::numeric_limits<Float>::lowest(), std::numeric_limits<Float>::lowest())
+	);
 	const BoundingBox BoundingBox::ZERO(
-		Vector3Float(0, 0, 0),
-		Vector3Float(0, 0, 0)
-		);
-	const BoundingBox BoundingBox::infinity(
-		Vector3Float(NEG_INFINITY_FLOAT, NEG_INFINITY_FLOAT, NEG_INFINITY_FLOAT),
-		Vector3Float(POS_INFINITY_FLOAT * 0.5f, POS_INFINITY_FLOAT * 0.5f, POS_INFINITY_FLOAT * 0.5f)
-		);
+		Vector3f(0, 0, 0),
+		Vector3f(0, 0, 0)
+	);
+	const BoundingBox BoundingBox::MAX(
+		Vector3f(std::numeric_limits<Float>::lowest(), std::numeric_limits<Float>::lowest(), std::numeric_limits<Float>::lowest()),
+		Vector3f(std::numeric_limits<Float>::max() * 0.5f, std::numeric_limits<Float>::max() * 0.5f, std::numeric_limits<Float>::max() * 0.5f)
+	);
 
-	BoundingBox::BoundingBox(const Vector3Float& minValue, const Vector3Float& maxValue)
+	BoundingBox::BoundingBox(const Vector3f& minValue, const Vector3f& maxValue)
 	{
-		this->mMin = minValue;
-		this->mMax = maxValue;
+		min = minValue;
+		max = maxValue;
 	}
 
-	//BoundingBox& BoundingBox::operator = (const BoundingBox& box)
-	//{
-	//	this->mMin = box.mMin;
-	//	this->mMax = box.mMax;
-	//	return *this;
-	//}
+	BoundingBox::BoundingBox(const BoundingBox& box)
+	{
+		min = box.min;
+		max = box.max;
+	}
 
 	bool BoundingBox::operator == (const BoundingBox& box)const
 	{
-		return mMin == box.mMin && mMax == box.mMax;
+		return min == box.min && max == box.max;
 	}
 
 	bool BoundingBox::operator != (const BoundingBox& box)const
 	{
-		return mMin != box.mMin || mMax != box.mMax;
+		return min != box.min || max != box.max;
 	}
 
 	BoundingBox BoundingBox::operator + (const BoundingBox& box)const
 	{
 		BoundingBox ret = *this;
-		ret.mMin.Floor(box.mMin);
-		ret.mMax.Ceil(box.mMax);
+		ret.min.Floor(box.min);
+		ret.max.Ceil(box.max);
 		return ret;
 	}
 
 	BoundingBox& BoundingBox::operator += (const BoundingBox& box)
 	{
-		mMin.Floor(box.mMin);
-		mMax.Ceil(box.mMax);
+		min.Floor(box.min);
+		max.Ceil(box.max);
 		return *this;
 	}
 
-	BoundingBox BoundingBox::operator + (const Vector3Float& vec)const
+	BoundingBox BoundingBox::operator + (const Vector3f& vec)const
 	{
 		BoundingBox ret = *this;
-		ret.mMin.Floor(vec);
-		ret.mMax.Ceil(vec);
+		ret.min.Floor(vec);
+		ret.max.Ceil(vec);
 		return ret;
 	}
 
-	BoundingBox& BoundingBox::operator += (const Vector3Float& vec)
+	BoundingBox& BoundingBox::operator += (const Vector3f& vec)
 	{
-		mMin.Floor(vec);
-		mMax.Ceil(vec);
+		min.Floor(vec);
+		max.Ceil(vec);
 		return *this;
-	}
-
-	void BoundingBox::ClampMin(const Vector3Float& vec)
-	{
-		mMin.Floor(vec);
-	}
-
-	void BoundingBox::ClampMax(const Vector3Float& vec)
-	{
-		mMax.Ceil(vec);
 	}
 
 	bool BoundingBox::IsValid()const
 	{
-		return (!(mMin.x > mMax.x)) && (!(mMin.y > mMax.y)) && (!(mMin.z > mMax.z));
+		return (!(min.x > max.x)) && (!(min.y > max.y)) && (!(min.z > max.z));
 	}
 
-	void BoundingBox::Set(const Vector3Float& minValue, const Vector3Float& maxOrExt, bool isExt)
+	void BoundingBox::Set(const Vector3f& minValue, const Vector3f& maxOrExt, bool isExt)
 	{
-		mMin = minValue;
+		min = minValue;
 		if (isExt)
 		{
-			mMax = minValue + maxOrExt;
+			max = minValue + maxOrExt;
 		}
 		else
 		{
-			mMax = maxOrExt;
+			max = maxOrExt;
 		}
 	}
 
-	void BoundingBox::Set(const BoundingBox& box)
+	Vector3f BoundingBox::GetCenter()const
 	{
-		*this = box;
+		return (max + min) * 0.5;
 	}
 
-	Vector3Float BoundingBox::GetCenter()const
+	Vector3f BoundingBox::GetDiagonal()const
 	{
-		return (mMax + mMin) / 2;
+		return max - min;
 	}
 
-	Vector3Float BoundingBox::GetDiagonal()const
+	Float BoundingBox::GetDiagonalLength()const
 	{
-		return mMax - mMin;
+		return (max - min).Length();
 	}
 
-	float BoundingBox::GetDiagonalLength()const
+	bool BoundingBox::IsContain(const Vector3f& point)const
 	{
-		return (mMax - mMin).Length();
-	}
-
-	bool BoundingBox::IsContain(const Vector3Float& point)const 
-	{
-		return (point.x >= mMin.x) && (point.x <= mMax.x) &&
-			(point.y >= mMin.y) && (point.y <= mMax.y) &&
-			(point.z >= mMin.z) && (point.z <= mMax.z);
+		return (point.x >= min.x) && (point.x <= max.x) &&
+			(point.y >= min.y) && (point.y <= max.y) &&
+			(point.z >= min.z) && (point.z <= max.z);
 	}
 
 	bool BoundingBox::IsContain(const BoundingBox& box)const
 	{
-		return !(box.mMin.x < mMin.x || box.mMin.y < mMin.y || box.mMin.z < mMin.z ||
-			box.mMax.x > mMax.x || box.mMax.y > mMax.y || box.mMax.z > mMax.z);
+		return !(box.min.x < min.x || box.min.y < min.y || box.min.z < min.z ||
+			box.max.x > max.x || box.max.y > max.y || box.max.z > max.z);
 	}
 
-	Vector3Float BoundingBox::ClosestPointTo(const Vector3Float& point)const 
+	Vector3f BoundingBox::ClosestPointTo(const Vector3f& point)const
 	{
-		Vector3Float r = point;
-		if (point.x < mMin.x) 
+		Vector3f r = point;
+		if (point.x < min.x)
 		{
-			r.x = mMin.x;
+			r.x = min.x;
 		}
-		else if (point.x > mMax.x)
+		else if (point.x > max.x)
 		{
-			r.x = mMax.x;
-		}
-
-		if (point.y < mMin.y)
-		{
-			r.y = mMin.y;
-		}
-		else if (point.y > mMax.y)
-		{
-			r.y = mMax.y;
+			r.x = max.x;
 		}
 
-		if (point.z < mMin.z)
+		if (point.y < min.y)
 		{
-			r.z = mMin.z;
+			r.y = min.y;
 		}
-		else if (point.z > mMax.z)
+		else if (point.y > max.y)
 		{
-			r.z = mMax.z;
+			r.y = max.y;
+		}
+
+		if (point.z < min.z)
+		{
+			r.z = min.z;
+		}
+		else if (point.z > max.z)
+		{
+			r.z = max.z;
 		}
 
 		return r;
 	}
 
-	Vector3Float BoundingBox::FurthestPointTo(const Vector3Float& point)const
+	Vector3f BoundingBox::FurthestPointTo(const Vector3f& point)const
 	{
-		Vector3Float r;
-		if ( abs(point.x-mMin.x) < abs(point.x-mMax.x) )
+		Vector3f r;
+		if (abs(point.x - min.x) < abs(point.x - max.x))
 		{
-			r.x = mMax.x;
+			r.x = max.x;
 		}
 		else
 		{
-			r.x = mMin.x;
+			r.x = min.x;
 		}
-		if ( abs(point.y-mMin.y) < abs(point.y-mMax.y) )
+		if (abs(point.y - min.y) < abs(point.y - max.y))
 		{
-			r.y = mMax.y;
-		}
-		else
-		{
-			r.y = mMin.y;
-		}
-		if ( abs(point.z-mMin.z) < abs(point.z-mMax.z) )
-		{
-			r.z = mMax.z;
+			r.y = max.y;
 		}
 		else
 		{
-			r.z = mMin.z;
+			r.y = min.y;
+		}
+		if (abs(point.z - min.z) < abs(point.z - max.z))
+		{
+			r.z = max.z;
+		}
+		else
+		{
+			r.z = min.z;
 		}
 		return r;
 	}
 
-	float BoundingBox::GetArea()const
+	Float BoundingBox::GetArea()const
 	{
 		if (!IsValid())
 		{
 			return -1.0f;
 		}
-		return 2.0f * (mMax.z - mMin.z) * (mMax.y - mMin.y) * (mMax.x - mMin.x);
+		return 2.0f * (max.z - min.z) * (max.y - min.y) * (max.x - min.x);
 	}
 
-	float BoundingBox::GetWidth()const
+	Float BoundingBox::GetWidth()const
 	{
-		return mMax.x - mMin.x;
+		return max.x - min.x;
 	}
 
-	float BoundingBox::GetHeight()const
+	Float BoundingBox::GetHeight()const
 	{
-		return mMax.y - mMin.y;
+		return max.y - min.y;
 	}
 
-	float BoundingBox::GetDepth()const
+	Float BoundingBox::GetDepth()const
 	{
-		return mMax.z - mMin.z;
+		return max.z - min.z;
 	}
 
-	EAxis BoundingBox::GetLongestAxis(float* length)const
+	EAxis BoundingBox::GetLongestAxis(Float* length)const
 	{
-		float fHeight = GetHeight();
-		float fWidth = GetWidth();
-		float fDepth = GetDepth();
-		if (fWidth > fHeight)
+		Float height = GetHeight();
+		Float width = GetWidth();
+		Float depth = GetDepth();
+		if (width > height)
 		{
-			if (fWidth > fDepth)
+			if (width > depth)
 			{
 				if (length != NULL)
 				{
-					*length = fWidth;
+					*length = width;
 				}
 				return AXIS_X;
 			}
@@ -236,18 +220,18 @@ namespace Luna
 			{
 				if (length != NULL)
 				{
-					*length = fDepth;
+					*length = depth;
 				}
 				return AXIS_Z;
 			}
 		}
 		else
 		{
-			if (fHeight > fDepth)
+			if (height > depth)
 			{
 				if (length != NULL)
 				{
-					*length = fHeight;
+					*length = height;
 				}
 				return AXIS_Y;
 			}
@@ -255,25 +239,25 @@ namespace Luna
 			{
 				if (length != NULL)
 				{
-					*length = fDepth;
+					*length = depth;
 				}
 				return AXIS_Z;
 			}
 		}
 	}
 
-	EAxis BoundingBox::GetShortestAxis(float* length)const
+	EAxis BoundingBox::GetShortestAxis(Float* length)const
 	{
-		float fHeight = GetHeight();
-		float fWidth = GetWidth();
-		float fDepth = GetDepth();
-		if (fWidth < fHeight)
+		Float height = GetHeight();
+		Float width = GetWidth();
+		Float depth = GetDepth();
+		if (width < height)
 		{
-			if (fWidth < fDepth)
+			if (width < depth)
 			{
 				if (length != NULL)
 				{
-					*length = fWidth;
+					*length = width;
 				}
 				return AXIS_X;
 			}
@@ -281,18 +265,18 @@ namespace Luna
 			{
 				if (length != NULL)
 				{
-					*length = fDepth;
+					*length = depth;
 				}
 				return AXIS_Z;
 			}
 		}
 		else
 		{
-			if (fHeight < fDepth)
+			if (height < depth)
 			{
 				if (length != NULL)
 				{
-					*length = fHeight;
+					*length = height;
 				}
 				return AXIS_Y;
 			}
@@ -300,180 +284,72 @@ namespace Luna
 			{
 				if (length != NULL)
 				{
-					*length = fDepth;
+					*length = depth;
 				}
 				return AXIS_Z;
 			}
 		}
 	}
 
-	void BoundingBox::DeformExtent(float size)
+	void BoundingBox::ExpandSize(Float size)
 	{
-		mMin -= Vector3Float(0.5f * size, 0.5f * size, 0.5f * size);
-		mMax += Vector3Float(0.5f * size, 0.5f * size, 0.5f * size);
+		min -= Vector3f(0.5f * size, 0.5f * size, 0.5f * size);
+		max += Vector3f(0.5f * size, 0.5f * size, 0.5f * size);
 	}
 
 	void BoundingBox::MakeInside(const BoundingBox& box)
 	{
-		Vector3Float dia = GetDiagonal();
-		if (mMin.x < box.mMin.x)
+		Vector3f dia = GetDiagonal();
+		if (min.x < box.min.x)
 		{
-			mMin.x = box.mMin.x;
+			min.x = box.min.x;
 		}
-		if (mMin.y < box.mMin.y)
+		if (min.y < box.min.y)
 		{
-			mMin.y = box.mMin.y;
+			min.y = box.min.y;
 		}
-		if (mMin.z < box.mMin.z)
+		if (min.z < box.min.z)
 		{
-			mMin.z = box.mMin.z;
+			min.z = box.min.z;
 		}
-		mMax = mMin + dia;
+		max = min + dia;
 
-		if (mMax.x > box.mMax.x)
+		if (max.x > box.max.x)
 		{
-			mMax.x = box.mMax.x;
+			max.x = box.max.x;
 		}
-		if (mMax.y > box.mMax.y)
+		if (max.y > box.max.y)
 		{
-			mMax.y = box.mMax.y;
+			max.y = box.max.y;
 		}
-		if (mMax.z > box.mMax.z)
+		if (max.z > box.max.z)
 		{
-			mMax.z = box.mMax.z;
+			max.z = box.max.z;
 		}
-		mMin = mMax - dia;
+		min = max - dia;
 	}
 
-	void BoundingBox::MakeVecInside(Vector3Float& vec)
+	void BoundingBox::MoveDelta(const Vector3f& vec)
 	{
-		vec.Ceil(mMin);
-		vec.Floor(mMax);
+		Vector3f dia = GetDiagonal();
+		min += vec;
+		max = min + dia;
 	}
 
-	void BoundingBox::MoveDelta(const Vector3Float& vec)
+	void BoundingBox::MoveAbs(const Vector3f& abs)
 	{
-		Vector3Float dia = GetDiagonal();
-		mMin += vec;
-		mMax = mMin + dia;
+		Vector3f dia = GetDiagonal();
+		min = abs - dia * 0.5;
+		max = abs + dia * 0.5;
 	}
 
-	void BoundingBox::MoveAbs(const Vector3Float& abs)
+	Float BoundingBox::DistanceFrom(const Vector3f& point)const
 	{
-		Vector3Float dia = GetDiagonal();
-		mMin = abs - dia / 2;
-		mMax = abs + dia / 2;
+		return DistanceSQ(GetCenter(), point);
 	}
 
-	float BoundingBox::DistanceFrom(const Vector3Float& point)const
+	Float BoundingBox::DistanceFromSQ(const Vector3f& point)const
 	{
-		return GetCenter().DistanceSQ(point);
-	}
-
-	float BoundingBox::DistanceFromSQ(const Vector3Float& point)const
-	{
-		return GetCenter().Distance(point);
-	}
-
-	BoundingBox BoundingBox::TransformBy(const Matrix4f& mat)const
-	{
-		if (!IsValid())
-		{
-			return BoundingBox::INVALID;
-		}
-		BoundingBox ret;
-		ret.mMin = ret.mMax = mat.GetTranslation();
-		if (mat[0][0] > 0.0f)
-		{
-			ret.mMin.x += mat[0][0] * mMin.x; 
-			ret.mMax.x += mat[0][0] * mMax.x;
-		}
-		else
-		{
-			ret.mMin.x += mat[0][0] * mMax.x; 
-			ret.mMax.x += mat[0][0] * mMin.x;
-		}
-		if (mat[0][1] > 0.0f)
-		{
-			ret.mMin.y += mat[0][1] * mMin.x; 
-			ret.mMax.y += mat[0][1] * mMax.x;
-		}
-		else
-		{
-			ret.mMin.y += mat[0][1] * mMax.x; 
-			ret.mMax.y += mat[0][1] * mMin.x;
-		}
-		if (mat[0][2] > 0.0f)
-		{
-			ret.mMin.z += mat[0][2] * mMin.x; 
-			ret.mMax.z += mat[0][2] * mMax.x;
-		}
-		else
-		{
-			ret.mMin.z += mat[0][2] * mMax.x; 
-			ret.mMax.z += mat[0][2] * mMin.x;
-		}
-
-		if (mat[1][0] > 0.0f)
-		{
-			ret.mMin.x += mat[1][0] * mMin.y; 
-			ret.mMax.x += mat[1][0] * mMax.y;
-		}
-		else
-		{
-			ret.mMin.x += mat[1][0] * mMax.y; 
-			ret.mMax.x += mat[1][0] * mMin.y;
-		}
-		if (mat[1][1] > 0.0f)
-		{
-			ret.mMin.y += mat[1][1] * mMin.y; 
-			ret.mMax.y += mat[1][1] * mMax.y;
-		}
-		else
-		{
-			ret.mMin.y += mat[1][1] * mMax.y; 
-			ret.mMax.y += mat[1][1] * mMin.y;
-		}
-		if (mat[1][2] > 0.0f)
-		{
-			ret.mMin.z += mat[1][2] * mMin.y; 
-			ret.mMax.z += mat[1][2] * mMax.y;
-		}
-		else
-		{
-			ret.mMin.z += mat[1][2] * mMax.y; 
-			ret.mMax.z += mat[1][2] * mMin.y;
-		}
-		if (mat[2][0] > 0.0f)
-		{
-			ret.mMin.x += mat[2][0] * mMin.z; 
-			ret.mMax.x += mat[2][0] * mMax.z;
-		}
-		else
-		{
-			ret.mMin.x += mat[2][0] * mMax.z; 
-			ret.mMax.x += mat[2][0] * mMin.z;
-		}
-		if (mat[2][1] > 0.0f)
-		{
-			ret.mMin.y += mat[2][1] * mMin.z; 
-			ret.mMax.y += mat[2][1] * mMax.z;
-		}
-		else
-		{
-			ret.mMin.y += mat[2][1] * mMax.z; 
-			ret.mMax.y += mat[2][1] * mMin.z;
-		}
-		if (mat[2][2] > 0.0f)
-		{
-			ret.mMin.z += mat[2][2] * mMin.z; 
-			ret.mMax.z += mat[2][2] * mMax.z;
-		}
-		else
-		{
-			ret.mMin.z += mat[2][2] * mMax.z; 
-			ret.mMax.z += mat[2][2] * mMin.z;
-		}
-		return ret;
+		return Distance(GetCenter(), point);
 	}
 }

@@ -1,6 +1,10 @@
 #pragma once
-#include "system.h"
 
 namespace RenderBird
 {
+	class MonteCarlo
+	{
+	public:
+
+	};
 }

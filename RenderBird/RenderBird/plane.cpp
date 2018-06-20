@@ -1,20 +1,19 @@
-#include "LNCorePrivate.h"
-#include "LNPlane.h"
+#include "plane.h"
 
-namespace Luna
+namespace MathLib
 {
-	const Plane Plane::ZERO = Plane(Vector3Float(0,0,0), 0);
+	const Plane Plane::ZERO = Plane(Vector3f(0, 0, 0), 0);
 
-	Plane::Plane(const Vector3Float& normal, float d) 
-		: mNormal(normal)
-		, mD(-d)
+	Plane::Plane(const Vector3f& normal, Float d)
+		: normal(normal)
+		, distance(-d)
 	{
 	}
 
-	Plane::Plane(Vector3Float a, Vector3Float b, Vector3Float c)
+	Plane::Plane(Vector3f a, Vector3f b, Vector3f c)
 	{
-		mNormal = Cross((b - a), (c - a)).SafeNormalize();
-		mD = a.Dot(mNormal);
+		normal = Cross((b - a), (c - a)).Normalize();
+		distance = Dot(a, normal);
 	}
 
 	Plane::Plane(const Plane& plane)
@@ -24,132 +23,118 @@ namespace Luna
 
 	Plane& Plane::operator = (const Plane& plane)
 	{
-		mNormal = plane.mNormal;
-		mD = plane.mD;
+		normal = plane.normal;
+		distance = plane.distance;
 		return *this;
 	}
 
 	bool Plane::operator == (const Plane& plane)const
 	{
-		return mNormal == plane.mNormal && mD == plane.mD;
+		return normal == plane.normal && distance == plane.distance;
 	}
 
 	bool Plane::operator != (const Plane& plane)const
 	{
-		return mNormal != plane.mNormal || mD != plane.mD;
-	}
-
-	void Plane::Set(const Vector3Float& v1, const Vector3Float& v2, const Vector3Float& v3)
-	{
-		Vector3Float e1 = v2 - v1;
-		Vector3Float e2 = v3 - v2;
-		mNormal = Cross(e1, e2).Normalize();
-		mD = -mNormal.Dot(v1);
-	}
-
-	void Plane::Set(const Vector3Float& normal, float d)
-	{
-		mNormal = normal;
-		mD = -d;
+		return normal != plane.normal || distance != plane.distance;
 	}
 
 	void Plane::Normalize()
 	{
-		float len = mNormal.Length();
-		if (len > FLOAT_EPSILON)
+		Float len = normal.Length();
+		if (len > C_FLOAT_EPSILON)
 		{
-			float invLen = 1.0f / len;
-			mNormal *= invLen;
-			mD *= invLen;
+			Float invLen = 1.0f / len;
+			normal *= invLen;
+			distance *= invLen;
 		}
 	}
 
-	float Plane::Distance(const Vector3Float& point)const
+	Float Plane::Distance(const Vector3f& point)const
 	{
-		return mNormal.Dot(point) + mD;
+		return Dot(normal, point) + distance;
 	}
 
-	EPlaneSide Plane::GetPlaneSide(const Vector3Float& point)const
+	EPlaneSide Plane::GetPlaneSide(const Vector3f& point)const
 	{
-		float dis = Distance(point);
-		if (fabs(dis) < SMALL_FLOAT_EPSILON)
+		Float dis = Distance(point);
+		if (fabs(dis) < C_FLOAT_EPSILON)
 		{
-			return PS_In;
+			return PlaneSide_In;
 		}
-		else if (dis > SMALL_FLOAT_EPSILON)
+		else if (dis > C_FLOAT_EPSILON)
 		{
-			return PS_Front;
+			return PlaneSide_Front;
 		}
-		else 
+		else
 		{
-			return PS_Back;
+			return PlaneSide_Back;
 		}
 	}
 
 	EPlaneSide Plane::GetPlaneSide(const BoundingBox& box)const
 	{
-		float minD, maxD;
+		Float minD, maxD;
 
-		if (mNormal.x > 0.0f)
+		if (normal.x > 0.0f)
 		{
-			minD = mNormal.x*box.mMin.x;
-			maxD = mNormal.x*box.mMax.x;
+			minD = normal.x * box.min.x;
+			maxD = normal.x * box.max.x;
 		}
 		else
 		{
-			minD = mNormal.x*box.mMax.x; 
-			maxD = mNormal.x*box.mMin.x;
+			minD = normal.x * box.max.x;
+			maxD = normal.x * box.min.x;
 		}
 
-		if (mNormal.y > 0.0f)
+		if (normal.y > 0.0f)
 		{
-			minD += mNormal.y*box.mMin.y; 
-			maxD += mNormal.y*box.mMax.y;
+			minD += normal.y * box.min.y;
+			maxD += normal.y * box.max.y;
 		}
 		else
 		{
-			minD += mNormal.y*box.mMax.y; 
-			maxD += mNormal.y*box.mMin.y;
+			minD += normal.y * box.max.y;
+			maxD += normal.y * box.min.y;
 		}
 
-		if (mNormal.z > 0.0f)
+		if (normal.z > 0.0f)
 		{
-			minD += mNormal.z*box.mMin.z;
-			maxD += mNormal.z*box.mMax.z;
+			minD += normal.z * box.min.z;
+			maxD += normal.z * box.max.z;
 		}
 		else
 		{
-			minD += mNormal.z*box.mMax.z; 
-			maxD += mNormal.z*box.mMin.z;
+			minD += normal.z * box.max.z;
+			maxD += normal.z * box.min.z;
 		}
 
 		//box at front side of plane
-		if (minD > -mD)
+		if (minD > -distance)
 		{
-			return PS_Front;
+			return PlaneSide_Front;
 		}
 
 		//box at back side of plane
-		if (maxD < -mD)
+		if (maxD < -distance)
 		{
-			return PS_Back;
+			return PlaneSide_Back;
 		}
 
 		//box cross plane
-		return PS_Cross;
+		return PlaneSide_Cross;
 	}
 
 	EPlaneSide Plane::GetPlaneSide(const Sphere& sphere)const
 	{
-		float d = Distance(sphere.mCenter);
-		if (d > sphere.mRadius)
+		Float d = Distance(sphere.center);
+		if (d > sphere.radius)
 		{
-			return PS_Front;
+			return PlaneSide_Front;
 		}
-		if (d < -sphere.mRadius)
+		if (d < -sphere.radius)
 		{
-			return PS_Back;
+			return PlaneSide_Back;
 		}
-		return PS_Cross;
+		return PlaneSide_Cross;
 	}
 }

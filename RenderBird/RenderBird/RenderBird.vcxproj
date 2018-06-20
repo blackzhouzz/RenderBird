@@ -69,7 +69,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>F:\gits\RenderBird\RenderBird\RenderBird;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -115,24 +117,79 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="bidirectional.h" />
+    <ClInclude Include="boundingbox.h" />
+    <ClInclude Include="component.h" />
+    <ClInclude Include="componentmeta.h" />
+    <ClInclude Include="coreprivate.h" />
+    <ClInclude Include="disk.h" />
+    <ClInclude Include="entity.h" />
     <ClInclude Include="eulerrotation.h" />
+    <ClInclude Include="fastdelegate.h" />
+    <ClInclude Include="fastdelegatebind.h" />
+    <ClInclude Include="geometry.h" />
+    <ClInclude Include="geometrycomponent.h" />
+    <ClInclude Include="integrator.h" />
+    <ClInclude Include="montecarlo.h" />
+    <ClInclude Include="object.h" />
+    <ClInclude Include="objectmanager.h" />
+    <ClInclude Include="raycastsys.h" />
+    <ClInclude Include="rayhitinfo.h" />
     <ClInclude Include="intersection.h" />
+    <ClInclude Include="material.h" />
     <ClInclude Include="mathext.h" />
     <ClInclude Include="mathutils.h" />
     <ClInclude Include="matrix.h" />
+    <ClInclude Include="pathtracing.h" />
+    <ClInclude Include="pdf.h" />
+    <ClInclude Include="plane.h" />
     <ClInclude Include="quaternion.h" />
-    <ClInclude Include="tilerenderer.h" />
+    <ClInclude Include="ray.h" />
+    <ClInclude Include="rect.h" />
+    <ClInclude Include="renderer.h" />
+    <ClInclude Include="resourcemanager.h" />
+    <ClInclude Include="scene.h" />
+    <ClInclude Include="scenemanager.h" />
+    <ClInclude Include="spectrum.h" />
+    <ClInclude Include="sphere.h" />
+    <ClInclude Include="system.h" />
+    <ClInclude Include="typeinfo.h" />
     <ClInclude Include="vector.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="bidirectional.cpp" />
+    <ClCompile Include="boundingbox.cpp" />
+    <ClCompile Include="component.cpp" />
+    <ClCompile Include="coreprivate.cpp" />
+    <ClCompile Include="disk.cpp" />
+    <ClCompile Include="entity.cpp" />
     <ClCompile Include="eulerrotation.cpp" />
+    <ClCompile Include="geometry.cpp" />
+    <ClCompile Include="geometrycomponent.cpp" />
+    <ClCompile Include="integrator.cpp" />
     <ClCompile Include="intersection.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="material.cpp" />
     <ClCompile Include="mathext.cpp" />
     <ClCompile Include="mathutils.cpp" />
     <ClCompile Include="matrix.cpp" />
+    <ClCompile Include="montecarlo.cpp" />
+    <ClCompile Include="object.cpp" />
+    <ClCompile Include="objectmanager.cpp" />
+    <ClCompile Include="pathtracing.cpp" />
+    <ClCompile Include="pdf.cpp" />
+    <ClCompile Include="plane.cpp" />
     <ClCompile Include="quaternion.cpp" />
-    <ClCompile Include="tilerenderer.cpp" />
+    <ClCompile Include="ray.cpp" />
+    <ClCompile Include="raycastsys.cpp" />
+    <ClCompile Include="rect.cpp" />
+    <ClCompile Include="renderer.cpp" />
+    <ClCompile Include="resourcemanager.cpp" />
+    <ClCompile Include="scene.cpp" />
+    <ClCompile Include="scenemanager.cpp" />
+    <ClCompile Include="spectrum.cpp" />
+    <ClCompile Include="sphere.cpp" />
+    <ClCompile Include="system.cpp" />
     <ClCompile Include="vector.cpp" />
   </ItemGroup>
   <ItemGroup>

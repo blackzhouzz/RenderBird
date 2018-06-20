@@ -1,19 +1,18 @@
-#include "LNCorePrivate.h"
-#include "LNSphere.h"
+#include "sphere.h"
 
-namespace Luna
+namespace MathLib
 {
-	const Sphere Sphere::ZERO(Vector3Float::ZERO, 0.0f);
-	Sphere::Sphere(const Vector3Float& center, float radius)
-		:mCenter(center), mRadius(radius)
+	const Sphere Sphere::ZERO(Vector3f::ZERO, 0.0);
+	Sphere::Sphere(const Vector3f& center, float radius)
+		:center(center), radius(radius)
 	{
 	}
 
 	//Sphere Sphere::TransformBy(const Matrix4f& mat)const
 	//{
 	//	Sphere ret;
-	//	ret.mCenter = mCenter * mat;
-	//	ret.mRadius = mRadius;
+	//	ret.center = center * mat;
+	//	ret.radius = radius;
 	//	return ret;
 	//}
 }

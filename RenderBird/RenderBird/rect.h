@@ -1,41 +1,41 @@
 #pragma once
 
-namespace Luna
+namespace MathLib
 {
 	template<typename T>
 	class TRect
 	{
 	public:
-		T mLeft;
-		T mTop;
-		T mRight;
-		T mBottom;
+		T left;
+		T top;
+		T right;
+		T bottom;
 	public:
 		TRect() {}
-		TRect(T left, T top, T right, T bottom)
-			: mLeft(left), mTop(top), mRight(right), mBottom(bottom)
-		{}
+		TRect(T l, T t, T r, T b)
+			: left(l), top(t), right(r), bottom(b)
+		{
+		}
 
 		bool operator == (const TRect<T>& rect) const
 		{
-			return 
-				mLeft	== rect.mLeft && 
-				mTop	== rect.mTop && 
-				mRight	== rect.mRight && 
-				mBottom	== rect.mBottom;
+			return left == rect.left &&
+				top == rect.top &&
+				right == rect.right &&
+				bottom == rect.bottom;
 		}
 		bool operator != (const TRect<T>& rect) const
 		{
-			return 
-				mLeft	!= rect.mLeft || 
-				mTop	!= rect.mTop || 
-				mRight	!= rect.mRight || 
-				mBottom != rect.mBottom;
+			return left != rect.left ||
+				top != rect.top ||
+				right != rect.right ||
+				bottom != rect.bottom;
 		}
 		static const TRect<T> ZERO;
 	};
-	typedef TRect<float> RectFloat;
-	typedef TRect<int> RectInt;
-	const RectFloat RectFloat::ZERO = RectFloat(0,0,0,0);
-	const RectInt RectInt::ZERO = RectInt(0,0,0,0);
+	using Rectf = TRect<float>;
+	using Recti = TRect<int>;
+
+	template <typename T>
+	const TRect<T> TRect<T>::ZERO(0, 0, 0, 0);
 }

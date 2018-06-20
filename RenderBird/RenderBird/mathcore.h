@@ -20,6 +20,7 @@ namespace MathLib
 	static const Float C_FLOAT_EPSILON = (Float)1e-06;
 	static const Float C_FLOAT_EPSILON_HIGH = (Float)1e-09;
 	static const Float C_PI = (Float)3.14159265358979323846;
+	static const Float C_INV_PI = (Float)0.3183098861837907;
 	static const Float C_HALF_PI = (Float)1.57079632679489661923;
 	static const Float C_TWO_PI = (Float)6.28318530717958647692;
 
@@ -52,4 +53,13 @@ namespace MathLib
 			val = max;
 		return val;
 	}
+
+	enum EAxis
+	{
+		None = -1,
+		AXIS_X = 0,
+		AXIS_Y,
+		AXIS_Z,
+		AXIS_Count,
+	};
 }

@@ -1,59 +1,48 @@
 #pragma once
-#include "LNVector.h"
-#include "LNMatrix.h"
+#include "vector.h"
 
-namespace Luna
+namespace MathLib
 {
 	class BoundingBox
 	{
 	public:
 		BoundingBox() {}
-		BoundingBox(const Vector3Float& minValue, const Vector3Float& maxValue);
+		BoundingBox(const BoundingBox& box);
+		BoundingBox(const Vector3f& minValue, const Vector3f& maxValue);
 		~BoundingBox() {}
 		bool operator == (const BoundingBox& box)const;
 		bool operator != (const BoundingBox& box)const;
 		BoundingBox operator + (const BoundingBox& box)const;
 		BoundingBox& operator += (const BoundingBox& box);
-		BoundingBox operator + (const Vector3Float& vec)const;
-		BoundingBox& operator += (const Vector3Float& vec);
-
+		BoundingBox operator + (const Vector3f& vec)const;
+		BoundingBox& operator += (const Vector3f& vec);
 	public:
-		void ClampMin(const Vector3Float& vec);
-		void ClampMax(const Vector3Float& vec);
-
 		bool IsValid()const;
-		void Set(const Vector3Float& minValue, const Vector3Float& maxOrExt, bool isExt=false);
-		void Set(const BoundingBox& box);
-
-		Vector3Float GetCenter()const;
-		Vector3Float GetDiagonal()const;
-		float GetDiagonalLength()const;
-
-		float DistanceFrom(const Vector3Float& point)const;
-		float DistanceFromSQ(const Vector3Float& point)const;
-
-		bool IsContain(const Vector3Float& point)const;
+		void Set(const Vector3f& minValue, const Vector3f& maxOrExt, bool isExt = false);
+		Vector3f GetCenter()const;
+		Vector3f GetDiagonal()const;
+		Float GetDiagonalLength()const;
+		Float DistanceFrom(const Vector3f& point)const;
+		Float DistanceFromSQ(const Vector3f& point)const;
+		bool IsContain(const Vector3f& point)const;
 		bool IsContain(const BoundingBox& box)const;
-		Vector3Float ClosestPointTo(const Vector3Float& point) const;
-		Vector3Float FurthestPointTo(const Vector3Float& point) const;
-		float GetArea()const;
-		float GetWidth()const;
-		float GetHeight()const;
-		float GetDepth()const;
-		EAxis GetLongestAxis(float* length=NULL)const;
-		EAxis GetShortestAxis(float* length=NULL)const;
-		void DeformExtent(float size);
-
+		Vector3f ClosestPointTo(const Vector3f& point) const;
+		Vector3f FurthestPointTo(const Vector3f& point) const;
+		Float GetArea()const;
+		Float GetWidth()const;
+		Float GetHeight()const;
+		Float GetDepth()const;
+		EAxis GetLongestAxis(Float* length = NULL)const;
+		EAxis GetShortestAxis(Float* length = NULL)const;
+		void ExpandSize(Float size);
 		void MakeInside(const BoundingBox& box);
-		void MakeVecInside(Vector3Float& vec);
-		void MoveDelta(const Vector3Float& vec);
-		void MoveAbs(const Vector3Float& abs);
-		BoundingBox TransformBy(const Matrix4f& mat)const;
+		void MoveDelta(const Vector3f& vec);
+		void MoveAbs(const Vector3f& abs);
 	public:
-		Vector3Float mMin;
-		Vector3Float mMax;
+		Vector3f min;
+		Vector3f max;
 		static const BoundingBox INVALID;
 		static const BoundingBox ZERO;
-		static const BoundingBox infinity;
+		static const BoundingBox MAX;
 	};
 }

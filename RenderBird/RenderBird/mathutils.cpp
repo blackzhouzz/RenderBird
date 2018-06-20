@@ -204,7 +204,7 @@ namespace MathLib
 		}
 	}
 
-	Quaternion MathUtils::ExtraRotation(const Matrix4f mat)
+	Quaternion MathUtils::ExtraRotation(const Matrix4f& mat)
 	{
 		return RotationMatrixToQuaternion(mat.GetMatrix3());
 	}
@@ -642,6 +642,107 @@ namespace MathLib
 		uuv *= 2.0;
 
 		return vec + uv + uuv;
+	}
 
+	BoundingBox MathUtils::TransformBoundingBox(const BoundingBox& boundingBox, const Matrix4f& mat)
+	{
+		if (!boundingBox.IsValid())
+		{
+			return BoundingBox::INVALID;
+		}
+		BoundingBox ret;
+		ret.min = ret.max = mat.GetTranslation();
+		if (mat[0][0] > 0.0f)
+		{
+			ret.min.x += mat[0][0] * boundingBox.min.x;
+			ret.max.x += mat[0][0] * boundingBox.max.x;
+		}
+		else
+		{
+			ret.min.x += mat[0][0] * boundingBox.max.x;
+			ret.max.x += mat[0][0] * boundingBox.min.x;
+		}
+		if (mat[0][1] > 0.0f)
+		{
+			ret.min.y += mat[0][1] * boundingBox.min.x;
+			ret.max.y += mat[0][1] * boundingBox.max.x;
+		}
+		else
+		{
+			ret.min.y += mat[0][1] * boundingBox.max.x;
+			ret.max.y += mat[0][1] * boundingBox.min.x;
+		}
+		if (mat[0][2] > 0.0f)
+		{
+			ret.min.z += mat[0][2] * boundingBox.min.x;
+			ret.max.z += mat[0][2] * boundingBox.max.x;
+		}
+		else
+		{
+			ret.min.z += mat[0][2] * boundingBox.max.x;
+			ret.max.z += mat[0][2] * boundingBox.min.x;
+		}
+
+		if (mat[1][0] > 0.0f)
+		{
+			ret.min.x += mat[1][0] * boundingBox.min.y;
+			ret.max.x += mat[1][0] * boundingBox.max.y;
+		}
+		else
+		{
+			ret.min.x += mat[1][0] * boundingBox.max.y;
+			ret.max.x += mat[1][0] * boundingBox.min.y;
+		}
+		if (mat[1][1] > 0.0f)
+		{
+			ret.min.y += mat[1][1] * boundingBox.min.y;
+			ret.max.y += mat[1][1] * boundingBox.max.y;
+		}
+		else
+		{
+			ret.min.y += mat[1][1] * boundingBox.max.y;
+			ret.max.y += mat[1][1] * boundingBox.min.y;
+		}
+		if (mat[1][2] > 0.0f)
+		{
+			ret.min.z += mat[1][2] * boundingBox.min.y;
+			ret.max.z += mat[1][2] * boundingBox.max.y;
+		}
+		else
+		{
+			ret.min.z += mat[1][2] * boundingBox.max.y;
+			ret.max.z += mat[1][2] * boundingBox.min.y;
+		}
+		if (mat[2][0] > 0.0f)
+		{
+			ret.min.x += mat[2][0] * boundingBox.min.z;
+			ret.max.x += mat[2][0] * boundingBox.max.z;
+		}
+		else
+		{
+			ret.min.x += mat[2][0] * boundingBox.max.z;
+			ret.max.x += mat[2][0] * boundingBox.min.z;
+		}
+		if (mat[2][1] > 0.0f)
+		{
+			ret.min.y += mat[2][1] * boundingBox.min.z;
+			ret.max.y += mat[2][1] * boundingBox.max.z;
+		}
+		else
+		{
+			ret.min.y += mat[2][1] * boundingBox.max.z;
+			ret.max.y += mat[2][1] * boundingBox.min.z;
+		}
+		if (mat[2][2] > 0.0f)
+		{
+			ret.min.z += mat[2][2] * boundingBox.min.z;
+			ret.max.z += mat[2][2] * boundingBox.max.z;
+		}
+		else
+		{
+			ret.min.z += mat[2][2] * boundingBox.max.z;
+			ret.max.z += mat[2][2] * boundingBox.min.z;
+		}
+		return ret;
 	}
 }

@@ -1,16 +1,16 @@
 #pragma once
-#include "LNVector.h"
+#include "vector.h"
 
-namespace Luna
+namespace MathLib
 {
 	class Ray
 	{
 	public:
-		Ray(const Vector3Float& origin, const Vector3Float& dir)
-			: mOrigin(origin), mDirection(dir)
+		Ray(const Vector3f& o, const Vector3f& d)
+			: origin(o), direction(d)
 		{
 		}
-		Vector3Float mOrigin;
-		Vector3Float mDirection;
+		Vector3f origin;
+		Vector3f direction;
 	};
 }

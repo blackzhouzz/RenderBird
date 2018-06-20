@@ -1,17 +1,17 @@
 #pragma once
-#include "LNVector.h"
+#include "vector.h"
 
-namespace Luna
+namespace MathLib
 {
 	class Sphere
 	{
 	public:
 		Sphere() {}
-		Sphere(const Vector3Float& center, float radius);
+		Sphere(const Vector3f& center, float radius);
 		//Sphere TransformBy(const Matrix4f& mat)const;
 	public:
-		Vector3Float mCenter;
-		float mRadius;
+		Vector3f center;
+		float radius;
 		static const Sphere ZERO;
 	};
 }

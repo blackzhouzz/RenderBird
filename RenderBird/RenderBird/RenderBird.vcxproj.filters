@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="tilerenderer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="vector.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -36,15 +33,105 @@
     <ClInclude Include="quaternion.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="boundingbox.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="plane.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="sphere.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ray.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="rect.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="disk.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="pdf.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="coreprivate.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="spectrum.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="material.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="geometry.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="eulerrotation.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="rayhitinfo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="integrator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="pathtracing.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="bidirectional.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="montecarlo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="object.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="entity.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="objectmanager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="geometrycomponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="resourcemanager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="scenemanager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="system.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="raycastsys.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="fastdelegate.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="fastdelegatebind.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="componentmeta.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="typeinfo.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="tilerenderer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="vector.cpp">
@@ -65,7 +152,85 @@
     <ClCompile Include="quaternion.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="boundingbox.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="plane.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sphere.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="rect.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ray.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="disk.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="pdf.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="coreprivate.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="spectrum.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="material.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="geometry.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="eulerrotation.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="integrator.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="pathtracing.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="bidirectional.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="montecarlo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="scene.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="object.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="entity.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="objectmanager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="geometrycomponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="resourcemanager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="scenemanager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="system.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="raycastsys.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
