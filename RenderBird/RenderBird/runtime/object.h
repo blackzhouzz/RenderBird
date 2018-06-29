@@ -1,17 +1,17 @@
 #pragma once
-#include "coreprivate.h"
-#include "typeinfo.h"
+#include "core/coreprivate.h"
+#include "core/typeinfo.h"
 
 namespace RenderBird
 {
+	enum EObjectTypeId
+	{
+		TYPE_ID_ITEM(Object, 0)
+	};
 	class Object
 	{
 		DECLARE_TYPEINFO_BASE(Object)
-	public:
-		const std::string& GetName()const { return m_name; }
-	private:
 		std::string m_name;
-		uint m_id;
 	};
 	typedef std::unique_ptr<Object> ObjectPtr;
 }

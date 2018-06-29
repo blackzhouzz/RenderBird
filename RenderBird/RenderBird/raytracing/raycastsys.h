@@ -1,7 +1,7 @@
 #pragma once
-#include "system.h"
-#include "ray.h"
-#include "rayhitinfo.h"
+#include "ecs/system.h"
+#include "math/ray.h"
+#include "raytracing/rayhitinfo.h"
 
 namespace RenderBird
 {

@@ -1,5 +1,5 @@
 #pragma once
-#include "coreprivate.h"
+#include "core/coreprivate.h"
 #include "scene.h"
 
 namespace RenderBird
