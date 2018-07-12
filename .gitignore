@@ -5,3 +5,13 @@ RenderBird/RenderBird/Debug
 RenderBird/Debug
 RenderBird/.vs
 Debug
+*.tlog
+*.obj
+*.idb
+*.log
+*.pdb
+*.pch
+*.lib
+*.iobj
+*.exe
+*.ipdb

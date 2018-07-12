@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{6D1AF61B-2FD8-4CAA-99D9-168C7F01003B}</ProjectGuid>
-    <RootNamespace>renderbird</RootNamespace>
+    <ProjectGuid>{A7E20D9B-AD55-44C3-9D4E-7039320EB0AA}</ProjectGuid>
+    <RootNamespace>core</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -73,25 +73,25 @@
     <OutDir>$(SolutionDir)libs\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Intermediates\$(Configuration)\</IntDir>
     <TargetExt>.lib</TargetExt>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)libs\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Intermediates\$(Configuration)\</IntDir>
     <TargetExt>.lib</TargetExt>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)libs\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Intermediates\$(Configuration)\</IntDir>
     <TargetExt>.lib</TargetExt>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)libs\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Intermediates\$(Configuration)\</IntDir>
     <TargetExt>.lib</TargetExt>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -99,7 +99,9 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\core\include;$(SolutionDir)\runtime\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include</AdditionalIncludeDirectories>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>core_private.h</PrecompiledHeaderFile>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -108,7 +110,9 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\core\include;$(SolutionDir)\runtime\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include</AdditionalIncludeDirectories>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>core_private.h</PrecompiledHeaderFile>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -119,7 +123,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\core\include;$(SolutionDir)\runtime\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include</AdditionalIncludeDirectories>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>core_private.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -134,7 +140,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\core\include;$(SolutionDir)\runtime\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include</AdditionalIncludeDirectories>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>core_private.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -142,34 +150,45 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\disk.h" />
-    <ClInclude Include="include\geometry.h" />
-    <ClInclude Include="include\geometrycomponent.h" />
-    <ClInclude Include="include\integrator.h" />
-    <ClInclude Include="include\material.h" />
-    <ClInclude Include="include\montecarlo.h" />
-    <ClInclude Include="include\pathtracing.h" />
-    <ClInclude Include="include\raycastsys.h" />
-    <ClInclude Include="include\rayhitinfo.h" />
-    <ClInclude Include="include\renderbird_private.h" />
-    <ClInclude Include="include\renderbird_register.h" />
-    <ClInclude Include="include\renderer.h" />
-    <ClInclude Include="include\scene.h" />
-    <ClInclude Include="include\trianglemesh.h" />
+    <ClInclude Include="include\core_private.h" />
+    <ClInclude Include="include\core_public.h" />
+    <ClInclude Include="include\event.h" />
+    <ClInclude Include="include\fastdelegate.hpp" />
+    <ClInclude Include="include\math\boundingbox.h" />
+    <ClInclude Include="include\math\euler_rotation.h" />
+    <ClInclude Include="include\math\mathcore.h" />
+    <ClInclude Include="include\math\mathutils.h" />
+    <ClInclude Include="include\math\matrix.h" />
+    <ClInclude Include="include\math\plane.h" />
+    <ClInclude Include="include\math\quaternion.h" />
+    <ClInclude Include="include\math\ray.h" />
+    <ClInclude Include="include\math\rect.h" />
+    <ClInclude Include="include\math\spectrum.h" />
+    <ClInclude Include="include\math\sphere.h" />
+    <ClInclude Include="include\math\vector.h" />
+    <ClInclude Include="include\pool.h" />
+    <ClInclude Include="include\simplesignal.h" />
+    <ClInclude Include="include\time.h" />
+    <ClInclude Include="include\typeinfo.h" />
+    <ClInclude Include="include\typelist.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\disk.cpp" />
-    <ClCompile Include="src\geometry.cpp" />
-    <ClCompile Include="src\geometrycomponent.cpp" />
-    <ClCompile Include="src\integrator.cpp" />
-    <ClCompile Include="src\material.cpp" />
-    <ClCompile Include="src\montecarlo.cpp" />
-    <ClCompile Include="src\pathtracing.cpp" />
-    <ClCompile Include="src\raycastsys.cpp" />
-    <ClCompile Include="src\renderbird_register.cpp" />
-    <ClCompile Include="src\renderer.cpp" />
-    <ClCompile Include="src\scene.cpp" />
-    <ClCompile Include="src\trianglemesh.cpp" />
+    <ClCompile Include="src\core_private.cpp" />
+    <ClCompile Include="src\event.cpp" />
+    <ClCompile Include="src\math\boundingbox.cpp" />
+    <ClCompile Include="src\math\euler_rotation.cpp" />
+    <ClCompile Include="src\math\mathcore.cpp" />
+    <ClCompile Include="src\math\mathutils.cpp" />
+    <ClCompile Include="src\math\matrix.cpp" />
+    <ClCompile Include="src\math\plane.cpp" />
+    <ClCompile Include="src\math\quaternion.cpp" />
+    <ClCompile Include="src\math\ray.cpp" />
+    <ClCompile Include="src\math\rect.cpp" />
+    <ClCompile Include="src\math\spectrum.cpp" />
+    <ClCompile Include="src\math\sphere.cpp" />
+    <ClCompile Include="src\math\vector.cpp" />
+    <ClCompile Include="src\pool.cpp" />
+    <ClCompile Include="src\typeinfo.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

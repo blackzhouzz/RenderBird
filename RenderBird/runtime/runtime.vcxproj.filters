@@ -15,84 +15,57 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\disk.h">
+    <ClInclude Include="include\ecs\component.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\geometry.h">
+    <ClInclude Include="include\ecs\componentregister.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\geometrycomponent.h">
+    <ClInclude Include="include\ecs\entity.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\integrator.h">
+    <ClInclude Include="include\ecs\entitymanager.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\material.h">
+    <ClInclude Include="include\ecs\system.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\montecarlo.h">
+    <ClInclude Include="include\object.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\pathtracing.h">
+    <ClInclude Include="include\transform.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\raycastsys.h">
+    <ClInclude Include="include\runtime_register.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\rayhitinfo.h">
+    <ClInclude Include="include\runtime_private.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\renderer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\scene.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\trianglemesh.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\renderbird_register.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\renderbird_private.h">
+    <ClInclude Include="include\runtime_public.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\disk.cpp">
+    <ClCompile Include="src\ecs\component.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\geometry.cpp">
+    <ClCompile Include="src\ecs\componentregister.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\geometrycomponent.cpp">
+    <ClCompile Include="src\ecs\entity.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\integrator.cpp">
+    <ClCompile Include="src\ecs\entitymanager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\material.cpp">
+    <ClCompile Include="src\ecs\system.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\montecarlo.cpp">
+    <ClCompile Include="src\object.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\pathtracing.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\raycastsys.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\renderer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\scene.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\trianglemesh.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\renderbird_register.cpp">
+    <ClCompile Include="src\runtime_register.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
