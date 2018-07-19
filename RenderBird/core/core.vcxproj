@@ -99,7 +99,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\3rdparty</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>core_private.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -110,7 +110,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\3rdparty</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>core_private.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -123,7 +123,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\3rdparty</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>core_private.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -140,7 +140,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\3rdparty</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>core_private.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\3rdparty\random.hpp" />
     <ClInclude Include="include\core_private.h" />
     <ClInclude Include="include\core_public.h" />
     <ClInclude Include="include\event.h" />
@@ -162,13 +163,13 @@
     <ClInclude Include="include\math\plane.h" />
     <ClInclude Include="include\math\quaternion.h" />
     <ClInclude Include="include\math\ray.h" />
-    <ClInclude Include="include\math\rect.h" />
+    <ClInclude Include="include\math\rect2.h" />
     <ClInclude Include="include\math\spectrum.h" />
     <ClInclude Include="include\math\sphere.h" />
     <ClInclude Include="include\math\vector.h" />
     <ClInclude Include="include\pool.h" />
     <ClInclude Include="include\simplesignal.h" />
-    <ClInclude Include="include\time.h" />
+    <ClInclude Include="include\timer.h" />
     <ClInclude Include="include\typeinfo.h" />
     <ClInclude Include="include\typelist.h" />
   </ItemGroup>
@@ -183,7 +184,6 @@
     <ClCompile Include="src\math\plane.cpp" />
     <ClCompile Include="src\math\quaternion.cpp" />
     <ClCompile Include="src\math\ray.cpp" />
-    <ClCompile Include="src\math\rect.cpp" />
     <ClCompile Include="src\math\spectrum.cpp" />
     <ClCompile Include="src\math\sphere.cpp" />
     <ClCompile Include="src\math\vector.cpp" />

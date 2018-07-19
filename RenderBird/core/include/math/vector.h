@@ -38,6 +38,8 @@ namespace Core
 
 	using Vector2i = TVector2<int>;
 	using Vector2f = TVector2<Float>;
+	using Point2i = TVector2<int>;
+	using Point2f = TVector2<Float>;
 
 	template <typename T>
 	const TVector2<T> TVector2<T>::ZERO(0, 0);
@@ -420,7 +422,7 @@ namespace Core
 	template<typename T>
 	inline TVector3<T> TVector3<T>::GetNormalized()const
 	{
-		TVector3<T> v = TVector3<T>.ZERO;
+		TVector3<T> v = TVector3<T>::ZERO;
 		Float len = Length();
 		if (len == 0)
 			return v;

@@ -182,10 +182,6 @@ private:
 	TypeInfoMap m_typeMap;
 };
 
-#ifndef TYPE_ID
-#define TYPE_ID(cls) TYPE_ID_##cls
-#endif
-
 #ifndef TYPE_ID_GROUP
 #define TYPE_ID_GROUP(name, id) static const int TYPE_ID_GROUP_##name = id;
 #endif
@@ -196,11 +192,10 @@ private:
 	{\
 		class cls;\
 	}\
-	static const int TYPE_ID_##cls = id + TYPE_ID_GROUP_##group;\
 	template <>\
 	struct TypeId<group::cls>\
 	{\
-		static const int value = TYPE_ID_##cls;\
+		static const int value = id + TYPE_ID_GROUP_##group;\
 	};
 #endif
 
@@ -219,7 +214,7 @@ struct TypeOf;
 			static TypeInfo* typeInfo = nullptr;\
 			if (typeInfo == nullptr)\
 			{\
-				typeInfo = new TypeInfo(#Type, nullptr, nullptr, TYPE_ID(Type), sizeof(Module::Type), TypeInfoFlag::Default);\
+				typeInfo = new TypeInfo(#Type, nullptr, nullptr, TypeId<Module::Type>::value, sizeof(Module::Type), TypeInfoFlag::Default);\
 			}\
 			return typeInfo;\
 		}\
@@ -235,7 +230,7 @@ struct TypeOf;
 			static TypeInfo* typeInfo = nullptr;\
 			if (typeInfo == nullptr)\
 			{\
-				typeInfo = new TypeInfo(#Type, TypeOf<Super>::StaticTypeInfo(), new TAllocator<Module::Type>(), TYPE_ID(Type), sizeof(Module::Type), TypeInfoFlag::Default);\
+				typeInfo = new TypeInfo(#Type, TypeOf<Super>::StaticTypeInfo(), new TAllocator<Module::Type>(), TypeId<Module::Type>::value, sizeof(Module::Type), TypeInfoFlag::Default);\
 			}\
 			return typeInfo;\
 		}\
@@ -251,7 +246,7 @@ struct TypeOf;
 			static TypeInfo* typeInfo = nullptr;\
 			if (typeInfo == nullptr)\
 			{\
-				typeInfo = new TypeInfo(#Type, TypeOf<Super>::StaticTypeInfo(), nullptr, TYPE_ID(Type), sizeof(Module::Type), TypeInfoFlag::IsAbstract);\
+				typeInfo = new TypeInfo(#Type, TypeOf<Super>::StaticTypeInfo(), nullptr, TypeId<Module::Type>::value, sizeof(Module::Type), TypeInfoFlag::IsAbstract);\
 			}\
 			return typeInfo;\
 		}\

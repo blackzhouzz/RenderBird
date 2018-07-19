@@ -5,20 +5,10 @@
 
 namespace Core
 {
-
-#undef Float
 #ifdef NO_USE_HIGH_PRECISE
-#define Float float
+	using Float = float;
 #else
-#define Float double
-#endif
-
-#ifndef uint
-#define uint unsigned int
-#endif
-
-#ifndef longlong
-#define longlong long long
+	using Float = double;
 #endif
 
 	static const Float C_FLOAT_EPSILON = (Float)1e-06;
@@ -35,7 +25,7 @@ namespace Core
 
 	inline Float RadToDeg(Float val)
 	{
-		return (val) * (Float)(180.0 / C_PI);
+		return (val) * (Float)(180.0 * C_INV_PI);
 	}
 
 	inline Float AngleModRad(Float a)

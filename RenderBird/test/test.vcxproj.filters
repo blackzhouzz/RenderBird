@@ -21,13 +21,13 @@
     <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="test_pathtracing.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="test_trianglemesh.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="test_benchmark_entity_component.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="test_raytracing.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,7 +44,7 @@
     <ClCompile Include="test_benchmark_entity_component.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="test_pathtracing.cpp">
+    <ClCompile Include="test_raytracing.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

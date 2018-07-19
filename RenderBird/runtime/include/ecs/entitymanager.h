@@ -1,7 +1,7 @@
 #pragma once
 #include "entity.h"
 #include "pool.h"
-#include "ecs/componentregister.h"
+#include "ecs/component_typelist.h"
 
 namespace Runtime
 {

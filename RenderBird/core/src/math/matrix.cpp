@@ -21,16 +21,16 @@ namespace Core
 		m[2][0] = m20; m[2][1] = m21; m[2][2] = m22;
 	}
 
-	Float* Matrix3f::operator [] (uint rowIndex)const
+	Float* Matrix3f::operator [] (uint32 rowIndex)const
 	{
 		return (Float*)m[rowIndex];
 	}
 
 	bool Matrix3f::operator == (const Matrix3f& mat)const
 	{
-		for (uint rowIndex = 0; rowIndex < 3; rowIndex++)
+		for (uint32 rowIndex = 0; rowIndex < 3; rowIndex++)
 		{
-			for (uint colIndex = 0; colIndex < 3; colIndex++)
+			for (uint32 colIndex = 0; colIndex < 3; colIndex++)
 			{
 				if (m[rowIndex][colIndex] != mat.m[rowIndex][colIndex])
 				{
@@ -50,9 +50,9 @@ namespace Core
 	Matrix3f Matrix3f::operator + (const Matrix3f& mat)const
 	{
 		Matrix3f sum;
-		for (uint rowIndex = 0; rowIndex < 3; rowIndex++)
+		for (uint32 rowIndex = 0; rowIndex < 3; rowIndex++)
 		{
-			for (uint colIndex = 0; colIndex < 3; colIndex++)
+			for (uint32 colIndex = 0; colIndex < 3; colIndex++)
 			{
 				sum.m[rowIndex][colIndex] = m[rowIndex][colIndex] + mat.m[rowIndex][colIndex];
 			}
@@ -63,9 +63,9 @@ namespace Core
 	Matrix3f Matrix3f::operator - (const Matrix3f& mat)const
 	{
 		Matrix3f diff;
-		for (uint rowIndex = 0; rowIndex < 3; rowIndex++)
+		for (uint32 rowIndex = 0; rowIndex < 3; rowIndex++)
 		{
-			for (uint colIndex = 0; colIndex < 3; colIndex++)
+			for (uint32 colIndex = 0; colIndex < 3; colIndex++)
 			{
 				diff.m[rowIndex][colIndex] = m[rowIndex][colIndex] - mat.m[rowIndex][colIndex];
 			}
@@ -76,9 +76,9 @@ namespace Core
 	Matrix3f Matrix3f::operator * (const Matrix3f& mat)const
 	{
 		Matrix3f prod;
-		for (uint rowIndex = 0; rowIndex < 3; rowIndex++)
+		for (uint32 rowIndex = 0; rowIndex < 3; rowIndex++)
 		{
-			for (uint colIndex = 0; colIndex < 3; colIndex++)
+			for (uint32 colIndex = 0; colIndex < 3; colIndex++)
 			{
 				prod.m[rowIndex][colIndex] = m[rowIndex][0] * mat.m[0][colIndex] + m[rowIndex][1] * mat.m[1][colIndex] + m[rowIndex][2] * mat.m[2][colIndex];
 			}
@@ -89,9 +89,9 @@ namespace Core
 	Matrix3f Matrix3f::operator - ()const
 	{
 		Matrix3f neg;
-		for (uint rowIndex = 0; rowIndex < 3; rowIndex++)
+		for (uint32 rowIndex = 0; rowIndex < 3; rowIndex++)
 		{
-			for (uint colIndex = 0; colIndex < 3; colIndex++)
+			for (uint32 colIndex = 0; colIndex < 3; colIndex++)
 			{
 				neg[rowIndex][colIndex] = -m[rowIndex][colIndex];
 			}
@@ -102,7 +102,7 @@ namespace Core
 	Vector3f Matrix3f::operator * (const Vector3f& pt)const
 	{
 		Vector3f prod;
-		for (uint rowIndex = 0; rowIndex < 3; rowIndex++)
+		for (uint32 rowIndex = 0; rowIndex < 3; rowIndex++)
 		{
 			prod[rowIndex] = m[rowIndex][0] * pt[0] + m[rowIndex][1] * pt[1] + m[rowIndex][2] * pt[2];
 		}
@@ -112,7 +112,7 @@ namespace Core
 	Vector3f operator * (const Vector3f& pt, const Matrix3f& mat)
 	{
 		Vector3f prod;
-		for (uint rowIndex = 0; rowIndex < 3; rowIndex++)
+		for (uint32 rowIndex = 0; rowIndex < 3; rowIndex++)
 		{
 			prod[rowIndex] =
 				pt[0] * mat.m[0][rowIndex] +
@@ -125,9 +125,9 @@ namespace Core
 	Matrix3f Matrix3f::operator * (Float scalar)const
 	{
 		Matrix3f prod;
-		for (uint rowIndex = 0; rowIndex < 3; rowIndex++)
+		for (uint32 rowIndex = 0; rowIndex < 3; rowIndex++)
 		{
-			for (uint colIndex = 0; colIndex < 3; colIndex++)
+			for (uint32 colIndex = 0; colIndex < 3; colIndex++)
 			{
 				prod[rowIndex][colIndex] = scalar * m[rowIndex][colIndex];
 			}
@@ -138,9 +138,9 @@ namespace Core
 	Matrix3f operator * (Float scalar, const Matrix3f& mat)
 	{
 		Matrix3f prod;
-		for (uint rowIndex = 0; rowIndex < 3; rowIndex++)
+		for (uint32 rowIndex = 0; rowIndex < 3; rowIndex++)
 		{
-			for (uint colIndex = 0; colIndex < 3; colIndex++)
+			for (uint32 colIndex = 0; colIndex < 3; colIndex++)
 			{
 				prod[rowIndex][colIndex] = scalar * mat.m[rowIndex][colIndex];
 			}
@@ -148,13 +148,13 @@ namespace Core
 		return prod;
 	}
 
-	Vector3f Matrix3f::GetRow(uint axisIndex)const
+	Vector3f Matrix3f::GetRow(uint32 axisIndex)const
 	{
 		assert(0 <= axisIndex && axisIndex < 3);
 		return Vector3f(m[axisIndex][0], m[axisIndex][1], m[axisIndex][2]);
 	}
 
-	void Matrix3f::SetRow(uint axisIndex, const Vector3f& vec)
+	void Matrix3f::SetRow(uint32 axisIndex, const Vector3f& vec)
 	{
 		assert(0 <= axisIndex && axisIndex < 3);
 		m[axisIndex][0] = vec.x;
@@ -162,13 +162,13 @@ namespace Core
 		m[axisIndex][2] = vec.z;
 	}
 
-	Vector3f Matrix3f::GetColumn(uint colIndex)const
+	Vector3f Matrix3f::GetColumn(uint32 colIndex)const
 	{
 		assert(0 <= colIndex && colIndex < 3);
 		return Vector3f(m[0][colIndex], m[1][colIndex], m[2][colIndex]);
 	}
 
-	void Matrix3f::SetColumn(uint colIndex, const Vector3f& vec)
+	void Matrix3f::SetColumn(uint32 colIndex, const Vector3f& vec)
 	{
 		assert(0 <= colIndex && colIndex < 3);
 		m[0][colIndex] = vec.x;
@@ -193,9 +193,9 @@ namespace Core
 	Matrix3f Matrix3f::Transpose()const
 	{
 		Matrix3f trans;
-		for (uint rowIndex = 0; rowIndex < 3; rowIndex++)
+		for (uint32 rowIndex = 0; rowIndex < 3; rowIndex++)
 		{
-			for (uint colIndex = 0; colIndex < 3; colIndex++)
+			for (uint32 colIndex = 0; colIndex < 3; colIndex++)
 			{
 				trans[rowIndex][colIndex] = m[colIndex][rowIndex];
 			}
@@ -227,9 +227,9 @@ namespace Core
 			return false;
 
 		Float invDet = 1.0 / det;
-		for (uint rowIndex = 0; rowIndex < 3; rowIndex++)
+		for (uint32 rowIndex = 0; rowIndex < 3; rowIndex++)
 		{
-			for (uint colIndex = 0; colIndex < 3; colIndex++)
+			for (uint32 colIndex = 0; colIndex < 3; colIndex++)
 				invMat[rowIndex][colIndex] *= invDet;
 		}
 		return true;
@@ -301,13 +301,13 @@ namespace Core
 		m[3][0] = m30; m[3][1] = m31; m[3][2] = m32; m[3][3] = m33;
 	}
 
-	Float* Matrix4f::operator [] (uint rowIndex)
+	Float* Matrix4f::operator [] (uint32 rowIndex)
 	{
 		assert(rowIndex < 4);
 		return m[rowIndex];
 	}
 
-	const Float *const Matrix4f::operator [] (uint rowIndex)const
+	const Float *const Matrix4f::operator [] (uint32 rowIndex)const
 	{
 		assert(rowIndex < 4);
 		return m[rowIndex];
@@ -487,13 +487,23 @@ namespace Core
 		return false;
 	}
 
-	Vector3f Matrix4f::TransformVector(const Vector3f& vec)const
+	Vector3f Matrix4f::TransformPerspective(const Vector3f& vec)const
 	{
 		Vector3f r;
-		Float fInvW = 1.0 / (m[0][3] * vec.x + m[1][3] * vec.y + m[2][3] * vec.z + m[3][3]);
-		r.x = (m[0][0] * vec.x + m[1][0] * vec.y + m[2][0] * vec.z + m[3][0]) * fInvW;
-		r.y = (m[0][1] * vec.x + m[1][1] * vec.y + m[2][1] * vec.z + m[3][1]) * fInvW;
-		r.z = (m[0][2] * vec.x + m[1][2] * vec.y + m[2][2] * vec.z + m[3][2]) * fInvW;
+		Float invW = 1.0 / (m[0][3] * vec.x + m[1][3] * vec.y + m[2][3] * vec.z + m[3][3]);
+		r.x = (m[0][0] * vec.x + m[1][0] * vec.y + m[2][0] * vec.z + m[3][0]) * invW;
+		r.y = (m[0][1] * vec.x + m[1][1] * vec.y + m[2][1] * vec.z + m[3][1]) * invW;
+		r.z = (m[0][2] * vec.x + m[1][2] * vec.y + m[2][2] * vec.z + m[3][2]) * invW;
+		return r;
+	}
+
+
+	Vector3f Matrix4f::TransformPoint(const Vector3f& vec)const
+	{
+		Vector3f r;
+		r.x = (m[0][0] * vec.x + m[1][0] * vec.y + m[2][0] * vec.z + m[3][0]);
+		r.y = (m[0][1] * vec.x + m[1][1] * vec.y + m[2][1] * vec.z + m[3][1]);
+		r.z = (m[0][2] * vec.x + m[1][2] * vec.y + m[2][2] * vec.z + m[3][2]);
 		return r;
 	}
 
@@ -504,6 +514,15 @@ namespace Core
 		r.y = (m[0][1] * vec.x + m[1][1] * vec.y + m[2][1] * vec.z + m[3][1] * vec.w);
 		r.z = (m[0][2] * vec.x + m[1][2] * vec.y + m[2][2] * vec.z + m[3][2] * vec.w);
 		r.w = (m[0][3] * vec.x + m[1][3] * vec.y + m[2][3] * vec.z + m[3][3] * vec.w);
+		return r;
+	}
+
+	Vector3f Matrix4f::TransformDirection(const Vector3f& vec)const
+	{
+		Vector3f r;
+		r.x = (m[0][0] * vec.x + m[1][0] * vec.y + m[2][0] * vec.z);
+		r.y = (m[0][1] * vec.x + m[1][1] * vec.y + m[2][1] * vec.z);
+		r.z = (m[0][2] * vec.x + m[1][2] * vec.y + m[2][2] * vec.z);
 		return r;
 	}
 
@@ -548,13 +567,13 @@ namespace Core
 		m[2][2] *= scale.z;
 	}
 
-	Vector4f Matrix4f::GetRow(uint axis)const
+	Vector4f Matrix4f::GetRow(uint32 axis)const
 	{
 		assert(0 <= axis && axis < 4);
 		return Vector4f(m[axis][0], m[axis][1], m[axis][2], m[axis][3]);
 	}
 
-	void Matrix4f::SetRow(uint axis, const Vector4f& vec)
+	void Matrix4f::SetRow(uint32 axis, const Vector4f& vec)
 	{
 		assert(0 <= axis && axis < 4);
 		m[axis][0] = vec.x;
@@ -563,13 +582,13 @@ namespace Core
 		m[axis][3] = vec.w;
 	}
 
-	Vector4f Matrix4f::GetColumn(uint colIndex)const
+	Vector4f Matrix4f::GetColumn(uint32 colIndex)const
 	{
 		assert(0 <= colIndex && colIndex < 4);
 		return Vector4f(m[0][colIndex], m[1][colIndex], m[2][colIndex], m[3][colIndex]);
 	}
 
-	void Matrix4f::SetColumn(uint colIndex, const Vector4f& vec)
+	void Matrix4f::SetColumn(uint32 colIndex, const Vector4f& vec)
 	{
 		assert(0 <= colIndex && colIndex < 4);
 		m[0][colIndex] = vec.x;

@@ -14,7 +14,7 @@ namespace Core
 			m_beginTime = high_resolution_clock::now();
 		}
 
-		longlong End()
+		int64 End()
 		{
 			high_resolution_clock::time_point endTime = high_resolution_clock::now();
 			m_timeInterval = std::chrono::duration_cast<milliseconds>(endTime - m_beginTime);
@@ -25,11 +25,11 @@ namespace Core
 		{
 			return m_timeInterval;
 		}
-		longlong GetIntervalInMilliseconds()const
+		int64 GetIntervalInMilliseconds()const
 		{
 			return m_timeInterval.count();
 		}
-		longlong GetIntervalInSeconds()const
+		int64 GetIntervalInSeconds()const
 		{
 			return m_timeInterval.count() / 1000;
 		}

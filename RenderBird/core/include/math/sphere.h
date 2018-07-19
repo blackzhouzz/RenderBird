@@ -7,11 +7,11 @@ namespace Core
 	{
 	public:
 		Sphere() {}
-		Sphere(const Vector3f& center, float radius);
+		Sphere(const Vector3f& center, Float radius);
 		//Sphere TransformBy(const Matrix4f& mat)const;
 	public:
 		Vector3f center;
-		float radius;
+		Float radius;
 		static const Sphere ZERO;
 	};
 }

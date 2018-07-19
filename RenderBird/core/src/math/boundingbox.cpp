@@ -175,9 +175,9 @@ namespace Core
 	{
 		if (!IsValid())
 		{
-			return -1.0f;
+			return -1.0;
 		}
-		return 2.0f * (max.z - min.z) * (max.y - min.y) * (max.x - min.x);
+		return 2.0 * (max.z - min.z) * (max.y - min.y) * (max.x - min.x);
 	}
 
 	Float BoundingBox::GetWidth()const

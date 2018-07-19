@@ -5,24 +5,28 @@
 #include "euler_rotation.h"
 #include "vector.h"
 #include "boundingbox.h"
-
+#include "rect2.h"
+#
 namespace Core
 {
 	class MathUtils
 	{
-		static Matrix4f TranslateMatrix(const Vector3f& trans);
-		static Matrix4f ScaleMatrix(const Vector3f& scale);
+	public:
+		static Matrix4f TranslateMatrix(Float x, Float y, Float z);
+		static Matrix4f ScaleMatrix(Float x, Float y, Float z);
 		static Matrix4f ScaleMatrix(Float scale);
 		static Matrix4f InverseRotationMatrix(Float pitch, Float yaw, Float roll);
 		static Matrix4f RotationMatrix(const Vector3f& axis, Float theta);
 		static Matrix4f ScaleDirectionMatrix(const Vector3f& dir, Float k);
 		static Matrix4f BasisMatrix(const Vector3f& axisX, const Vector3f& axisY, const Vector3f& axisZ);
-		static Matrix4f OrthoMatrixLH(Float width, Float height, Float nearClip, Float farClip);
-		static Matrix4f OrthoOffCenterMatrixLH(Float left, Float right, Float bottom, Float top, Float nearClip, Float farClip);
-		static Matrix4f PerspectiveFovMatrixLH(Float fovY, Float aspect, Float nearClip, Float farClip);
-		static Matrix4f PerspectiveFovInfiniteMatrixLH(Float fovY, Float aspect, Float nearClip);
+		static Matrix4f OrthoMatrix(Float width, Float height, Float nearClip, Float farClip);
+		static Matrix4f OrthoOffCenterMatrix(Float left, Float right, Float bottom, Float top, Float nearClip, Float farClip);
+		static Matrix4f PerspectiveFovMatrix(Float fovY, Float aspect, Float nearClip, Float farClip);
+		static Matrix4f PerspectiveFovInfiniteMatrix(Float fovY, Float aspect, Float nearClip);
 		static Matrix4f LookAtMatrixLH(const Vector3f& eyePos, const Vector3f& at, const Vector3f& up);
 		static Matrix4f LookAtMatrix(const Vector3f& eyePos, const Vector3f& axisX, const Vector3f& axisY, const Vector3f& axisZ);
+		static Matrix4f LookAtMatrix(const Vector3f& eyePos, const Vector3f& lookat, const Vector3f& up);
+		static Matrix4f ScreenToRasterMatrix(const Rect2f& screenBound, const Point2i& resolution);
 		static Quaternion Slerp(Float t, const Quaternion& p, const Quaternion& quat, bool shortestPath = false);
 		static Quaternion ExtraRotation(const Matrix4f& mat);
 		static Quaternion RotationMatrixToQuaternion(const Matrix3f& mat);

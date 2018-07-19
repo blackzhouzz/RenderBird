@@ -2,21 +2,21 @@
 
 namespace Core
 {
-	Matrix4f MathUtils::TranslateMatrix(const Vector3f& trans)
+	Matrix4f MathUtils::TranslateMatrix(Float x, Float y, Float z)
 	{
 		return Matrix4f(
 			1.0, 0, 0, 0,
 			0, 1.0, 0, 0,
 			0, 0, 1.0, 0,
-			trans.x, trans.y, trans.z, 1.0);
+			x, y, z, 1.0);
 	}
 
-	Matrix4f MathUtils::ScaleMatrix(const Vector3f& scale)
+	Matrix4f MathUtils::ScaleMatrix(Float x, Float y, Float z)
 	{
 		return Matrix4f(
-			scale.x, 0, 0, 0,
-			0, scale.y, 0, 0,
-			0, 0, scale.z, 0,
+			x, 0, 0, 0,
+			0, y, 0, 0,
+			0, 0, z, 0,
 			0, 0, 0, 1.0);
 	}
 
@@ -96,7 +96,7 @@ namespace Core
 		);
 	}
 
-	Matrix4f MathUtils::OrthoMatrixLH(Float width, Float height, Float nearClip, Float farClip)
+	Matrix4f MathUtils::OrthoMatrix(Float width, Float height, Float nearClip, Float farClip)
 	{
 		return Matrix4f(
 			2.0 / width, 0, 0, 0,
@@ -106,7 +106,7 @@ namespace Core
 		);
 	}
 
-	Matrix4f MathUtils::OrthoOffCenterMatrixLH(Float left, Float right, Float bottom, Float top, Float nearClip, Float farClip)
+	Matrix4f MathUtils::OrthoOffCenterMatrix(Float left, Float right, Float bottom, Float top, Float nearClip, Float farClip)
 	{
 		return Matrix4f(
 			2.0 / (right - left), 0, 0, 0,
@@ -116,7 +116,7 @@ namespace Core
 		);
 	}
 
-	Matrix4f MathUtils::PerspectiveFovMatrixLH(Float fovY, Float aspect, Float nearClip, Float farClip)
+	Matrix4f MathUtils::PerspectiveFovMatrix(Float fovY, Float aspect, Float nearClip, Float farClip)
 	{
 		Float scaleY = 1.0 / std::tan(fovY * 0.5);
 		Float scaleX = scaleY / aspect;
@@ -128,7 +128,7 @@ namespace Core
 		);
 	}
 
-	Matrix4f MathUtils::PerspectiveFovInfiniteMatrixLH(Float fovY, Float aspect, Float nearClip)
+	Matrix4f MathUtils::PerspectiveFovInfiniteMatrix(Float fovY, Float aspect, Float nearClip)
 	{
 		Float scaleY = 1.0 / std::tan(fovY * 0.5);
 		Float scaleX = scaleY / aspect;
@@ -161,6 +161,46 @@ namespace Core
 			axisX.z, axisY.z, axisZ.z, 0.0,
 			-Dot(axisX, eyePos), -Dot(axisY, eyePos), -Dot(axisZ, eyePos), 1.0
 		);
+	}
+
+	Matrix4f MathUtils::LookAtMatrix(const Vector3f& eyePos, const Vector3f& lookat, const Vector3f& up)
+	{
+		Matrix4f ret;
+		ret.m[0][3] = eyePos.x;
+		ret.m[1][3] = eyePos.y;
+		ret.m[2][3] = eyePos.z;
+		ret.m[3][3] = 1;
+
+		Vector3f normUp = up.GetNormalized();
+		Vector3f forward = (lookat - eyePos).Normalize();
+		Vector3f right = Cross(normUp, forward).Normalize();
+		if (right.LengthSQ() == 0)
+		{
+			return Matrix4f::IDENTITY;
+		}
+		Vector3f newUp = Cross(forward, right);
+
+		ret.m[0][0] = right.x;
+		ret.m[1][0] = right.y;
+		ret.m[2][0] = right.z;
+		ret.m[3][0] = 0.;
+		ret.m[0][1] = newUp.x;
+		ret.m[1][1] = newUp.y;
+		ret.m[2][1] = newUp.z;
+		ret.m[3][1] = 0.;
+		ret.m[0][2] = forward.x;
+		ret.m[1][2] = forward.y;
+		ret.m[2][2] = forward.z;
+		ret.m[3][2] = 0.;
+
+		return ret;
+	}
+
+	Matrix4f MathUtils::ScreenToRasterMatrix(const Rect2f& screenBound, const Point2i& resolution)
+	{
+		return ScaleMatrix(resolution.x, resolution.y, 1.0) * 
+			ScaleMatrix(1.0 / (screenBound.m_max.x - screenBound.m_min.x), 1.0 / (screenBound.m_min.y - screenBound.m_max.y), 1.0) *
+			TranslateMatrix(-screenBound.m_min.x, -screenBound.m_max.y, 0);
 	}
 
 	Quaternion MathUtils::Slerp(Float t, const Quaternion& p, const Quaternion& quat, bool shortestPath)
@@ -652,7 +692,7 @@ namespace Core
 		}
 		BoundingBox ret;
 		ret.min = ret.max = mat.GetTranslation();
-		if (mat[0][0] > 0.0f)
+		if (mat[0][0] > 0)
 		{
 			ret.min.x += mat[0][0] * boundingBox.min.x;
 			ret.max.x += mat[0][0] * boundingBox.max.x;
@@ -662,7 +702,7 @@ namespace Core
 			ret.min.x += mat[0][0] * boundingBox.max.x;
 			ret.max.x += mat[0][0] * boundingBox.min.x;
 		}
-		if (mat[0][1] > 0.0f)
+		if (mat[0][1] > 0)
 		{
 			ret.min.y += mat[0][1] * boundingBox.min.x;
 			ret.max.y += mat[0][1] * boundingBox.max.x;
@@ -672,7 +712,7 @@ namespace Core
 			ret.min.y += mat[0][1] * boundingBox.max.x;
 			ret.max.y += mat[0][1] * boundingBox.min.x;
 		}
-		if (mat[0][2] > 0.0f)
+		if (mat[0][2] > 0)
 		{
 			ret.min.z += mat[0][2] * boundingBox.min.x;
 			ret.max.z += mat[0][2] * boundingBox.max.x;
@@ -683,7 +723,7 @@ namespace Core
 			ret.max.z += mat[0][2] * boundingBox.min.x;
 		}
 
-		if (mat[1][0] > 0.0f)
+		if (mat[1][0] > 0)
 		{
 			ret.min.x += mat[1][0] * boundingBox.min.y;
 			ret.max.x += mat[1][0] * boundingBox.max.y;
@@ -693,7 +733,7 @@ namespace Core
 			ret.min.x += mat[1][0] * boundingBox.max.y;
 			ret.max.x += mat[1][0] * boundingBox.min.y;
 		}
-		if (mat[1][1] > 0.0f)
+		if (mat[1][1] > 0)
 		{
 			ret.min.y += mat[1][1] * boundingBox.min.y;
 			ret.max.y += mat[1][1] * boundingBox.max.y;
@@ -703,7 +743,7 @@ namespace Core
 			ret.min.y += mat[1][1] * boundingBox.max.y;
 			ret.max.y += mat[1][1] * boundingBox.min.y;
 		}
-		if (mat[1][2] > 0.0f)
+		if (mat[1][2] > 0)
 		{
 			ret.min.z += mat[1][2] * boundingBox.min.y;
 			ret.max.z += mat[1][2] * boundingBox.max.y;
@@ -713,7 +753,7 @@ namespace Core
 			ret.min.z += mat[1][2] * boundingBox.max.y;
 			ret.max.z += mat[1][2] * boundingBox.min.y;
 		}
-		if (mat[2][0] > 0.0f)
+		if (mat[2][0] > 0)
 		{
 			ret.min.x += mat[2][0] * boundingBox.min.z;
 			ret.max.x += mat[2][0] * boundingBox.max.z;
@@ -723,7 +763,7 @@ namespace Core
 			ret.min.x += mat[2][0] * boundingBox.max.z;
 			ret.max.x += mat[2][0] * boundingBox.min.z;
 		}
-		if (mat[2][1] > 0.0f)
+		if (mat[2][1] > 0)
 		{
 			ret.min.y += mat[2][1] * boundingBox.min.z;
 			ret.max.y += mat[2][1] * boundingBox.max.z;
@@ -733,7 +773,7 @@ namespace Core
 			ret.min.y += mat[2][1] * boundingBox.max.z;
 			ret.max.y += mat[2][1] * boundingBox.min.z;
 		}
-		if (mat[2][2] > 0.0f)
+		if (mat[2][2] > 0)
 		{
 			ret.min.z += mat[2][2] * boundingBox.min.z;
 			ret.max.z += mat[2][2] * boundingBox.max.z;

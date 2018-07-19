@@ -8,6 +8,6 @@ namespace Core
 	public:
 		Vector3f origin;
 		Vector3f direction;
-		float m_time;
+		Float m_time;
 	};
 }

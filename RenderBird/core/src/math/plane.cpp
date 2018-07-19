@@ -31,7 +31,7 @@ namespace Core
 		Float len = normal.Length();
 		if (len > C_FLOAT_EPSILON)
 		{
-			Float invLen = 1.0f / len;
+			Float invLen = 1.0 / len;
 			normal *= invLen;
 			distance *= invLen;
 		}
@@ -63,7 +63,7 @@ namespace Core
 	{
 		Float minD, maxD;
 
-		if (normal.x > 0.0f)
+		if (normal.x > 0)
 		{
 			minD = normal.x * box.min.x;
 			maxD = normal.x * box.max.x;
@@ -74,7 +74,7 @@ namespace Core
 			maxD = normal.x * box.min.x;
 		}
 
-		if (normal.y > 0.0f)
+		if (normal.y > 0)
 		{
 			minD += normal.y * box.min.y;
 			maxD += normal.y * box.max.y;
@@ -85,7 +85,7 @@ namespace Core
 			maxD += normal.y * box.min.y;
 		}
 
-		if (normal.z > 0.0f)
+		if (normal.z > 0)
 		{
 			minD += normal.z * box.min.z;
 			maxD += normal.z * box.max.z;

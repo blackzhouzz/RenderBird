@@ -1,4 +1,4 @@
-#include "ecs/componentregister.h"
+#include "ecs/component_typelist.h"
 #include "transform.h"
 #include "ecs/component.h"
 

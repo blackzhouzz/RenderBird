@@ -18,7 +18,7 @@ namespace RenderBird
 	struct PathTracingState
 	{
 		int m_bounceCount;
-		RGBSpectrum m_throughtPut;
+		RGB32 m_throughtPut;
 	};
 
 	class PathTracing

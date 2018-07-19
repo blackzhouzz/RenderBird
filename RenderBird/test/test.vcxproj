@@ -100,7 +100,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)core\include;$(SolutionDir)runtime\include;$(SolutionDir)renderbird\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)core\include;$(SolutionDir)runtime\include;$(SolutionDir)renderbird\include;$(SolutionDir)\3rdparty</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -120,7 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)core\include;$(SolutionDir)runtime\include;$(SolutionDir)renderbird\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)core\include;$(SolutionDir)runtime\include;$(SolutionDir)renderbird\include;$(SolutionDir)\3rdparty</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -138,7 +138,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)core\include;$(SolutionDir)runtime\include;$(SolutionDir)renderbird\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)core\include;$(SolutionDir)runtime\include;$(SolutionDir)renderbird\include;$(SolutionDir)\3rdparty</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -157,7 +157,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)core\include;$(SolutionDir)runtime\include;$(SolutionDir)renderbird\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)core\include;$(SolutionDir)runtime\include;$(SolutionDir)renderbird\include;$(SolutionDir)\3rdparty</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -172,7 +172,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="test_benchmark_entity_component.h" />
-    <ClInclude Include="test_pathtracing.h" />
+    <ClInclude Include="test_raytracing.h" />
     <ClInclude Include="test_trianglemesh.h" />
   </ItemGroup>
   <ItemGroup>
@@ -184,7 +184,7 @@
     </ClCompile>
     <ClCompile Include="test.cpp" />
     <ClCompile Include="test_benchmark_entity_component.cpp" />
-    <ClCompile Include="test_pathtracing.cpp" />
+    <ClCompile Include="test_raytracing.cpp" />
     <ClCompile Include="test_trianglemesh.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
