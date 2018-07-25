@@ -100,6 +100,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\runtime\include;$(SolutionDir)\3rdparty</AdditionalIncludeDirectories>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -109,6 +110,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\runtime\include;$(SolutionDir)\3rdparty</AdditionalIncludeDirectories>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -120,6 +122,8 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\runtime\include;$(SolutionDir)\3rdparty</AdditionalIncludeDirectories>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -135,6 +139,8 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\runtime\include;$(SolutionDir)\3rdparty</AdditionalIncludeDirectories>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -149,6 +155,7 @@
     <ClInclude Include="include\geometrycomponent.h" />
     <ClInclude Include="include\geometry_generator.h" />
     <ClInclude Include="include\integrator.h" />
+    <ClInclude Include="include\light.h" />
     <ClInclude Include="include\material.h" />
     <ClInclude Include="include\montecarlo.h" />
     <ClInclude Include="include\pathtracing.h" />
@@ -169,6 +176,7 @@
     <ClCompile Include="src\geometrycomponent.cpp" />
     <ClCompile Include="src\image_output.cpp" />
     <ClCompile Include="src\integrator.cpp" />
+    <ClCompile Include="src\light.cpp" />
     <ClCompile Include="src\material.cpp" />
     <ClCompile Include="src\montecarlo.cpp" />
     <ClCompile Include="src\pathtracing.cpp" />

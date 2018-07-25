@@ -37,7 +37,7 @@ class TAllocator : public IAllocator
 class TypeInfo
 {
 public:
-	TypeInfo(std::string name, TypeInfo* superTypeInfo, IAllocator* alloc, int typeId, int typeSize, size_t flags)
+	TypeInfo(std::string name, TypeInfo* superTypeInfo, IAllocator* alloc, int typeId, size_t typeSize, size_t flags)
 		: m_name(name)
 		, m_superTypeInfo(superTypeInfo)
 		, m_alloc(alloc)
@@ -70,7 +70,7 @@ public:
 	const std::string& GetName()const { return m_name; }
 	TypeInfo* GetSuperTypeInfo()const { return m_superTypeInfo; }
 	int GetTypeId()const { return m_typeId; }
-	int GetTypeSize()const { return m_typeSize; }
+	size_t GetTypeSize()const { return m_typeSize; }
 	bool IsSubclassOf(const TypeInfo* baseClass)const
 	{
 		const TypeInfo* typeInfo = this;
@@ -103,7 +103,7 @@ private:
 	TypeInfo* m_superTypeInfo;
 	IAllocator* m_alloc;
 	int m_typeId;
-	int m_typeSize;
+	size_t m_typeSize;
 	size_t m_flags;
 };
 
@@ -186,11 +186,24 @@ private:
 #define TYPE_ID_GROUP(name, id) static const int TYPE_ID_GROUP_##name = id;
 #endif
 
-#ifndef TYPE_ID_ITEM
-#define	TYPE_ID_ITEM(cls, group, id)\
+#ifndef TYPE_ID_CLASS
+#define	TYPE_ID_CLASS(cls, group, id)\
 	namespace group\
 	{\
 		class cls;\
+	}\
+	template <>\
+	struct TypeId<group::cls>\
+	{\
+		static const int value = id + TYPE_ID_GROUP_##group;\
+	};
+#endif
+
+#ifndef TYPE_ID_STRUCT
+#define	TYPE_ID_STRUCT(cls, group, id)\
+	namespace group\
+	{\
+		struct cls;\
 	}\
 	template <>\
 	struct TypeId<group::cls>\

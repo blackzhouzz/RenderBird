@@ -30,8 +30,8 @@ namespace Core
 		Float GetWidth()const;
 		Float GetHeight()const;
 		Float GetDepth()const;
-		EAxis GetLongestAxis(Float* length = nullptr)const;
-		EAxis GetShortestAxis(Float* length = nullptr)const;
+		Axis GetLongestAxis(Float* length = nullptr)const;
+		Axis GetShortestAxis(Float* length = nullptr)const;
 		void ExpandSize(Float size);
 		void MakeInside(const BoundingBox& box);
 		void MoveDelta(const Vector3f& vec);

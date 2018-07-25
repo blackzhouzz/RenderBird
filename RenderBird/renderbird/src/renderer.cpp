@@ -82,9 +82,10 @@ namespace RenderBird
 
 		PerspectiveCamera* m_camera = new PerspectiveCamera();
 		const Float dist = 10;
-		Vector3f pos = Vector3f(0, 0, 1) * dist;
+		Vector3f pos = Vector3f(0, 1, 1) * dist;
 		m_camera->LookAt(pos, Vector3f::ZERO, Vector3f::UNIT_Z);
 		m_camera->PerspectiveFovLH(39.0f, 1.0, 1e-2f, 1000.f);
+
 		//OrthoCamera* m_camera = new OrthoCamera();
 		//const Float dist = 5.0;
 		//Vector3f pos = Vector3f(0, 0, 1) * dist;
@@ -109,13 +110,10 @@ namespace RenderBird
 		rayDir = m_renderContext.m_camera.m_cameraToWorld.TransformDirection(rayDir);
 		rayDir.Normalize();
 
-		Vector3f rayDir1 = m_renderContext.m_camera.m_rasterToWorld.TransformPerspective(Vector3f(pixelX, pixelY, 0));
-		rayDir1.Normalize();
-
 		Vector3f rayPos = Vector3f::ZERO;
 		rayPos = m_renderContext.m_camera.m_cameraToWorld.TransformPoint(rayPos);
 		ray->origin = rayPos;
-		ray->direction = rayDir1;
+		ray->direction = rayDir;
 	}
 
 	void Renderer::Render()

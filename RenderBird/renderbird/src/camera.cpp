@@ -138,7 +138,7 @@ namespace RenderBird
 
 	Vector3f CameraBase::GetViewDirection()const
 	{
-		Vector4f vec = GetViewMatrix().GetColumn(AXIS_Z);
+		Vector4f vec = GetViewMatrix().GetColumn((uint32)Axis::Z);
 		return Vector3f(vec.x, vec.y, vec.z);
 	}
 

@@ -102,7 +102,6 @@ namespace RenderBird
 			return 0;
 		}
 		bool IntersectTriangle(const Ray& ray, RayHitInfo* hitInfo, uint32 faceIndex);
-		bool IntersectTriangleEx(const Ray& ray, RayHitInfo* hitInfo, uint32 faceIndex);
 		virtual bool Intersect(const Ray& ray, RayHitInfo* hitInfo);
 	private:
 		MeshData* m_triMeshData;

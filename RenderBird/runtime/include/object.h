@@ -1,7 +1,5 @@
 #pragma once
 #include "runtime_private.h"
-#include "runtime_register.h"
-#include "typeinfo.h"
 
 namespace Runtime
 {

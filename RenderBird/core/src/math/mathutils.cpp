@@ -198,9 +198,10 @@ namespace Core
 
 	Matrix4f MathUtils::ScreenToRasterMatrix(const Rect2f& screenBound, const Point2i& resolution)
 	{
-		return ScaleMatrix(resolution.x, resolution.y, 1.0) * 
-			ScaleMatrix(1.0 / (screenBound.m_max.x - screenBound.m_min.x), 1.0 / (screenBound.m_min.y - screenBound.m_max.y), 1.0) *
-			TranslateMatrix(-screenBound.m_min.x, -screenBound.m_max.y, 0);
+		return
+			TranslateMatrix(-screenBound.m_min.x, -screenBound.m_max.y, 0) 
+			* ScaleMatrix(1.0 / (screenBound.m_max.x - screenBound.m_min.x), 1.0 / (screenBound.m_min.y - screenBound.m_max.y), 1.0) 
+			* ScaleMatrix(resolution.x, resolution.y, 1.0);
 	}
 
 	Quaternion MathUtils::Slerp(Float t, const Quaternion& p, const Quaternion& quat, bool shortestPath)

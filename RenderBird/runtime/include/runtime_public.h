@@ -1,8 +1,8 @@
 #pragma once
 #include "runtime_private.h"
-#include "ecs/component.h"
-#include "ecs/entity.h"
-#include "ecs/entitymanager.h"
-#include "ecs/system.h"
+#include "component.h"
+#include "entity.h"
+#include "entitymanager.h"
+#include "system.h"
 #include "object.h"
 #include "transform.h"

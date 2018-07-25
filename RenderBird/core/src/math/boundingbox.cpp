@@ -195,7 +195,7 @@ namespace Core
 		return max.z - min.z;
 	}
 
-	EAxis BoundingBox::GetLongestAxis(Float* length)const
+	Axis BoundingBox::GetLongestAxis(Float* length)const
 	{
 		Float height = GetHeight();
 		Float width = GetWidth();
@@ -208,7 +208,7 @@ namespace Core
 				{
 					*length = width;
 				}
-				return AXIS_X;
+				return Axis::X;
 			}
 			else
 			{
@@ -216,7 +216,7 @@ namespace Core
 				{
 					*length = depth;
 				}
-				return AXIS_Z;
+				return Axis::Z;
 			}
 		}
 		else
@@ -227,7 +227,7 @@ namespace Core
 				{
 					*length = height;
 				}
-				return AXIS_Y;
+				return Axis::Y;
 			}
 			else
 			{
@@ -235,12 +235,12 @@ namespace Core
 				{
 					*length = depth;
 				}
-				return AXIS_Z;
+				return Axis::Z;
 			}
 		}
 	}
 
-	EAxis BoundingBox::GetShortestAxis(Float* length)const
+	Axis BoundingBox::GetShortestAxis(Float* length)const
 	{
 		Float height = GetHeight();
 		Float width = GetWidth();
@@ -253,7 +253,7 @@ namespace Core
 				{
 					*length = width;
 				}
-				return AXIS_X;
+				return Axis::X;
 			}
 			else
 			{
@@ -261,7 +261,7 @@ namespace Core
 				{
 					*length = depth;
 				}
-				return AXIS_Z;
+				return Axis::Z;
 			}
 		}
 		else
@@ -272,7 +272,7 @@ namespace Core
 				{
 					*length = height;
 				}
-				return AXIS_Y;
+				return Axis::Y;
 			}
 			else
 			{
@@ -280,7 +280,7 @@ namespace Core
 				{
 					*length = depth;
 				}
-				return AXIS_Z;
+				return Axis::Z;
 			}
 		}
 	}

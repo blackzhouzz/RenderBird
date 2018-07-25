@@ -7,6 +7,5 @@ void RegisterTypeInfoRuntime()
 {
 	REGISTER_TYPEINFO(Object)
 		REGISTER_TYPEINFO(ComponentBase)
-		REGISTER_TYPEINFO_COMPONENT(Runtime, Transform)
-		REGISTER_TYPEINFO_COMPONENT(Runtime, TestComponent)
+		REGISTER_TYPEINFO(Transform)
 }

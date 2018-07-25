@@ -1,5 +1,4 @@
 #include "trianglemesh.h"
-#include "renderbird_register.h"
 #include <algorithm>
 
 IMPLEMENT_TYPE(RenderBird, TriangleMesh)
@@ -71,7 +70,65 @@ namespace RenderBird
 		return true;
 	}
 
-	bool TriangleMesh::IntersectTriangleEx(const Ray& ray, RayHitInfo* hitInfo, uint32 faceIndex)
+	//"Fast, Minimum Storage Ray-Triangle Intersection
+	static bool ray_triangle_intersect_ex(
+		Vector3f ray_P, Vector3f ray_dir, Float ray_t,
+		const Vector3f v0, const Vector3f v1, const Vector3f v2,
+		Float *isect_u, Float *isect_v, Float *isect_t)
+	{
+		Vector3f edge1 = v1 - v0;
+		Vector3f edge2 = v2 - v0;
+
+		// Begin calculating determinant; also used to calculate U parameter
+
+		Vector3f pvec = Cross(ray_dir, edge2);
+
+		// If determinant is near zero, ray lies in plane of triangle
+
+		const Float det = Dot(edge1, pvec);
+
+		// No backface culling in this experiment, determinant within "epsilon" as
+		// defined in M&T paper is considered 0
+
+		if (det > -C_FLOAT_EPSILON && det < C_FLOAT_EPSILON)
+			return false;
+
+		const Float inv_det = 1.0f / det;
+
+		// Calculate vector from vertex to ray origin
+
+		Vector3f tvec = ray_P - v0;
+
+		// Calculate U parameter and test bounds
+		const Float u = Dot(tvec, pvec) * inv_det;
+		if (u < 0.0f || u > 1.0f)
+			return false;
+
+		// Prepare to test V parameter
+
+		Vector3f qvec = Cross(tvec, edge1);
+
+		// Calculate V parameter and test bounds
+
+		const Float v = Dot(ray_dir, qvec) * inv_det;
+		if (v < 0.0f || u + v >= 1.0f)
+			return false;
+
+		// Calculate t, final check to see if ray intersects triangle. Test to
+		// see if t > tFar added for consistency with other algorithms in experiment.
+
+		const Float t = Dot(edge2, qvec) * inv_det;
+		if (t <= C_FLOAT_EPSILON || t >= ray_t)
+			return false;
+
+		*isect_u = u;
+		*isect_v = v;
+		*isect_t = t;
+
+		return true;
+	}
+
+	bool TriangleMesh::IntersectTriangle(const Ray& ray, RayHitInfo* hitInfo, uint32 faceIndex)
 	{
 		const FaceData& faceData = m_triMeshData->m_faceData[faceIndex];
 		const Vector3f& v0 = m_triMeshData->m_position[faceData.m_v0];
@@ -79,65 +136,16 @@ namespace RenderBird
 		const Vector3f& v2 = m_triMeshData->m_position[faceData.m_v2];
 
 		Float u, v, t;
-		return ray_triangle_intersect(ray.origin, ray.direction, 100000, v0, v1, v2, &u, &v, &t);
+		if (ray_triangle_intersect_ex(ray.origin, ray.direction, 100000, v0, v1, v2, &u, &v, &t))
+		{
+			hitInfo->m_u = u;
+			hitInfo->m_v = v;
+			hitInfo->m_t = t;
+			return true;
+		}
+		return false;
 	}
 
-
-	//Fast, Minimum Storage Ray-Triangle Intersection
-	bool TriangleMesh::IntersectTriangle(const Ray& ray, RayHitInfo* hitInfo, uint32 faceIndex)
-	{
-		Float u, v, time;
-		const FaceData& faceData = m_triMeshData->m_faceData[faceIndex];
-		const Vector3f& v0 = m_triMeshData->m_position[faceData.m_v0];
-		const Vector3f& v1 = m_triMeshData->m_position[faceData.m_v1];
-		const Vector3f& v2 = m_triMeshData->m_position[faceData.m_v2];
-		Vector3f e1 = v1 - v0;
-		Vector3f e2 = v2 - v1;
-		Vector3f p = Cross(ray.direction, e2);
-		const Float det = Dot(e1, p);
-		if (det == 0)
-			return false;
-		const Float inv_det = 1.0 / det;
-		Vector3f t = ray.origin - v0;
-
-		if (faceData.m_flags & FF_DoubleSide)
-		{
-			u = Dot(t, p) * inv_det;
-			if (u < 0.0 || u > 1.0)
-				return false;
-			Vector3f q = Cross(t, e1);
-			v = Dot(ray.direction, q) * inv_det;
-			if (v < 0.0 || u + v > 1.0)
-				return false;
-
-			time = Dot(e2, q) * inv_det;
-			if (hitInfo != nullptr)
-			{
-				hitInfo->m_t = time;
-				hitInfo->m_u = u;
-				hitInfo->m_v = v;
-			}
-		}
-		else
-		{
-			if (det < C_FLOAT_EPSILON)
-			{
-				return false;
-			}
-			u = Dot(t, p);
-			if (u < 0.0 || u > det)
-				return false;
-			Vector3f q = Cross(t, e1);
-			v = Dot(ray.direction, q);
-			if (v < 0.0 || u + v > det)
-				return false;
-			time = Dot(e2, q);
-			hitInfo->m_t = time * inv_det;
-			hitInfo->m_u = u * inv_det;
-			hitInfo->m_v = v * inv_det;
-		}
-		return true;
-	}
 
 	bool TriangleMesh::Intersect(const Ray& ray, RayHitInfo* hitInfo)
 	{
@@ -146,7 +154,7 @@ namespace RenderBird
 		uint32 faceCount = m_triMeshData->m_faceCount;
 		for (uint32 faceIndex = 0; faceIndex < faceCount; ++faceIndex)
 		{
-			if (IntersectTriangleEx(ray, hitInfo, faceIndex))
+			if (IntersectTriangle(ray, hitInfo, faceIndex))
 			{
 				return true;
 			}

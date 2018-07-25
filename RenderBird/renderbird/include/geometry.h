@@ -1,9 +1,7 @@
 #pragma once
-#include "runtime_private.h"
+#include "renderbird_private.h"
 #include "math/ray.h"
 #include "rayhitinfo.h"
-#include "renderbird_register.h"
-using namespace Runtime;
 
 namespace RenderBird
 {

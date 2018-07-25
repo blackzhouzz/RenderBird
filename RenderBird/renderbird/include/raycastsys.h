@@ -1,5 +1,5 @@
 #pragma once
-#include "ecs/system.h"
+#include "system.h"
 #include "math/ray.h"
 #include "rayhitinfo.h"
 using namespace Runtime;

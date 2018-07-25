@@ -1,5 +1,4 @@
 #include "geometry.h"
-#include "renderbird_register.h"
 
 IMPLEMENT_TYPE(RenderBird, Geometry)
 

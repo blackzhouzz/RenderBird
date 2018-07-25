@@ -48,12 +48,10 @@ namespace Core
 		return val;
 	}
 
-	enum EAxis
+	enum class Axis
 	{
-		None = -1,
-		AXIS_X = 0,
-		AXIS_Y,
-		AXIS_Z,
-		AXIS_Count,
+		X = 0,
+		Y = 1,
+		Z = 2,
 	};
 }
