@@ -27,14 +27,14 @@ namespace Runtime
 		return id;
 	}
 
-	void Chunk::CopyData(size_t srcBlockIndex, size_t destBlockIndex)
+	void Chunk::CopyData(size_t srcChunkIndex, size_t destChunkIndex)
 	{
 		uint8* compData = m_blockData;
 		for (auto type : *m_archetype)
 		{
 			size_t typeSize = type.m_typeInfo->GetTypeSize();
-			uint8* srcData = compData + typeSize * srcBlockIndex;
-			uint8* destData = compData + typeSize * destBlockIndex;
+			uint8* srcData = compData + typeSize * srcChunkIndex;
+			uint8* destData = compData + typeSize * destChunkIndex;
 			memcpy(destData, srcData, typeSize);
 			compData += typeSize * m_capacity;
 		}
@@ -58,6 +58,30 @@ namespace Runtime
 			return nullptr;
 		}
 		return m_blockData + (typeOffset)* m_capacity + compTypeInfo->GetTypeSize() * entityIndex;
+	}
+
+	void Chunk::SetAllComponentDefault(size_t entityIndex)
+	{
+		uint8* compData = m_blockData;
+		for (auto compTypeInfo : *m_archetype)
+		{
+			size_t typeSize = compTypeInfo.m_typeInfo->GetTypeSize();
+			uint8* data = compData + typeSize * entityIndex;
+			memcpy(data, compTypeInfo.m_typeInfo->GetDefaultValue(), typeSize);
+			compData += typeSize * m_capacity;
+		}
+	}
+
+	void* Chunk::SetComponentDefault(size_t entityIndex, TypeInfo* compTypeInfo)
+	{
+		size_t typeOffset = 0;
+		if (!m_archetype->GetComponentTypeOffset(compTypeInfo, typeOffset))
+		{
+			return nullptr;
+		}
+		void* data = m_blockData + (typeOffset)* m_capacity + compTypeInfo->GetTypeSize() * entityIndex;
+		memcpy(data, compTypeInfo->GetDefaultValue(), compTypeInfo->GetTypeSize());
+		return data;
 	}
 
 	void Chunk::PurgeMemory()

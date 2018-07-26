@@ -1,6 +1,7 @@
 #include "entitymanager.h"
 #include "event.h"
 #include <cstdarg>
+#include <algorithm>
 
 namespace Runtime
 {
@@ -31,8 +32,13 @@ namespace Runtime
 		typeIdList.sort();
 		typeIdList.erase(std::unique(typeIdList.begin(), typeIdList.end()), typeIdList.end());
 
-		Archetype* ret = GetOrCreateArchetype(typeIdList);
-		return ret;
+		return GetOrCreateArchetype(typeIdList);
+	}
+
+	Archetype* EntityManager::CreateEmptyArchetype()
+	{
+		std::list<ComponentTypeId> typeIdList;
+		return GetOrCreateArchetype(typeIdList);
 	}
 
 	Archetype* EntityManager::GetOrCreateArchetype(const std::list<ComponentTypeId>& typeIdList)
@@ -67,6 +73,7 @@ namespace Runtime
 		handle.second->m_chunk = chunk;
 		handle.second->m_chunkIndex = chunkIndex;
 		ret = handle.first;
+		chunk->SetAllComponentDefault(chunkIndex);
 		EventManager::IntancePtr()->emit<EntityCreatedEvent>(ret);
 		return ret;
 	}
@@ -137,7 +144,7 @@ namespace Runtime
 		Archetype* destArchetype = GetOrCreateArchetype(typeIdList);
 		SetArchetype(entityData, destArchetype);
 
-		return chunk->GetEntityComponentPtr(entityData->m_chunkIndex, typeinfo);
+		return chunk->SetComponentDefault(entityData->m_chunkIndex, typeinfo);
 	}
 
 	bool EntityManager::RemoveComponent(EntityId entity, TypeInfo* typeinfo)

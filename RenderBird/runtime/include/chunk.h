@@ -1,9 +1,6 @@
 #pragma once
 #include "runtime_private.h"
 #include "archetype.h"
-#include "component_typelist.h"
-#include "entity.h"
-#include <queue>
 
 namespace Runtime
 {
@@ -20,8 +17,10 @@ namespace Runtime
 		uint8* GetBlockData()const { return m_blockData; }
 		size_t Allocate();
 		void Deallocate(size_t chunkIndex);
-		void CopyData(size_t srcBlockIndex, size_t destBlockIndex);
+		void CopyData(size_t srcChunkIndex, size_t destChunkIndex);
 		void* GetEntityComponentPtr(size_t entityIndex, TypeInfo* compTypeInfo);
+		void SetAllComponentDefault(size_t entityIndex);
+		void* SetComponentDefault(size_t entityIndex, TypeInfo* compTypeInfo);
 	private:
 		void PurgeMemory();
 	private:

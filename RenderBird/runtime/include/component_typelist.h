@@ -16,5 +16,4 @@ namespace Runtime
 	private:
 		std::map<int, TypeInfo*> m_compTypeList;
 	};
-
 }

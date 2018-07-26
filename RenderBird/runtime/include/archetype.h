@@ -1,7 +1,5 @@
 #pragma once
 #include "runtime_private.h"
-#include <algorithm>
-#include <list>
 #include "component.h"
 
 namespace Runtime

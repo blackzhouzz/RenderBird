@@ -15,11 +15,10 @@ namespace Runtime
 
 	void ComponentTypeList::RegisterAllComponentType()
 	{
-		TypeInfo* baseType = TypeOf<ComponentBase>::StaticTypeInfo();
-		for (TypeMapIterator itr = GlobalTypeList::Instance().begin(); itr != GlobalTypeList::Instance().end(); ++itr)
+		for (auto itr = GlobalTypeList::Instance().begin(); itr != GlobalTypeList::Instance().end(); ++itr)
 		{
 			TypeInfo* typeInfo = itr->second;
-			if (typeInfo->IsSubclassOf(baseType) && typeInfo != baseType)
+			if (typeInfo->HasFlag(TypeInfoFlag::IsComponent))
 			{
 				m_compTypeList[typeInfo->GetTypeId()] = typeInfo;
 			}

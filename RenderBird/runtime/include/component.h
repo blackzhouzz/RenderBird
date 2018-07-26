@@ -5,35 +5,21 @@ using namespace Core;
 
 namespace Runtime
 {
-	struct ComponentBase
-	{
-		size_t m_ownerId;
+#define DECLEAR_TYPE_COMPONENT(Module, Type)\
+	template<>\
+	struct TypeOf<Module::Type>\
+	{\
+		static TypeInfo* Value()\
+		{\
+			static_assert(std::is_pod<Module::Type>::value, "Component type must be pod!");\
+			static TypeInfo* typeInfo = nullptr;\
+			if (typeInfo == nullptr)\
+			{\
+				typeInfo = new TTypeInfo<Module::Type>(#Type, nullptr, TypeInfoFlag::IsComponent);\
+			}\
+			return typeInfo;\
+		}\
 	};
-
-//	template<typename T>
-//	class Component : public ComponentBase
-//	{
-//	public:
-//		static TypeInfo* StaticTypeInfo()
-//		{
-//			static TypeInfo* typeInfo = nullptr;
-//			if (typeInfo == nullptr)
-//			{
-//				typeInfo = new TypeInfo(typeid(T).name(), TypeOf<ComponentBase>::StaticTypeInfo(), new TAllocator<T>(), TypeId<T>::value, sizeof(T), TypeInfoFlag::Default);
-//			}
-//			return typeInfo;
-//		}
-//
-//		static void RegisterTypeInfo()
-//		{
-//			GlobalTypeList::IntancePtr()->RegisterTypeInfo(StaticTypeInfo());
-//		}
-//	};
-//
-//
-//#ifndef REGISTER_TYPEINFO_COMPONENT
-//#define REGISTER_TYPEINFO_COMPONENT(group, cls) group::cls::RegisterTypeInfo();
-//#endif
 
 	struct ComponentTypeId
 	{
@@ -64,5 +50,3 @@ namespace Runtime
 		TypeInfo* m_typeInfo;
 	};
 }
-
-DECLEAR_TYPE_BASE(Runtime, ComponentBase)

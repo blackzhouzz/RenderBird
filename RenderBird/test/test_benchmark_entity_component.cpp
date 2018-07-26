@@ -35,7 +35,7 @@ void Test_BenchmarkEntitySlow()
 	time.Begin();
 	for (int i = 0; i < MAX_ENTITY_COUNT; ++i)
 	{
-		trans.push_back(Transform());
+		trans.push_back(*DefaultOf<Transform>::Value());
 	}
 	std::cout << "slow create component benchmark ms: " << time.End() << std::endl;
 
@@ -60,7 +60,7 @@ void Test_BenchmarkEntityFastest()
 
 	static EntityId entities[MAX_ENTITY_COUNT];
 	static Transform* components[MAX_ENTITY_COUNT];
-	Archetype* archtype = EntityManager::IntancePtr()->CreateArchetype(1, TypeOf<Transform>::StaticTypeInfo());
+	Archetype* archtype = EntityManager::IntancePtr()->CreateArchetype(1, TypeOf<Transform>::Value());
 
 	IntervalTime time;
 
@@ -78,7 +78,7 @@ void Test_BenchmarkEntityFastest()
 	}
 	std::cout << "fastest create component benchmark ms: " << time.End() << std::endl;
 
-	ComponentGroup group(1, TypeOf<Transform>::StaticTypeInfo());
+	ComponentGroup group(1, TypeOf<Transform>::Value());
 	ComponentArray* arr = group.GetComponentArray<Transform>();
 	time.Begin();
 
@@ -105,7 +105,7 @@ void Test_BenchmarkEntityFastest()
 
 void Test_IteratorComponent()
 {
-	Archetype* archtype = EntityManager::IntancePtr()->CreateArchetype(1, TypeOf<Transform>::StaticTypeInfo());
+	Archetype* archtype = EntityManager::IntancePtr()->CreateEmptyArchetype();
 	static const int testEntityCount = 10;
 
 	static EntityId test_entities[testEntityCount];
@@ -141,7 +141,7 @@ void Test_IteratorComponent()
 
 	}
 
-	ComponentGroup group(1, TypeOf<Transform>::StaticTypeInfo());
+	ComponentGroup group(1, TypeOf<Transform>::Value());
 	ComponentArray* arr = group.GetComponentArray<Transform>();
 	ComponentArray::Visitor<Transform> visitor(arr);
 	for (auto x : visitor)

@@ -6,7 +6,7 @@
 
 namespace Runtime
 {
-	struct Transform : public ComponentBase
+	struct Transform
 	{
 		Vector3f m_position;
 		Quaternion m_rotation;
@@ -16,4 +16,12 @@ namespace Runtime
 	};
 }
 
-DECLEAR_TYPE(Runtime, Transform, Runtime::ComponentBase);
+DECLEAR_TYPE_COMPONENT(Runtime, Transform);
+
+DEFAULT_BEGIN(Runtime, Transform)
+DEFAULT_DATA(Vector3f::ZERO)
+DEFAULT_DATA(Quaternion::IDENTITY)
+DEFAULT_DATA(Vector3f::ONE)
+DEFAULT_DATA(false)
+DEFAULT_DATA(Matrix4f::IDENTITY)
+DEFAULT_END()

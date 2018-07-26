@@ -25,4 +25,4 @@ namespace RenderBird
 
 }
 
-DECLEAR_TYPE_ABSTRACT(RenderBird, Geometry, Object);
+DECLEAR_TYPE(RenderBird, Geometry, Object);

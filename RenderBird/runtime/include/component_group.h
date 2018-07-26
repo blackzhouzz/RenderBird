@@ -114,7 +114,7 @@ namespace Runtime
 		template<typename T>
 		ComponentArray* GetComponentArray()const
 		{
-			return GetComponentArray(TypeOf<T>::StaticTypeInfo());
+			return GetComponentArray(TypeOf<T>::Value());
 		}
 		std::vector<ComponentArray*> m_componentArray;
 	};

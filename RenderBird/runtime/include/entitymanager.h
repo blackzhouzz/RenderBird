@@ -14,6 +14,7 @@ namespace Runtime
 		EntityManager();
 		~EntityManager();
 		Archetype* CreateArchetype(int count, ...);
+		Archetype* CreateEmptyArchetype();
 		EntityId CreateEntity(Archetype* archetype);
 		void DestroyEntity(EntityId entity);
 		void* AddComponent(EntityId entity, TypeInfo* typeinfo);
@@ -38,18 +39,18 @@ namespace Runtime
 	template<typename T>
 	inline T* EntityManager::AddComponent(EntityId entity)
 	{
-		return static_cast<T*>(AddComponent(entity, TypeOf<T>::StaticTypeInfo()));
+		return static_cast<T*>(AddComponent(entity, TypeOf<T>::Value()));
 	}
 
 	template<typename T>
 	inline bool EntityManager::RemoveComponent(EntityId entity)
 	{
-		return RemoveComponent(entity, TypeOf<T>::StaticTypeInfo());
+		return RemoveComponent(entity, TypeOf<T>::Value());
 	}
 
 	template<typename T>
 	inline T* EntityManager::GetComponent(EntityId entity)
 	{
-		return static_cast<T*>(GetComponent(entity, TypeOf<T>::StaticTypeInfo()));
+		return static_cast<T*>(GetComponent(entity, TypeOf<T>::Value()));
 	}
 }
