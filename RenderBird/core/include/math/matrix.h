@@ -75,7 +75,7 @@ namespace Core
 		Vector4f TransformVector(const Vector4f& vec)const;
 		Vector3f TransformDirection(const Vector3f& vec)const;
 		Matrix4f Transpose(void)const;
-		void SetTranslation(const Vector3f& vec, Float w = 1.0);
+		void SetTranslation(const Vector3f& vec, Float w = 1.0f);
 		Vector3f GetTranslation()const;
 		Vector3f GetScale()const;
 		void SetScale(const Vector3f& scale);
@@ -92,6 +92,7 @@ namespace Core
 		static const Matrix4f IDENTITY;
 		static const Matrix4f ZERO;
 		static const Matrix4f TEX;
+		static const Matrix4f YtoZ;
 		union
 		{
 			Float m[4][4];

@@ -4,7 +4,7 @@ namespace Core
 {
 #pragma region
 	const Matrix3f Matrix3f::ZERO(0, 0, 0, 0, 0, 0, 0, 0, 0);
-	const Matrix3f Matrix3f::IDENTITY(1.0, 0, 0, 0, 1.0, 0, 0, 0, 1.0);
+	const Matrix3f Matrix3f::IDENTITY(1.0f, 0, 0, 0, 1.0f, 0, 0, 0, 1.0f);
 
 	Matrix3f::Matrix3f(const Float data[3][3])
 	{
@@ -226,7 +226,7 @@ namespace Core
 		if (fabs(det) <= tolerance)
 			return false;
 
-		Float invDet = 1.0 / det;
+		Float invDet = 1.0f / det;
 		for (uint32 rowIndex = 0; rowIndex < 3; rowIndex++)
 		{
 			for (uint32 colIndex = 0; colIndex < 3; colIndex++)
@@ -262,10 +262,10 @@ namespace Core
 #pragma endregion Matrix3f
 
 	const Matrix4f Matrix4f::IDENTITY(
-		1.0, 0, 0, 0,
-		0, 1.0, 0, 0,
-		0, 0, 1.0, 0,
-		0, 0, 0, 1.0
+		1.0f, 0, 0, 0,
+		0, 1.0f, 0, 0,
+		0, 0, 1.0f, 0,
+		0, 0, 0, 1.0f
 	);
 	const Matrix4f Matrix4f::ZERO(
 		0, 0, 0, 0,
@@ -274,10 +274,17 @@ namespace Core
 		0, 0, 0, 0
 	);
 	const Matrix4f Matrix4f::TEX(
-		0.5, 0, 0, 0,
-		0, -0.5, 0, 0,
-		0, 0, 1.0, 0,
-		0.5, 0.5, 0, 1.0
+		0.5f, 0, 0, 0,
+		0, -0.5f, 0, 0,
+		0, 0, 1.0f, 0,
+		0.5f, 0.5f, 0, 1.0f
+	);
+
+	const Matrix4f Matrix4f::YtoZ(
+		1, 0, 0, 0,
+		0, 0, 1, 0,
+		0, 1, 0, 0,
+		0, 0, 0, 1
 	);
 
 	Matrix4f::Matrix4f(const Matrix3f& mat, const Vector3f& trans)
@@ -285,7 +292,7 @@ namespace Core
 		m[0][0] = mat.m[0][0]; m[0][1] = mat.m[0][1]; m[0][2] = mat.m[0][2]; m[0][3] = 0;
 		m[1][0] = mat.m[1][0]; m[1][1] = mat.m[1][1]; m[1][2] = mat.m[1][2]; m[1][3] = 0;
 		m[2][0] = mat.m[2][0]; m[2][1] = mat.m[2][1]; m[2][2] = mat.m[2][2]; m[2][3] = 0;
-		m[3][0] = trans.x;	m[3][1] = trans.y;	m[3][2] = trans.z; ; m[3][3] = 1.0;
+		m[3][0] = trans.x;	m[3][1] = trans.y;	m[3][2] = trans.z; ; m[3][3] = 1.0f;
 	}
 
 	Matrix4f::Matrix4f(
@@ -490,7 +497,7 @@ namespace Core
 	Vector3f Matrix4f::TransformPerspective(const Vector3f& vec)const
 	{
 		Vector3f r;
-		Float invW = 1.0 / (m[0][3] * vec.x + m[1][3] * vec.y + m[2][3] * vec.z + m[3][3]);
+		Float invW = 1.0f / (m[0][3] * vec.x + m[1][3] * vec.y + m[2][3] * vec.z + m[3][3]);
 		r.x = (m[0][0] * vec.x + m[1][0] * vec.y + m[2][0] * vec.z + m[3][0]) * invW;
 		r.y = (m[0][1] * vec.x + m[1][1] * vec.y + m[2][1] * vec.z + m[3][1]) * invW;
 		r.z = (m[0][2] * vec.x + m[1][2] * vec.y + m[2][2] * vec.z + m[3][2]) * invW;
@@ -636,11 +643,11 @@ namespace Core
 
 		//求矩阵行列式
 		Float det = (t00 * m00 + t10 * m01 + t20 * m02 + t30 * m03);
-		if (det == 0.0)
+		if (det == 0.0f)
 		{
 			return Matrix4f::IDENTITY;
 		}
-		Float invDet = 1.0 / det;
+		Float invDet = 1.0f / det;
 
 		Float d00 = t00 * invDet;
 		Float d10 = t10 * invDet;

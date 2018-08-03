@@ -278,7 +278,7 @@ namespace RenderBird
 
 	Float PerspectiveCamera::GetNearHeight()const
 	{
-		return 2.0 * std::tan(DegToRad(mFovY) * 0.5) * m_nearClip;
+		return 2.0f * std::tan(DegToRad(mFovY) * 0.5f) * m_nearClip;
 	}
 
 	Float PerspectiveCamera::GetFarWidth()const
@@ -335,8 +335,8 @@ namespace RenderBird
 
 	void OrthoCamera::OrthoLH(Float width, Float height, Float nearClip, Float farClip)
 	{
-		Float halfWidth = width * 0.5;
-		Float halfHeight = height * 0.5;
+		Float halfWidth = width * 0.5f;
+		Float halfHeight = height * 0.5f;
 		m_orthoRect.x = -halfWidth;
 		m_orthoRect.z = halfWidth;
 		m_orthoRect.w = -halfHeight;

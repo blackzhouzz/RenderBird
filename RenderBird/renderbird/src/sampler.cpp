@@ -12,11 +12,11 @@ namespace RenderBird
 
 	Float Sampler::Random1D()
 	{
-		return Random::get(0.0, 1.0);
+		return Random::get(0.0f, 1.0f);
 	}
 
 	Vector2f Sampler::Random2D()
 	{
-		return Vector2f(Random::get(0.0, 1.0), Random::get(0.0, 1.0));
+		return Vector2f(Random::get(0.0f, 1.0f), Random::get(0.0f, 1.0f));
 	}
 }

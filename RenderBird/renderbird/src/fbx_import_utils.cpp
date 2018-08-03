@@ -67,24 +67,6 @@ namespace RenderBird
 		return ImportNode(state, fbxscene, fbxscene->GetRootNode(), scene);
 	}
 
-	static FbxAMatrix ComputeTotalMatrix(FbxNode* Node, FbxScene* scene)
-	{
-		FbxAMatrix Geometry;
-		FbxVector4 Translation, Rotation, Scaling;
-		Translation = Node->GetGeometricTranslation(FbxNode::EPivotSet::eSourcePivot);
-		Rotation = Node->GetGeometricRotation(FbxNode::EPivotSet::eSourcePivot);
-		Scaling = Node->GetGeometricScaling(FbxNode::EPivotSet::eSourcePivot);
-		Geometry.SetTRS(Translation, Rotation, Scaling);
-
-		//For Single Matrix situation, obtain transfrom matrix from eDESTINATION_SET, which include pivot offsets and pre/post rotations.
-		FbxAMatrix GlobalTransform = scene->GetAnimationEvaluator()->GetNodeGlobalTransform(Node);
-
-		FbxAMatrix TotalMatrix;
-		TotalMatrix = /*GlobalTransform **/ Geometry;
-
-		return TotalMatrix;
-	}
-
 
 	template <typename KeyType, typename ValueType>
 	struct UnorderedMapGenerator {
@@ -123,6 +105,19 @@ namespace RenderBird
 		return pElement->GetDirectArray().GetAt(index);
 	}
 
+	static Matrix4f AsTransform(const FbxAMatrix& mat)
+	{
+		auto lT = mat.GetT();
+		auto lS = mat.GetS();
+		auto lQ = mat.GetQ();
+
+		return MathUtils::MakeTransform(
+			Vector3f(Float(lT[0]), Float(lT[1]), Float(lT[2])),
+			Quaternion(Float(lQ[0]), Float(lQ[1]), Float(lQ[2]), Float(lQ[3])),
+			Vector3f::ONE
+		);
+	}
+
 	Matrix4f GetGeometryTransform(FbxNode* pNode)
 	{
 		auto lT = pNode->GetGeometricTranslation(FbxNode::eSourcePivot);
@@ -133,9 +128,26 @@ namespace RenderBird
 		auto lQ = lM.GetQ();
 		return MathUtils::MakeTransform(
 			Vector3f(Float(lT[0]), Float(lT[1]), Float(lT[2])),
-			Quaternion(float(lQ[0]), float(lQ[1]), float(lQ[2]), float(lQ[3])),
+			Quaternion(Float(lQ[0]), Float(lQ[1]), Float(lQ[2]), Float(lQ[3])),
 			Vector3f(Float(lS[0]), Float(lS[1]), Float(lS[2]))
 		);
+	}
+
+	static FbxAMatrix ComputeTotalMatrix(FbxNode* Node, FbxScene* scene)
+	{
+		FbxAMatrix Geometry;
+		FbxVector4 Translation, Rotation, Scaling;
+		Translation = Node->GetGeometricTranslation(FbxNode::EPivotSet::eSourcePivot);
+		Rotation = Node->GetGeometricRotation(FbxNode::EPivotSet::eSourcePivot);
+		Scaling = Node->GetGeometricScaling(FbxNode::EPivotSet::eSourcePivot);
+		Geometry.SetTRS(Translation, Rotation, Scaling);
+
+		//For Single Matrix situation, obtain transfrom matrix from eDESTINATION_SET, which include pivot offsets and pre/post rotations.
+		FbxAMatrix GlobalTransform = scene->GetAnimationEvaluator()->GetNodeGlobalTransform(Node);
+		FbxAMatrix TotalMatrix;
+		TotalMatrix = GlobalTransform * Geometry;
+
+		return TotalMatrix;
 	}
 
 	TriangleMesh* FBXImporter::ImportMesh(ImportState& state, FbxScene* fbxScene, FbxMesh* fbxmesh)
@@ -146,23 +158,27 @@ namespace RenderBird
 		{
 			return nullptr;
 		}
-		auto trans = GetGeometryTransform(pNode);
-		//mesh.transform = AsTransform(pNode->EvaluateGlobalTransform()) * GetGeometryTransform(pNode);
+		auto totalMatrix = ComputeTotalMatrix(pNode, fbxScene);
+		auto totalMatrixForNormal = totalMatrix.Inverse();
+		totalMatrixForNormal = totalMatrixForNormal.Transpose();
 
 		TriangleMesh* trimesh = new TriangleMesh();
 		TriangleMesh::MeshData* meshData = new TriangleMesh::MeshData();
 		trimesh->SetMeshData(meshData);
 
 		int materialCount = pNode->GetMaterialCount();
-		for (int n = 0; n < materialCount; n++) {
+		for (int n = 0; n < materialCount; n++) 
+		{
 			FbxSurfaceMaterial* material = pNode->GetMaterial(n);
-			if (!ImportMaterial(state, trimesh, material)) {
+			if (!ImportMaterial(state, trimesh, material)) 
+			{
 				return nullptr;
 			}
 		}
 
 		const FbxGeometryElementNormal* pNormals = fbxmesh->GetElementNormal(0);
-		if (!pNormals) {
+		if (!pNormals) 
+		{
 			// Generate normals if we don't have any
 			fbxmesh->GenerateNormals();
 			pNormals = fbxmesh->GetElementNormal(0);
@@ -172,10 +188,12 @@ namespace RenderBird
 		const FbxGeometryElementVertexColor* pVertexColors = fbxmesh->GetElementVertexColor(0);
 		const FbxLayerElementMaterial* pPolygonMaterials = fbxmesh->GetElementMaterial();
 
-		auto getMaterialIndex = [pPolygonMaterials, materialCount](uint32 triangleIndex) {
+		auto getMaterialIndex = [pPolygonMaterials, materialCount](uint32 triangleIndex) 
+		{
 			int lookupIndex = 0;
 			auto mappingMode = pPolygonMaterials->GetMappingMode();
-			switch (mappingMode) {
+			switch (mappingMode) 
+			{
 			case FbxGeometryElement::eByPolygon:
 				lookupIndex = triangleIndex;
 				break;
@@ -205,7 +223,8 @@ namespace RenderBird
 			{
 				int iPoint = fbxmesh->GetPolygonVertex(t, v);
 
-				FbxVector4 point = fbxmesh->GetControlPointAt(iPoint);
+				//FbxVector4 point = totalMatrix.MultT(fbxmesh->GetControlPointAt(iPoint));
+				FbxVector4 point = (fbxmesh->GetControlPointAt(iPoint));
 				FbxVector4 normal = GetVertexElement(pNormals, iPoint, t, v, FbxVector4(0, 0, 0, 0));
 				FbxVector2 uv = GetVertexElement(pUVs, iPoint, t, v, FbxVector2(0, 1));
 				FbxVector4 tangent = GetVertexElement(pTangents, iPoint, t, v, FbxVector4(0, 0, 0, 0));
@@ -326,7 +345,7 @@ namespace RenderBird
 	//}
 
 	RGBA32 fbxColorConvert(const FbxDouble3& inColor, const FbxDouble& inFactor) {
-		//hvvr::vector3 linearColor = hvvr::sRgbToLinear(hvvr::vector3(float(inColor[0]), float(inColor[1]), float(inColor[2])));
+		//hvvr::vector3 linearColor = hvvr::sRgbToLinear(hvvr::vector3(Float(inColor[0]), Float(inColor[1]), Float(inColor[2])));
 		return RGBA32(inColor[0] * Float(inFactor), inColor[1] * Float(inFactor), inColor[2] * Float(inFactor), Float(inFactor));
 	}
 
@@ -351,9 +370,9 @@ namespace RenderBird
 		FbxDouble TransFactor = pPhong->TransparencyFactor.Get();
 		FbxDouble Shininess = pPhong->Shininess.Get();
 
-		float transparency = float((TransColor[0] + TransColor[1] + TransColor[2]) / 3.0 * TransFactor);
+		Float transparency = Float((TransColor[0] + TransColor[1] + TransColor[2]) / 3.0 * TransFactor);
 		//// Undo FBX glossiness to specular power mapping (n = 2^(g*10)) to get a 0..1 gloss value
-		float glossiness = float(log2(fmax(Shininess, 1.0)) / 10.0);
+		Float glossiness = Float(log2(fmax(Shininess, 1.0f)) / 10.0);
 
 		//uint32 diffuseID = importTexture(state, GetTextureFromProperty(&pPhong->Diffuse), true);
 		//uint32 emissiveID = importTexture(state, GetTextureFromProperty(&pPhong->Emissive), true);

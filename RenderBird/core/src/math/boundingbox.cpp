@@ -82,7 +82,7 @@ namespace Core
 
 	Vector3f BoundingBox::GetCenter()const
 	{
-		return (max + min) * 0.5;
+		return (max + min) * 0.5f;
 	}
 
 	Vector3f BoundingBox::GetDiagonal()const
@@ -175,9 +175,9 @@ namespace Core
 	{
 		if (!IsValid())
 		{
-			return -1.0;
+			return -1.0f;
 		}
-		return 2.0 * (max.z - min.z) * (max.y - min.y) * (max.x - min.x);
+		return 2.0f * (max.z - min.z) * (max.y - min.y) * (max.x - min.x);
 	}
 
 	Float BoundingBox::GetWidth()const
@@ -333,8 +333,8 @@ namespace Core
 	void BoundingBox::MoveAbs(const Vector3f& abs)
 	{
 		Vector3f dia = GetDiagonal();
-		min = abs - dia * 0.5;
-		max = abs + dia * 0.5;
+		min = abs - dia * 0.5f;
+		max = abs + dia * 0.5f;
 	}
 
 	Float BoundingBox::DistanceFrom(const Vector3f& point)const

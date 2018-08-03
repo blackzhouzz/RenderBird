@@ -31,7 +31,7 @@ namespace Core
 		Float len = normal.Length();
 		if (len > C_FLOAT_EPSILON)
 		{
-			Float invLen = 1.0 / len;
+			Float invLen = 1.0f / len;
 			normal *= invLen;
 			distance *= invLen;
 		}

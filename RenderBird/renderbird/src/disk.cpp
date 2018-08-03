@@ -6,22 +6,20 @@ namespace RenderBird
 {
 	Float DiskUtils::GetArea(Disk* disk)
 	{
-		return disk->m_phiMax * 0.5 * (disk->m_radius * disk->m_radius - disk->m_innerRadius * disk->m_innerRadius);
+		return disk->m_phiMax * 0.5f * (disk->m_radius * disk->m_radius - disk->m_innerRadius * disk->m_innerRadius);
 	}
 
 	bool DiskUtils::Intersect(Disk* disk, const Matrix4f& objToWorld, const Ray& worldRay, RayHitInfo* hitInfo)
 	{
 		Matrix4f worldToObj = objToWorld.InverseSafe();
-		Ray ray;
-		ray.m_origin = worldToObj.TransformPoint(worldRay.m_origin);
-		ray.m_direction = worldToObj.TransformDirection(worldRay.m_direction);
+		Ray objRay = Ray::TransformRay(worldRay, worldToObj);
 
-		if (ray.m_direction.z == 0) return false;
-		Float t = (-ray.m_origin.z) / ray.m_direction.z;
-		if (t <= 0 || t >= ray.m_maxT)
+		if (objRay.m_direction.z == 0) return false;
+		Float t = (-objRay.m_origin.z) / objRay.m_direction.z;
+		if (t <= 0 || t >= objRay.m_maxT)
 			return false;
 
-		Vector3f hitPoint = ray.GetPoint(t);
+		Vector3f hitPoint = objRay.GetPoint(t);
 		Float dist2 = hitPoint.x * hitPoint.x + hitPoint.y * hitPoint.y;
 		if (dist2 > disk->m_radius * disk->m_radius || dist2 < disk->m_innerRadius * disk->m_innerRadius)
 			return false;

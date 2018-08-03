@@ -227,15 +227,15 @@ namespace Core
 	inline RGB8 RGB32toRGB8(const RGB32& rgb)
 	{
 		return RGB8(
-			(uint8)Clamp(rgb[0] * 255.0, 0.0, 255.0),
-			(uint8)Clamp(rgb[1] * 255.0, 0.0, 255.0),
-			(uint8)Clamp(rgb[2] * 255.0, 0.0, 255.0)
+			(uint8)Clamp<Float>(rgb[0] * 255.0f, 0.0f, 255.0f),
+			(uint8)Clamp<Float>(rgb[1] * 255.0f, 0.0f, 255.0f),
+			(uint8)Clamp<Float>(rgb[2] * 255.0f, 0.0f, 255.0f)
 		);
 	}
 
 	inline RGB32 RGB8toRGB32(const RGB8& rgb)
 	{
-		static const Float inv255 = 1.0 / 255.0;
+		static const Float inv255 = 1.0f / 255.0f;
 		return RGB32(rgb[0] * inv255, rgb[1] * inv255, rgb[2] * inv255);
 	}
 
@@ -280,16 +280,16 @@ namespace Core
 	inline RGBA8 RGBA32toRGBA8(const RGBA32& rgb)
 	{
 		return RGBA8(
-			(uint8)Clamp(rgb[0] * 255.0, 0.0, 255.0),
-			(uint8)Clamp(rgb[1] * 255.0, 0.0, 255.0),
-			(uint8)Clamp(rgb[2] * 255.0, 0.0, 255.0),
-			(uint8)Clamp(rgb[3] * 255.0, 0.0, 255.0)
+			(uint8)Clamp<Float>(rgb[0] * 255.0f, 0.0f, 255.0f),
+			(uint8)Clamp<Float>(rgb[1] * 255.0f, 0.0f, 255.0f),
+			(uint8)Clamp<Float>(rgb[2] * 255.0f, 0.0f, 255.0f),
+			(uint8)Clamp<Float>(rgb[3] * 255.0f, 0.0f, 255.0f)
 		);
 	}
 
 	inline RGBA32 RGBA8toRGBA32(const RGBA8& rgb)
 	{
-		static const Float inv255 = 1.0 / 255.0;
+		static const Float inv255 = 1.0f / 255.0f;
 		return RGBA32(rgb[0] * inv255, rgb[1] * inv255, rgb[2] * inv255, rgb[3] * inv255);
 	}
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "vector.h"
+#include "matrix.h"
 
 namespace Core
 {
@@ -20,5 +21,7 @@ namespace Core
 			return m_origin + m_direction * t;
 		}
 		static const Float DefaultMaxT;
+
+		static Ray TransformRay(const Ray& ray, const Matrix4f& mat);
 	};
 }

@@ -173,7 +173,7 @@ namespace Core
 		Float len = Length();
 		if (len == 0)
 			return *this;
-		len = 1.0 / len;
+		len = 1.0f / len;
 		x *= len;
 		y *= len;
 		return *this;
@@ -412,7 +412,7 @@ namespace Core
 		Float len = Length();
 		if (len == 0)
 			return *this;
-		len = 1.0 / len;
+		len = 1.0f / len;
 		x *= len;
 		y *= len;
 		z *= len;
@@ -426,7 +426,7 @@ namespace Core
 		Float len = Length();
 		if (len == 0)
 			return v;
-		len = 1.0 / len;
+		len = 1.0f / len;
 		v.x = x * len;
 		v.y = y * len;
 		v.z = z * len;
@@ -448,7 +448,7 @@ namespace Core
 	template<typename T>
 	inline bool TVector3<T>::IsNormalized()const
 	{
-		return std::abs(LengthSQ() - 1.0) < C_FLOAT_EPSILON;
+		return std::abs(LengthSQ() - 1.0f) < C_FLOAT_EPSILON;
 	}
 
 	template<typename T>
@@ -536,7 +536,7 @@ namespace Core
 		TVector3<T> ret = TVector3<T>::ZERO;
 		Float angle = std::acos(Dot(a, b));
 
-		if (0.0 == angle)
+		if (0.0f == angle)
 		{
 			ret[0] = a[0];
 			ret[1] = a[1];
@@ -550,9 +550,9 @@ namespace Core
 		}
 		else
 		{
-			ret[0] = (std::sin((1.0 - t)*angle) / std::sin(angle))*a[0] + (std::sin(t*angle) / std::sin(angle))*b[0];
-			ret[1] = (std::sin((1.0 - t)*angle) / std::sin(angle))*a[1] + (std::sin(t*angle) / std::sin(angle))*b[1];
-			ret[2] = (std::sin((1.0 - t)*angle) / std::sin(angle))*a[2] + (std::sin(t*angle) / std::sin(angle))*b[2];
+			ret[0] = (std::sin((1.0f - t)*angle) / std::sin(angle))*a[0] + (std::sin(t*angle) / std::sin(angle))*b[0];
+			ret[1] = (std::sin((1.0f - t)*angle) / std::sin(angle))*a[1] + (std::sin(t*angle) / std::sin(angle))*b[1];
+			ret[2] = (std::sin((1.0f - t)*angle) / std::sin(angle))*a[2] + (std::sin(t*angle) / std::sin(angle))*b[2];
 		}
 		return ret;
 	}

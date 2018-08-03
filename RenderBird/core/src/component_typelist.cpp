@@ -25,9 +25,9 @@ namespace Core
 		}
 	}
 
-	TypeInfo* ComponentTypeList::GetComponentTypeInfo(int typeId)const
+	TypeInfo* ComponentTypeList::GetComponentTypeInfo(size_t typeId)const
 	{
-		std::map<int, TypeInfo*>::const_iterator itr = m_compTypeList.find(typeId);
+		std::map<size_t, TypeInfo*>::const_iterator itr = m_compTypeList.find(typeId);
 		if (itr != m_compTypeList.end())
 			return itr->second;
 		return nullptr;

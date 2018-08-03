@@ -25,7 +25,7 @@ namespace RenderBird
 DECLEAR_TYPE_COMPONENT(RenderBird, LightProperty);
 DEFAULT_BEGIN(RenderBird, LightProperty)
 DEFAULT_DATA(RGBA8::WHITE)
-DEFAULT_DATA(1.0)
+DEFAULT_DATA(1.0f)
 DEFAULT_END()
 
 DECLEAR_TYPE_COMPONENT(RenderBird, DirectionalLight);
@@ -36,6 +36,6 @@ DEFAULT_END()
 DECLEAR_TYPE_COMPONENT(RenderBird, AreaLight);
 DEFAULT_BEGIN(RenderBird, AreaLight)
 DEFAULT_DATA(nullptr)
-DEFAULT_DATA(0.0)
+DEFAULT_DATA(0.0f)
 DEFAULT_DATA(true)
 DEFAULT_END()

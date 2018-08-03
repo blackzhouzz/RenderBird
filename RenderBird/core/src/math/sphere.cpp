@@ -2,7 +2,7 @@
 
 namespace Core
 {
-	const Sphere Sphere::ZERO(Vector3f::ZERO, 0.0);
+	const Sphere Sphere::ZERO(Vector3f::ZERO, 0.0f);
 	Sphere::Sphere(const Vector3f& center, Float radius)
 		:center(center), radius(radius)
 	{

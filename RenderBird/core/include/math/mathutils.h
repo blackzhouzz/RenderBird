@@ -18,7 +18,6 @@ namespace Core
 		static Matrix4f InverseRotationMatrix(Float pitch, Float yaw, Float roll);
 		static Matrix4f RotationMatrix(const Vector3f& axis, Float theta);
 		static Matrix4f ScaleDirectionMatrix(const Vector3f& dir, Float k);
-		static Matrix4f BasisMatrix(const Vector3f& axisX, const Vector3f& axisY, const Vector3f& axisZ);
 		static Matrix4f OrthoMatrix(Float width, Float height, Float nearClip, Float farClip);
 		static Matrix4f OrthoOffCenterMatrix(Float left, Float right, Float bottom, Float top, Float nearClip, Float farClip);
 		static Matrix4f PerspectiveFovMatrix(Float fovY, Float aspect, Float nearClip, Float farClip);

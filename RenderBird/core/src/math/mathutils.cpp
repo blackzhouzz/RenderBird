@@ -5,10 +5,10 @@ namespace Core
 	Matrix4f MathUtils::TranslateMatrix(Float x, Float y, Float z)
 	{
 		return Matrix4f(
-			1.0, 0, 0, 0,
-			0, 1.0, 0, 0,
-			0, 0, 1.0, 0,
-			x, y, z, 1.0);
+			1.0f, 0, 0, 0,
+			0, 1.0f, 0, 0,
+			0, 0, 1.0f, 0,
+			x, y, z, 1.0f);
 	}
 
 	Matrix4f MathUtils::ScaleMatrix(Float x, Float y, Float z)
@@ -17,7 +17,7 @@ namespace Core
 			x, 0, 0, 0,
 			0, y, 0, 0,
 			0, 0, z, 0,
-			0, 0, 0, 1.0);
+			0, 0, 0, 1.0f);
 	}
 
 	Matrix4f MathUtils::ScaleMatrix(Float scale)
@@ -26,7 +26,7 @@ namespace Core
 			scale, 0, 0, 0,
 			0, scale, 0, 0,
 			0, 0, scale, 0,
-			0, 0, 0, 1.0);
+			0, 0, 0, 1.0f);
 	}
 
 	Matrix4f MathUtils::InverseRotationMatrix(Float pitch, Float yaw, Float roll)
@@ -35,20 +35,20 @@ namespace Core
 			Matrix4f(
 				+std::cos(yaw), -std::sin(yaw), 0, 0,
 				+std::sin(yaw), +std::cos(yaw), 0, 0,
-				0, 0, 1.0, 0,
-				0, 0, 0, 1.0
+				0, 0, 1.0f, 0,
+				0, 0, 0, 1.0f
 			) *
 			Matrix4f(
 				+std::cos(pitch), 0, -std::sin(pitch), 0,
-				0, 1.0, 0, 0,
+				0, 1.0f, 0, 0,
 				+std::sin(pitch), 0, +std::cos(pitch), 0,
-				0, 0, 0, 1.0
+				0, 0, 0, 1.0f
 			) *
 			Matrix4f(
-				1.0, 0, 0, 0,
+				1.0f, 0, 0, 0,
 				0, +std::cos(roll), +std::sin(roll), 0,
 				0, -std::sin(roll), +std::cos(roll), 0,
-				0, 0, 0, 1.0)
+				0, 0, 0, 1.0f)
 		);
 	}
 
@@ -73,80 +73,70 @@ namespace Core
 			0,
 			0,
 			0,
-			1.0
+			1.0f
 		);
 	}
 
 	Matrix4f MathUtils::ScaleDirectionMatrix(const Vector3f& dir, Float k)
 	{
 		return Matrix4f(
-			1.0 + (k - 1.0) * dir.x * dir.x, (k - 1.0) * dir.x * dir.y, (k - 1.0) * dir.x * dir.z, 0,
-			(k - 1.0) * dir.x * dir.y, 1.0 + (k - 1.0) * dir.y * dir.y, (k - 1.0) * dir.y * dir.z, 0,
-			(k - 1.0) * dir.x * dir.z, (k - 1.0) * dir.z * dir.y, 1.0 + (k - 1.0) * dir.z * dir.z, 0,
-			0, 0, 0, 1.0);
-	}
-
-	Matrix4f MathUtils::BasisMatrix(const Vector3f& axisX, const Vector3f& axisY, const Vector3f& axisZ)
-	{
-		return Matrix4f(
-			axisX.x, axisY.x, axisZ.x, 0,
-			axisX.y, axisY.y, axisZ.y, 0,
-			axisX.z, axisY.z, axisZ.z, 0,
-			0, 0, 0, 1.0
-		);
+			1.0f + (k - 1.0f) * dir.x * dir.x, (k - 1.0f) * dir.x * dir.y, (k - 1.0f) * dir.x * dir.z, 0,
+			(k - 1.0f) * dir.x * dir.y, 1.0f + (k - 1.0f) * dir.y * dir.y, (k - 1.0f) * dir.y * dir.z, 0,
+			(k - 1.0f) * dir.x * dir.z, (k - 1.0f) * dir.z * dir.y, 1.0f + (k - 1.0f) * dir.z * dir.z, 0,
+			0, 0, 0, 1.0f);
 	}
 
 	Matrix4f MathUtils::OrthoMatrix(Float width, Float height, Float nearClip, Float farClip)
 	{
 		return Matrix4f(
-			2.0 / width, 0, 0, 0,
-			0, 2.0 / height, 0, 0,
-			0, 0, 1.0 / (farClip - nearClip), 0,
-			0, 0, nearClip / (nearClip - farClip), 1.0
+			2.0f / width, 0, 0, 0,
+			0, 2.0f / height, 0, 0,
+			0, 0, 1.0f / (farClip - nearClip), 0,
+			0, 0, nearClip / (nearClip - farClip), 1.0f
 		);
 	}
 
 	Matrix4f MathUtils::OrthoOffCenterMatrix(Float left, Float right, Float bottom, Float top, Float nearClip, Float farClip)
 	{
 		return Matrix4f(
-			2.0 / (right - left), 0, 0, 0,
-			0, 2.0 / (top - bottom), 0, 0,
-			0, 0, 1.0 / (farClip - nearClip), 0,
-			(left + right) / (left - right), (top + bottom) / (bottom - top), nearClip / (nearClip - farClip), 1.0
+			2.0f / (right - left), 0, 0, 0,
+			0, 2.0f / (top - bottom), 0, 0,
+			0, 0, 1.0f / (farClip - nearClip), 0,
+			(left + right) / (left - right), (top + bottom) / (bottom - top), nearClip / (nearClip - farClip), 1.0f
 		);
 	}
 
 	Matrix4f MathUtils::PerspectiveFovMatrix(Float fovY, Float aspect, Float nearClip, Float farClip)
 	{
-		Float scaleY = 1.0 / std::tan(fovY * 0.5);
+		Float scaleY = 1.0f / std::tan(fovY * 0.5f);
 		Float scaleX = scaleY / aspect;
 		return Matrix4f(
 			scaleX, 0, 0, 0,
 			0, scaleY, 0, 0,
-			0, 0, farClip / (farClip - nearClip), 1.0,
+			0, 0, farClip / (farClip - nearClip), 1.0f,
 			0, 0, -nearClip * farClip / (farClip - nearClip), 0
 		);
 	}
 
 	Matrix4f MathUtils::PerspectiveFovInfiniteMatrix(Float fovY, Float aspect, Float nearClip)
 	{
-		Float scaleY = 1.0 / std::tan(fovY * 0.5);
+		Float scaleY = 1.0f / std::tan(fovY * 0.5f);
 		Float scaleX = scaleY / aspect;
 		return Matrix4f(
 			scaleX, 0, 0, 0,
 			0, scaleY, 0, 0,
-			0, 0, (1.0 - C_FLOAT_EPSILON), 1.0,
-			0, 0, -nearClip * (1.0 - C_FLOAT_EPSILON), 0
+			0, 0, (1.0f - C_FLOAT_EPSILON), 1.0f,
+			0, 0, -nearClip * (1.0f - C_FLOAT_EPSILON), 0
 		);
 	}
 
 	Matrix4f MathUtils::LookAtMatrix(const Vector3f& eyePos, const Vector3f& axisX, const Vector3f& axisY, const Vector3f& axisZ)
 	{
 		return Matrix4f(
-			axisX.x, axisY.x, axisZ.x, 0.0,
-			axisX.y, axisY.y, axisZ.y, 0.0,
-			axisX.z, axisY.z, axisZ.z, 0.0,
-			-Dot(axisX, eyePos), -Dot(axisY, eyePos), -Dot(axisZ, eyePos), 1.0
+			axisX.x, axisY.x, axisZ.x, 0.0f,
+			axisX.y, axisY.y, axisZ.y, 0.0f,
+			axisX.z, axisY.z, axisZ.z, 0.0f,
+			-Dot(axisX, eyePos), -Dot(axisY, eyePos), -Dot(axisZ, eyePos), 1.0f
 		);
 	}
 
@@ -186,9 +176,9 @@ namespace Core
 	Matrix4f MathUtils::ScreenToRasterMatrix(const Rect2f& screenBound, const Point2i& resolution)
 	{
 		return
-			TranslateMatrix(-screenBound.m_min.x, -screenBound.m_max.y, 0) 
-			* ScaleMatrix(1.0 / (screenBound.m_max.x - screenBound.m_min.x), 1.0 / (screenBound.m_min.y - screenBound.m_max.y), 1.0) 
-			* ScaleMatrix(resolution.x, resolution.y, 1.0);
+			TranslateMatrix(-screenBound.m_min.x, -screenBound.m_max.y, 0.0f) 
+			* ScaleMatrix(1.0f / (screenBound.m_max.x - screenBound.m_min.x), 1.0f / (screenBound.m_min.y - screenBound.m_max.y), 1.0f) 
+			* ScaleMatrix((Float)resolution.x, (Float)resolution.y, 1.0f);
 	}
 
 	Quaternion MathUtils::Slerp(Float t, const Quaternion& p, const Quaternion& quat, bool shortestPath)
@@ -197,7 +187,7 @@ namespace Core
 		Quaternion rt;
 
 		// Do we need to invert rotation?
-		if (cosTemp < 0.0 && shortestPath)
+		if (cosTemp < 0.0f && shortestPath)
 		{
 			cosTemp = -cosTemp;
 			rt = -quat;
@@ -210,10 +200,10 @@ namespace Core
 		if (abs(cosTemp) < 1 - C_FLOAT_EPSILON)
 		{
 			// Standard case (slerp)
-			Float sinTemp = std::sqrt(1.0 - cosTemp * cosTemp);
+			Float sinTemp = std::sqrt(1.0f - cosTemp * cosTemp);
 			Float angle = std::atan2(sinTemp, cosTemp);
-			Float invSin = 1.0 / sinTemp;
-			Float coeff0 = std::sin((1.0 - t) * angle) * invSin;
+			Float invSin = 1.0f / sinTemp;
+			Float coeff0 = std::sin((1.0f - t) * angle) * invSin;
 			Float coeff1 = std::sin(t * angle) * invSin;
 			return coeff0 * p + coeff1 * rt;
 		}
@@ -225,7 +215,7 @@ namespace Core
 			// 2. "p" and "quat" are almost inverse of each other (cosTemp ~= -1), there
 			//    are an infinite number of possibilities interpolation. but we haven't
 			//    have method to fix this case, so just use linear interpolation here.
-			Quaternion q = (1.0 - t) * p + t * rt;
+			Quaternion q = (1.0f - t) * p + t * rt;
 			// taking the complement requires renormalisation
 			q.Normalize();
 			return q;
@@ -264,7 +254,7 @@ namespace Core
 		//	fBiggestM1 = fZM1;
 		//	iBiggestIndex = 3;
 		//}
-		//Float fBiggestVal = sqrt(fBiggestM1+1.0)*0.5;
+		//Float fBiggestVal = sqrt(fBiggestM1+1.0f)*0.5f;
 		//Float fMult = 0.25f / fBiggestVal;
 		//switch(iBiggestIndex)
 		//{
@@ -301,12 +291,12 @@ namespace Core
 		Float trace = mat[0][0] + mat[1][1] + mat[2][2];
 		Float root;
 
-		if (trace > 0.0)
+		if (trace > 0.0f)
 		{
 			// |w| > 1/2, may as well choose w > 1/2
-			root = (Float)sqrt(trace + 1.0);  // 2w
-			ret.w = 0.5 * root;
-			root = 0.5 / root;  // 1/(4w)
+			root = (Float)sqrt(trace + 1.0f);  // 2w
+			ret.w = 0.5f * root;
+			root = 0.5f / root;  // 1/(4w)
 			ret.x = (mat[2][1] - mat[1][2]) * root;
 			ret.y = (mat[0][2] - mat[2][0]) * root;
 			ret.z = (mat[1][0] - mat[0][1]) * root;
@@ -323,10 +313,10 @@ namespace Core
 			unsigned int j = sNext[i];
 			unsigned int k = sNext[j];
 
-			root = (Float)std::sqrt(mat[i][i] - mat[j][j] - mat[k][k] + 1.0);
+			root = (Float)std::sqrt(mat[i][i] - mat[j][j] - mat[k][k] + 1.0f);
 			Float* apkQuat[3] = { &ret.x, &ret.y, &ret.z };
-			*apkQuat[i] = 0.5 * root;
-			root = 0.5 / root;
+			*apkQuat[i] = 0.5f * root;
+			root = 0.5f / root;
 			ret.w = (mat[k][j] - mat[j][k])*root;
 			*apkQuat[j] = (mat[j][i] + mat[i][j])*root;
 			*apkQuat[k] = (mat[k][i] + mat[i][k])*root;
@@ -340,15 +330,15 @@ namespace Core
 
 		cosTemp = std::cos(yaw);
 		sinTemp = std::sin(yaw);
-		Matrix3f matY(cosTemp, 0.0, sinTemp, 0.0, 1.0, 0.0, -sinTemp, 0.0, cosTemp);
+		Matrix3f matY(cosTemp, 0.0f, sinTemp, 0.0f, 1.0f, 0.0f, -sinTemp, 0.0f, cosTemp);
 
 		cosTemp = std::cos(pitch);
 		sinTemp = std::sin(pitch);
-		Matrix3f matX(1.0, 0.0, 0.0, 0.0, cosTemp, -sinTemp, 0.0, sinTemp, cosTemp);
+		Matrix3f matX(1.0f, 0.0f, 0.0f, 0.0f, cosTemp, -sinTemp, 0.0f, sinTemp, cosTemp);
 
 		cosTemp = std::cos(roll);
 		sinTemp = std::sin(roll);
-		Matrix3f matZ(cosTemp, -sinTemp, 0.0, sinTemp, cosTemp, 0.0, 0.0, 0.0, 1.0);
+		Matrix3f matZ(cosTemp, -sinTemp, 0.0f, sinTemp, cosTemp, 0.0f, 0.0f, 0.0f, 1.0f);
 
 		return matY * (matX * matZ);
 	}
@@ -372,7 +362,7 @@ namespace Core
 			{
 				// WARNING.  Not a unique solution.
 				Float rmY = std::atan2(-rotate.m[0][1], rotate.m[0][0]);
-				roll = (0.0);  // any angle works
+				roll = (0.0f);  // any angle works
 				yaw = roll - rmY;
 				return false;
 			}
@@ -381,7 +371,7 @@ namespace Core
 		{
 			// WARNING.  Not a unique solution.
 			Float rpY = std::atan2(-rotate.m[0][1], rotate.m[0][0]);
-			roll = (0.0);  // any angle works
+			roll = (0.0f);  // any angle works
 			yaw = rpY - roll;
 			return false;
 		}
@@ -422,19 +412,19 @@ namespace Core
 		if (std::abs(denom) < C_FLOAT_EPSILON)
 			return false;
 
-		Float invDenom = 1.0 / denom;
+		Float invDenom = 1.0f / denom;
 		b.x = (v4 * u2 - v2 * u4) * invDenom;
 		b.y = (v1 * u3 - v3 * u1) * invDenom;
-		b.z = 1.0 - (b.x + b.y);
+		b.z = 1.0f - (b.x + b.y);
 		return true;
 	}
 
 	Matrix3f MathUtils::QuaternionToRotationMatrix(const Quaternion& quat)
 	{
 		Matrix3f matRot;
-		Float tx = 2.0 * quat.x;
-		Float ty = 2.0 * quat.y;
-		Float tz = 2.0 * quat.z;
+		Float tx = 2.0f * quat.x;
+		Float ty = 2.0f * quat.y;
+		Float tz = 2.0f * quat.z;
 		Float twx = tx * quat.w;
 		Float twy = ty * quat.w;
 		Float twz = tz * quat.w;
@@ -445,25 +435,25 @@ namespace Core
 		Float tyz = tz * quat.y;
 		Float tzz = tz * quat.z;
 
-		matRot[0][0] = 1.0 - (tyy + tzz);
+		matRot[0][0] = 1.0f - (tyy + tzz);
 		matRot[0][1] = txy - twz;
 		matRot[0][2] = txz + twy;
 		matRot[1][0] = txy + twz;
-		matRot[1][1] = 1.0 - (txx + tzz);
+		matRot[1][1] = 1.0f - (txx + tzz);
 		matRot[1][2] = tyz - twx;
 		matRot[2][0] = txz - twy;
 		matRot[2][1] = tyz + twx;
-		matRot[2][2] = 1.0 - (txx + tyy);
+		matRot[2][2] = 1.0f - (txx + tyy);
 
-		//matRot[0][0] = 1.0-(tyy+tzz);
+		//matRot[0][0] = 1.0f-(tyy+tzz);
 		//matRot[1][0] = txy-twz;
 		//matRot[2][0] = txz+twy;
 		//matRot[0][1] = txy+twz;
-		//matRot[1][1] = 1.0-(txx+tzz);
+		//matRot[1][1] = 1.0f-(txx+tzz);
 		//matRot[2][1] = tyz-twx;
 		//matRot[0][2] = txz-twy;
 		//matRot[1][2] = tyz+twx;
-		//matRot[2][2] = 1.0-(txx+tyy);
+		//matRot[2][2] = 1.0f-(txx+tyy);
 		return matRot;
 	}
 
@@ -475,7 +465,7 @@ namespace Core
 		//   q = cos(A/2)+sin(A/2)*(x*i+y*j+z*k)
 
 		Quaternion ret;
-		Float halfAngle(0.5 * angle);
+		Float halfAngle(0.5f * angle);
 		Float sinTemp = std::sin(halfAngle);
 
 		ret.x = sinTemp * axis.x;
@@ -491,10 +481,10 @@ namespace Core
 		//   q = cos(A/2)+sin(A/2)*(x*i+y*j+z*k)
 
 		Float sqLength = quat.x*quat.x + quat.y*quat.y + quat.z*quat.z;
-		if (sqLength > 0.0)
+		if (sqLength > 0.0f)
 		{
-			angle = 2.0*std::acos(quat.w);
-			Float invLength = 1.0 / (std::sqrt(sqLength));
+			angle = 2.0f*std::acos(quat.w);
+			Float invLength = 1.0f / (std::sqrt(sqLength));
 			axis.x = quat.x * invLength;
 			axis.y = quat.y * invLength;
 			axis.z = quat.z * invLength;
@@ -502,10 +492,10 @@ namespace Core
 		else
 		{
 			// angle is 0 (mod 2*pi), so any axis will do
-			angle = 0.0;
-			axis.x = 1.0;
-			axis.y = 0.0;
-			axis.z = 0.0;
+			angle = 0.0f;
+			axis.x = 1.0f;
+			axis.y = 0.0f;
+			axis.z = 0.0f;
 		}
 	}
 
@@ -550,7 +540,7 @@ namespace Core
 	EulerRotation MathUtils::QuaternionToEulerRotation(const Quaternion& rotate)
 	{
 		EulerRotation ret;
-		ret.pitch = asin(Clamp(2 * (rotate.w * rotate.x - rotate.y * rotate.z), -1.0, 1.0));
+		ret.pitch = asin(Clamp<Float>(2 * (rotate.w * rotate.x - rotate.y * rotate.z), -1.0f, 1.0f));
 		ret.yaw = atan2(2 * (rotate.w * rotate.y + rotate.z * rotate.x), 1 - 2 * (rotate.x * rotate.x + rotate.y * rotate.y));
 		ret.roll = atan2(2 * (rotate.w * rotate.z + rotate.x * rotate.y), 1 - 2 * (rotate.z * rotate.z + rotate.x * rotate.x));
 		return ret;
@@ -562,15 +552,15 @@ namespace Core
 		Float  angle;
 		Float  sinRoll, sinPitch, sinYaw, cosRoll, cosPitch, cosYaw;
 
-		angle = rotate.yaw * 0.5;
+		angle = rotate.yaw * 0.5f;
 		sinYaw = std::sin(angle);
 		cosYaw = std::cos(angle);
 
-		angle = rotate.pitch * 0.5;
+		angle = rotate.pitch * 0.5f;
 		sinPitch = std::sin(angle);
 		cosPitch = std::cos(angle);
 
-		angle = rotate.roll * 0.5;
+		angle = rotate.roll * 0.5f;
 		sinRoll = std::sin(angle);
 		cosRoll = std::cos(angle);
 
@@ -601,6 +591,7 @@ namespace Core
 		ret.m[1][3] = 0;
 		ret.m[2][3] = 0;
 		ret.m[3][3] = 1;
+
 		return ret;
 	}
 
@@ -634,8 +625,8 @@ namespace Core
 
 	void MathUtils::VectorToRotation(const Vector3f& vec, Float& pitch, Float& yaw, Float& roll)
 	{
-		yaw = (std::atan2(vec.y, vec.x) * (Float)(0xffff) / (C_PI * 2.0));
-		pitch = (std::atan2(vec.z, std::sqrt(vec.x * vec.x + vec.y * vec.y)) * (Float)(0xffff) / (C_PI * 2.0));
+		yaw = (std::atan2(vec.y, vec.x) * (Float)(0xffff) / (C_PI * 2.0f));
+		pitch = (std::atan2(vec.z, std::sqrt(vec.x * vec.x + vec.y * vec.y)) * (Float)(0xffff) / (C_PI * 2.0f));
 		roll = 0;
 	}
 
@@ -646,8 +637,8 @@ namespace Core
 		Vector3f qvec(q.x, q.y, q.z);
 		uv = Cross(qvec, vec);
 		uuv = Cross(qvec, uv);
-		uv *= (2.0 * q.w);
-		uuv *= 2.0;
+		uv *= (2.0f * q.w);
+		uuv *= 2.0f;
 
 		return vec + uv + uuv;
 	}

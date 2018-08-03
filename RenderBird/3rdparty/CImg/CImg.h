@@ -31015,7 +31015,7 @@ namespace cimg_library_suffixed {
         }
       } else { // Generic angle
         const float
-          rad = (float)(nangle*cimg::PI/180.0),
+          rad = (float)(nangle*cimg::PI/180.0f),
           ca = (float)std::cos(rad), sa = (float)std::sin(rad),
           ux = cimg::abs((_width - 1)*ca), uy = cimg::abs((_width - 1)*sa),
           vx = cimg::abs((_height - 1)*sa), vy = cimg::abs((_height - 1)*ca),
@@ -31055,7 +31055,7 @@ namespace cimg_library_suffixed {
                  const float w2, const float h2,
                  const float rw2, const float rh2) const {
       const float
-        rad = (float)(angle*cimg::PI/180.0),
+        rad = (float)(angle*cimg::PI/180.0f),
         ca = (float)std::cos(rad), sa = (float)std::sin(rad);
 
       switch (boundary_conditions) {

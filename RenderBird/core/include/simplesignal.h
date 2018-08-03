@@ -1,4 +1,4 @@
-// CC0 Public Domain: http://creativecommons.org/publicdomain/zero/1.0/
+// CC0 Public Domain: http://creativecommons.org/publicdomain/zero/1.0f/
 #ifndef SIMPLE_SIGNAL_H__
 #define SIMPLE_SIGNAL_H__
 
@@ -522,7 +522,7 @@ static void bench_simple_signal() {
   const uint64_t end_counter = TestCounter::get();
   assert(end_counter - start_counter == i);
   printf("OK\n  Benchmark: Simple::Signal: %fns per emission (size=%zu): ",
-         size_t(benchdone - benchstart) * 1.0 / size_t(i),
+         size_t(benchdone - benchstart) * 1.0f / size_t(i),
          sizeof(sig_increment));
 }
 
@@ -538,7 +538,7 @@ static void bench_callback_loop() {
   const uint64_t end_counter = TestCounter::get();
   assert(end_counter - start_counter == i);
   printf("OK\n  Benchmark: callback loop: %fns per round: ",
-         size_t(benchdone - benchstart) * 1.0 / size_t(i));
+         size_t(benchdone - benchstart) * 1.0f / size_t(i));
 }
 
 uint64_t TestCounter::get() { return test_counter_var; }

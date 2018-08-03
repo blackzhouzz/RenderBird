@@ -2,8 +2,8 @@
 
 namespace Core
 {
-	const Quaternion Quaternion::ZERO(0.0, 0.0, 0.0, 0.0);
-	const Quaternion Quaternion::IDENTITY(0.0, 0.0, 0.0, 1.0);
+	const Quaternion Quaternion::ZERO(0.0f, 0.0f, 0.0f, 0.0f);
+	const Quaternion Quaternion::IDENTITY(0.0f, 0.0f, 0.0f, 1.0f);
 
 	Quaternion::Quaternion(Float x1, Float y1, Float z1, Float w1)
 		: x(x1), y(y1), z(z1), w(w1)
@@ -29,13 +29,13 @@ namespace Core
 
 	void Quaternion::SetZero()
 	{
-		x = y = z = w = 0.0;
+		x = y = z = w = 0.0f;
 	}
 
 	void Quaternion::SetIdentity()
 	{
-		x = y = z = 0.0;
-		w = 1.0;
+		x = y = z = 0.0f;
+		w = 1.0f;
 	}
 
 	Quaternion Quaternion::operator + (const Quaternion& quat)const
@@ -93,7 +93,7 @@ namespace Core
 	Float Quaternion::Normalize(void)
 	{
 		Float len = NormSQ();
-		Float factor = 1.0 / sqrt(len);
+		Float factor = 1.0f / sqrt(len);
 		*this = *this * factor;
 		return len;
 	}
@@ -101,9 +101,9 @@ namespace Core
 	Quaternion Quaternion::Inverse()const
 	{
 		Float norm = x * x + y * y + z * z + w * w;
-		if (norm > 0.0)
+		if (norm > 0.0f)
 		{
-			Float invNorm = 1.0 / norm;
+			Float invNorm = 1.0f / norm;
 			return Quaternion(-x * invNorm, -y * invNorm, -z * invNorm, w * invNorm);
 		}
 		else
@@ -154,9 +154,9 @@ namespace Core
 		// sin(A)*(x*i+y*j+z*k) since sin(A)/A has limit 1.
 
 		Quaternion result;
-		result.w = 0.0;
+		result.w = 0.0f;
 
-		if (abs(w) < 1.0)
+		if (abs(w) < 1.0f)
 		{
 			Float angle(acos(w));
 			Float sinTemp = sin(angle);
@@ -179,17 +179,17 @@ namespace Core
 	{
 		if (reprojectAxis)
 		{
-			Float tx = 2.0 * x;
-			Float ty = 2.0 * y;
-			Float tz = 2.0 * z;
+			Float tx = 2.0f * x;
+			Float ty = 2.0f * y;
+			Float tz = 2.0f * z;
 			Float twz = tz * w;
 			Float txy = ty * x;
 			Float tyy = ty * y;
 			Float tzz = tz * z;
 
-			// Vector3f(1.0-(tyy+tzz), txy+twz, txz-twy);
+			// Vector3f(1.0f-(tyy+tzz), txy+twz, txz-twy);
 
-			return Float(std::atan2((Float)(txy + twz), (Float)(1.0 - (tyy + tzz))));
+			return Float(std::atan2((Float)(txy + twz), (Float)(1.0f - (tyy + tzz))));
 
 		}
 		else
@@ -202,16 +202,16 @@ namespace Core
 	{
 		if (reprojectAxis)
 		{
-			Float tx = 2.0 * x;
-			Float ty = 2.0 * y;
-			Float tz = 2.0 * z;
+			Float tx = 2.0f * x;
+			Float ty = 2.0f * y;
+			Float tz = 2.0f * z;
 			Float twx = tx * w;
 			Float txx = tx * x;
 			Float tyz = tz * y;
 			Float tzz = tz * z;
 
-			// Vector3f(txy-twz, 1.0-(txx+tzz), tyz+twx);
-			return std::atan2((Float)(tyz + twx), (Float)(1.0 - (txx + tzz)));
+			// Vector3f(txy-twz, 1.0f-(txx+tzz), tyz+twx);
+			return std::atan2((Float)(tyz + twx), (Float)(1.0f - (txx + tzz)));
 		}
 		else
 		{
@@ -226,16 +226,16 @@ namespace Core
 		{
 			// yaw = std::atan2(localz.x, localz.z)
 			// pick parts of axisZ() implementation that we need
-			Float tx = 2.0 * x;
-			Float ty = 2.0 * y;
-			Float tz = 2.0 * z;
+			Float tx = 2.0f * x;
+			Float ty = 2.0f * y;
+			Float tz = 2.0f * z;
 			Float twy = ty * w;
 			Float txx = tx * x;
 			Float txz = tz * x;
 			Float tyy = ty * y;
 
-			// Vector3f(txz+twy, tyz-twx, 1.0-(txx+tyy));
-			return std::atan2((Float)(txz + twy), (Float)(1.0 - (txx + tyy)));
+			// Vector3f(txz+twy, tyz-twx, 1.0f-(txx+tyy));
+			return std::atan2((Float)(txz + twy), (Float)(1.0f - (txx + tyy)));
 
 		}
 		else

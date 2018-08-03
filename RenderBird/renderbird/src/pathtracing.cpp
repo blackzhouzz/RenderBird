@@ -40,7 +40,7 @@ namespace RenderBird
 
 		surfData.m_wo = -ray.m_direction;
 
-		//surfData.m_isBackfacing = (Dot(surfData.m_geomNormal, surfData.m_wo) < 0.0);
+		//surfData.m_isBackfacing = (Dot(surfData.m_geomNormal, surfData.m_wo) < 0.0f);
 		//if (surfData.m_isBackfacing)
 		//{
 		//	surfData.m_normal = -surfData.m_normal;
@@ -83,7 +83,7 @@ namespace RenderBird
 			{
 				diffuseColor = hitInfo.m_material->m_diffuseColor;
 			}
-			//Float nol = Dot(surfData.m_normal, Vector3f(1, 1, 1).GetNormalized());
+			Float nol = Dot(hitInfo.m_normal.GetNormalized(), Vector3f(-1, -1, 1).GetNormalized());
 			RGB32 color = RGB32(diffuseColor[0], diffuseColor[1], diffuseColor[2]);
 			m_renderer->SetColor(state.m_pixelX, state.m_pixelY, color);
 			break;
@@ -96,7 +96,8 @@ namespace RenderBird
 			//if (!SurfaceBounce(state, ray))
 			//	break;
 		}
-
+		
+		//m_renderer->SetColor(state.m_pixelX, state.m_pixelY, Core::RGB32::GREEN);
 		//path tracing loop end
 	}
 

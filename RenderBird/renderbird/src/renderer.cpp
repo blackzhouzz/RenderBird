@@ -68,7 +68,7 @@ namespace RenderBird
 		//const Float dist = 10;
 		//Vector3f pos = Vector3f(0, 1, 1) * dist;
 		//m_camera->LookAt(pos, Vector3f::ZERO, Vector3f::UNIT_Z);
-		//m_camera->PerspectiveFovLH(39.0f, 1.0, 1e-2f, 1000.f);
+		//m_camera->PerspectiveFovLH(39.0f, 1.0f, 1e-2f, 1000.f);
 		//auto oldView = m_camera->GetViewMatrix();
 		//auto oldProj = m_camera->GetProjMatrix();
 
@@ -78,7 +78,7 @@ namespace RenderBird
 		auto viewMatrix = cameraTransform->m_cached;
 		auto projMatrix = cameraComponent->m_proj;
 
-		m_renderContext.m_camera.m_screenBound = Rect2f(-1.0, -1.0, 1.0, 1.0);
+		m_renderContext.m_camera.m_screenBound = Rect2f(-1.0f, -1.0f, 1.0f, 1.0f);
 		m_renderContext.m_camera.m_cameraToWorld = viewMatrix.InverseSafe();
 		Matrix4f screenToRaster = MathUtils::ScreenToRasterMatrix(m_renderContext.m_camera.m_screenBound, Point2i(m_setting.m_resX, m_setting.m_resY));
 		Matrix4f cameraToRaster = projMatrix * screenToRaster;
@@ -91,7 +91,7 @@ namespace RenderBird
 
 	void Renderer::GenerateCameraRay(int pixelX, int pixelY, Ray* ray)
 	{
-		Vector3f rayDir = m_renderContext.m_camera.m_rasterToCamera.TransformPerspective(Vector3f(pixelX, pixelY, 0));
+		Vector3f rayDir = m_renderContext.m_camera.m_rasterToCamera.TransformPerspective(Vector3f(pixelX, pixelY, 0.0f));
 		rayDir = m_renderContext.m_camera.m_cameraToWorld.TransformDirection(rayDir);
 		rayDir.Normalize();
 

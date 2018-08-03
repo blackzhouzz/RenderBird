@@ -4,11 +4,11 @@
 //
 //                      - Don Clugston, Mar 2004.
 //      Major contributions were made by Jody Hagins.
-//      Version 2.0 by Pa�l Jim�nez.
-//      Version 2.0.1-2.0.2 by Benjamin YanXiang Huang
+//      Version 2.0f by Pa�l Jim�nez.
+//      Version 2.0f.1-2.0f.2 by Benjamin YanXiang Huang
 //
 // History:
-// 24-Apr-04 1.0  * Submitted to CodeProject.
+// 24-Apr-04 1.0f  * Submitted to CodeProject.
 // 28-Apr-04 1.1  * Prevent most unsafe uses of evil static function hack.
 //                * Improved syntax for horrible_cast (thanks Paul Bludov).
 //                * Tested on Metrowerks MWCC and Intel ICL (IA32)
@@ -47,14 +47,14 @@
 //                * Fully supported by CodePlay VectorC
 //                * Bugfix for Metrowerks: empty() was buggy because a valid MFP can be 0 on MWCC!
 //                * More optimal assignment,== and != operators for static function pointers.
-// 06-Feb-13 2.0  * GetMemento is now const
+// 06-Feb-13 2.0f  * GetMemento is now const
 //                * Added hash method that makes use of new unchecked function unsafe_horrible_cast
 //                * Removed VC6 code
 //                * Use variadic templates (C++11)
 //                * Added MakeDelegate for plain function pointers
 //                * Use static_assert for compile-time checks (C++11)
-// 21-Jan-14 2.0.1* Fixed 2 typos (line 393 & 429) where a static_cast should have been a static_assert. 
-// 21-Jun-14 2.0.2* Fixed incorrect union member name in the SimplifyMemFunc struct.
+// 21-Jan-14 2.0f.1* Fixed 2 typos (line 393 & 429) where a static_cast should have been a static_assert. 
+// 21-Jun-14 2.0f.2* Fixed incorrect union member name in the SimplifyMemFunc struct.
 
 #ifndef FASTDELEGATE_HPP
 #define FASTDELEGATE_HPP

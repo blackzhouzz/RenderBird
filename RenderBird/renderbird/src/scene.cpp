@@ -15,7 +15,8 @@ namespace RenderBird
 		{
 			auto trans = EntityManager::Instance().GetComponent<Transform>(m_diskId);
 			auto disk = EntityManager::Instance().GetComponent<Disk>(m_diskId);
-			if (DiskUtils::Intersect(disk, TransformUtils::GetMatrix(trans), ray, hitInfo))
+
+			if (disk != nullptr && DiskUtils::Intersect(disk, TransformUtils::GetMatrix(trans), ray, hitInfo))
 				return true;
 		}
 
@@ -23,9 +24,9 @@ namespace RenderBird
 		bool hasIntersected = false;
 		while (visitor.HasNext())
 		{
-			auto transform = visitor.Get<Transform>();
+			auto trans = visitor.Get<Transform>();
 			auto meshcomponent = visitor.Get<MeshComponent>();
-			hasIntersected |= MeshComponentUtils::Intersect(meshcomponent, ray, hitInfo);
+			hasIntersected |= MeshComponentUtils::Intersect(meshcomponent, TransformUtils::GetMatrix(trans), ray, hitInfo);
 
 			visitor.MoveNext();
 		}
@@ -78,7 +79,12 @@ namespace RenderBird
 		{
 			auto planeEntity = EntityManager::IntancePtr()->CreateEntity(meshArchetype);
 			auto meshComp = EntityManager::IntancePtr()->GetComponent<MeshComponent>(planeEntity);
+			auto trans = EntityManager::IntancePtr()->GetComponent<Transform>(planeEntity);
 			meshComp->m_trimesh = m_meshResources[i];
+			if (i == 0)
+			{
+				//trans->m_position = Vector3f(0, 0, 0.5f);
+			}
 			m_entities.insert(planeEntity);
 		}
 
@@ -96,7 +102,7 @@ namespace RenderBird
 		m_camera = EntityManager::IntancePtr()->CreateEntity(camArchetype);
 		auto comp = EntityManager::IntancePtr()->GetComponent<CameraComponent>(m_camera);
 
-		CameraComponentUtils::PerspectiveFovMatrix(comp, 60, 1.0, 1e-2, 1000);
+		CameraComponentUtils::PerspectiveFovMatrix(comp, 60, 1.0f, 1e-2, 1000);
 
 		auto trans = EntityManager::IntancePtr()->GetComponent<Transform>(m_camera);
 		const Float dist = 4;
