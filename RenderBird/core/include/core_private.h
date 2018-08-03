@@ -3,7 +3,6 @@
 #include <memory>
 #include <assert.h>
 #include <vector>
-#include "math/mathcore.h"
 
 #  ifdef CORE_DLL
 #    ifdef CORE_DLL_INTERNAL

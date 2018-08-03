@@ -140,19 +140,6 @@ namespace Core
 		);
 	}
 
-	Matrix4f MathUtils::LookAtMatrixLH(const Vector3f& eyePos, const Vector3f& at, const Vector3f& up)
-	{
-		Vector3f axisZ = (at - eyePos).Normalize();
-		Vector3f axisX = Cross(up, axisZ).Normalize();
-		Vector3f axisY = Cross(axisZ, axisX);
-		return Matrix4f(
-			axisX.x, axisY.x, axisZ.x, 0.0,
-			axisX.y, axisY.y, axisZ.y, 0.0,
-			axisX.z, axisY.z, axisZ.z, 0.0,
-			-Dot(axisX, eyePos), -Dot(axisY, eyePos), -Dot(axisZ, eyePos), 1.0
-		);
-	}
-
 	Matrix4f MathUtils::LookAtMatrix(const Vector3f& eyePos, const Vector3f& axisX, const Vector3f& axisY, const Vector3f& axisZ)
 	{
 		return Matrix4f(
@@ -766,4 +753,16 @@ namespace Core
 		}
 		return ret;
 	}
+
+	//Matrix3f MathUtils::MakeNormalTransform(const Vector3f& normal)
+	//{
+	//	Vector3f axisX, axisY;
+	//	if (normal.x != normal.y || normal.x != normal.z)
+	//		axisX = Vector3f(normal.z - normal.y, normal.x - normal.z, normal.y - normal.x);
+	//	else
+	//		axisX = Vector3f(normal.z - normal.y, normal.x + normal.z, -normal.y - normal.x);
+
+	//	*a = normalize(axisX);
+	//	*b = cross(normal, axisX);
+	//}
 }

@@ -32,7 +32,7 @@ namespace RenderBird
 		{
 			int m_pixelX;
 			int m_pixelY;
-			int m_bounceCount;
+			int m_currentBounceCount;
 			Ray m_cameraRay;
 			RGB32 m_throughtPut;
 		};

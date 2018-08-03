@@ -21,15 +21,15 @@ namespace Core
 
 	void TransformUtils::LookAt(Transform* trans, const Vector3f& eyePos, const Vector3f& at, const Vector3f& up)
 	{
-		Vector3f axisZ = (at - eyePos).Normalize();
-		Vector3f axisX = Cross(up, axisZ).Normalize();
-		if (axisX.LengthSQ() < C_FLOAT_EPSILON)
+		Vector3f forward = (at - eyePos).Normalize();
+		Vector3f right = Cross(up, forward).Normalize();
+		if (right.LengthSQ() < C_FLOAT_EPSILON)
 		{
-			axisX = Vector3f::UNIT_X;
+			right = Vector3f::UNIT_X;
 		}
-		Vector3f axisY = Cross(axisZ, axisX).Normalize();
-		trans->m_position = Vector3f(-Dot(axisX, eyePos), -Dot(axisZ, eyePos), -Dot(axisY, eyePos));
-		trans->m_rotation = MathUtils::AxesToQuaternion(axisX, axisY, axisZ);
+		Vector3f newup = Cross(forward, right).Normalize();
+		trans->m_position = Vector3f(-Dot(right, eyePos), -Dot(forward, eyePos), -Dot(newup, eyePos));
+		trans->m_rotation = MathUtils::AxesToQuaternion(right, newup, forward);
 		trans->m_cached = MathUtils::MakeTransform(trans->m_position, trans->m_rotation, trans->m_scale);
 		trans->m_needUpdate = false;
 	}

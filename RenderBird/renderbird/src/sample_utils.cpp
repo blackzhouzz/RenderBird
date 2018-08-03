@@ -4,33 +4,33 @@
 
 namespace RenderBird
 {
-	Vector2f SampleUtils::ConcentricSampleDisk(const Vector2f &u)
+	//concentric mapping see [Shirley and Chiu 97]
+	Vector2f SampleUtils::ToUnitDisk(const Vector2f &randuv)
 	{
-		// Map uniform random numbers to $[-1,1]^2$
-		Vector2f offset = u * 2.0 - Vector2f(1, 1);
-
-		// Handle degeneracy at the origin
-		if (offset.x == 0 && offset.y == 0) return Vector2f(0, 0);
-
-		// Apply concentric mapping to point
-		Float theta, r;
-		if (std::abs(offset.x) > std::abs(offset.y)) 
+		Float phi, r;
+		Float a = 2 * randuv.x - 1;
+		Float b = 2 * randuv.y - 1;
+		if (a == 0 && b == 0)
 		{
-			r = offset.x;
-			theta = C_QUARTER_PI * (offset.y / offset.x);
+			return Vector2f::ZERO;
+		}
+		if (a*a > b*b) 
+		{
+			r = a;
+			phi = (C_QUARTER_PI)*(b / a);
 		}
 		else 
 		{
-			r = offset.y;
-			theta = C_QUARTER_PI - C_QUARTER_PI * (offset.x / offset.y);
+			r = b;
+			phi = (C_QUARTER_PI)*(a / b) + C_HALF_PI;
 		}
-		return Vector2f(std::cos(theta), std::sin(theta)) * r;
+		return Vector2f(r*cos(phi), r*sin(phi));
 	}
 
 	void SampleUtils::SampleDiskLight(Disk* disk, const Matrix4f& objToWorld, const Vector2f& randuv, LightSample& lightSample)
 	{
-		Vector2f pd = ConcentricSampleDisk(randuv);
-		Vector3f objPos(pd.x * disk->m_radius, pd.y * disk->m_radius, disk->m_height);
+		Vector2f pd = ToUnitDisk(randuv);
+		Vector3f objPos(pd.x * disk->m_radius, pd.y * disk->m_radius, 0);
 		lightSample.m_normal = objToWorld.TransformDirection(Vector3f::UNIT_Z).GetNormalized();
 		lightSample.m_position = objToWorld.TransformPoint(objPos);
 		lightSample.m_pdf = 1 / DiskUtils::GetArea(disk);

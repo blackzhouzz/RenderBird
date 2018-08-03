@@ -156,7 +156,7 @@ namespace RenderBird
 		const Vector3f& v2 = meshData->m_vertexData[faceData.m_v2].m_position;
 
 		Float u, v, t;
-		if (ray_triangle_intersect_ex(ray.origin, ray.direction, 10000, v0, v1, v2, &u, &v, &t, true))
+		if (ray_triangle_intersect_ex(ray.m_origin, ray.m_direction, ray.m_maxT, v0, v1, v2, &u, &v, &t, true))
 		{
 			if (hitInfo->m_hasHit == false || lt(t, hitInfo->m_t))
 			{

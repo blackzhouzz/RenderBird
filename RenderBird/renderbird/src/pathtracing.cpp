@@ -38,7 +38,7 @@ namespace RenderBird
 			surfData.m_normal = surfData.m_geomNormal;
 		}
 
-		surfData.m_wo = -ray.direction;
+		surfData.m_wo = -ray.m_direction;
 
 		//surfData.m_isBackfacing = (Dot(surfData.m_geomNormal, surfData.m_wo) < 0.0);
 		//if (surfData.m_isBackfacing)
@@ -69,7 +69,7 @@ namespace RenderBird
 		{
 			RayHitInfo hitInfo;
 			bool isHit = m_renderer->m_scene->Intersect(ray, &hitInfo);
-			if (!isHit || state.m_bounceCount > m_setting.m_maxBounce)
+			if (!isHit || state.m_currentBounceCount > m_setting.m_maxBounce)
 			{
 				break;
 			}
@@ -114,7 +114,7 @@ namespace RenderBird
 	{
 		state.m_pixelX = pixelX;
 		state.m_pixelY = pixelY;
-		state.m_bounceCount = 0;
+		state.m_currentBounceCount = 0;
 		state.m_throughtPut = RGB32::WHITE;
 
 		m_renderer->GenerateCameraRay(pixelX, pixelY, &state.m_cameraRay);

@@ -1,8 +1,7 @@
 #pragma once
-#include <assert.h>
 #include <cmath>
-#include <string.h>
 #include <limits>
+#include <assert.h>
 
 namespace Core
 {
@@ -32,7 +31,7 @@ namespace Core
 
 	inline Float AngleModRad(Float a)
 	{
-			return std::fmod(a, C_TWO_PI);
+		return std::fmod(a, C_TWO_PI);
 	}
 
 	inline Float AngleModEuler(Float a)

@@ -113,7 +113,6 @@ namespace RenderBird
 		auto camArchetype = EntityManager::IntancePtr()->CreateArchetype<Transform, Disk>();
 		m_diskId = EntityManager::IntancePtr()->CreateEntity(camArchetype);
 		auto disk = EntityManager::IntancePtr()->GetComponent<Disk>(m_camera);
-		disk->m_height = 0;
 		disk->m_innerRadius = 0;
 		disk->m_radius = 0.2;
 		disk->m_phiMax = C_TWO_PI;

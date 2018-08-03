@@ -13,12 +13,12 @@ namespace RenderBird
 	{
 		Matrix4f worldToObj = objToWorld.InverseSafe();
 		Ray ray;
-		ray.origin = worldToObj.TransformPoint(worldRay.origin);
-		ray.direction = worldToObj.TransformDirection(worldRay.direction);
+		ray.m_origin = worldToObj.TransformPoint(worldRay.m_origin);
+		ray.m_direction = worldToObj.TransformDirection(worldRay.m_direction);
 
-		if (ray.direction.z == 0) return false;
-		Float t = (disk->m_height - ray.origin.z) / ray.direction.z;
-		if (t <= 0 || t >= Ray::MaxT) 
+		if (ray.m_direction.z == 0) return false;
+		Float t = (-ray.m_origin.z) / ray.m_direction.z;
+		if (t <= 0 || t >= ray.m_maxT)
 			return false;
 
 		Vector3f hitPoint = ray.GetPoint(t);
@@ -32,13 +32,13 @@ namespace RenderBird
 			return false;
 
 		Float u = phi / disk->m_phiMax;
-		Float rHit = std::sqrt(dist2);
-		Float oneMinusV = ((rHit - disk->m_innerRadius) / (disk->m_radius - disk->m_innerRadius));
+		Float sqrDist2 = std::sqrt(dist2);
+		Float oneMinusV = ((sqrDist2 - disk->m_innerRadius) / (disk->m_radius - disk->m_innerRadius));
 		Float v = 1 - oneMinusV;
 		//Vector3f dpdu(-disk->m_phiMax * hitPoint.y, disk->m_phiMax * hitPoint.x, 0);
-		//Vector3f dpdv = Vector3f(hitPoint.x, hitPoint.y, 0.) * (disk->m_radius - disk->m_innerRadius) / rHit;
+		//Vector3f dpdv = Vector3f(hitPoint.x, hitPoint.y, 0.) * (disk->m_radius - disk->m_innerRadius) / sqrDist2;
 		//Vector3f dndu(0, 0, 0), dndv(0, 0, 0);
-		hitPoint.z = disk->m_height;
+		hitPoint.z = 0;
 
 		hitInfo->m_u = u;
 		hitInfo->m_v = v;

@@ -17,8 +17,8 @@ namespace RenderBird
 	class SampleUtils
 	{
 	public:
-		static Vector2f ConcentricSampleDisk(const Vector2f &u);
+		static Vector2f ToUnitDisk(const Vector2f &u);
 		static void SampleDiskLight(Disk* disk, const Matrix4f& objToWorld, const Vector2f& randuv, LightSample& lightSample);
-
+		static void CosHemisphere(const Vector3f& normal, const Vector2f& randuv, Float* pdf);
 	};
 }

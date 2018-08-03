@@ -97,8 +97,8 @@ namespace RenderBird
 
 		Vector3f rayPos = Vector3f::ZERO;
 		rayPos = m_renderContext.m_camera.m_cameraToWorld.TransformPoint(rayPos);
-		ray->origin = rayPos;
-		ray->direction = rayDir;
+		ray->m_origin = rayPos;
+		ray->m_direction = rayDir;
 	}
 
 	void Renderer::Render()

@@ -6,7 +6,6 @@ namespace RenderBird
 {
 	struct Disk
 	{
-		Float m_height;
 		Float m_radius;
 		Float m_innerRadius;
 		Float m_phiMax;
@@ -21,7 +20,6 @@ namespace RenderBird
 
 DECLEAR_TYPE_COMPONENT(RenderBird, Disk);
 DEFAULT_BEGIN(RenderBird, Disk)
-DEFAULT_DATA(0.0)
 DEFAULT_DATA(0.0)
 DEFAULT_DATA(0.0)
 DEFAULT_DATA(0.0)

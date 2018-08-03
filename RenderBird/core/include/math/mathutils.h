@@ -23,7 +23,6 @@ namespace Core
 		static Matrix4f OrthoOffCenterMatrix(Float left, Float right, Float bottom, Float top, Float nearClip, Float farClip);
 		static Matrix4f PerspectiveFovMatrix(Float fovY, Float aspect, Float nearClip, Float farClip);
 		static Matrix4f PerspectiveFovInfiniteMatrix(Float fovY, Float aspect, Float nearClip);
-		static Matrix4f LookAtMatrixLH(const Vector3f& eyePos, const Vector3f& at, const Vector3f& up);
 		static Matrix4f LookAtMatrix(const Vector3f& eyePos, const Vector3f& axisX, const Vector3f& axisY, const Vector3f& axisZ);
 		static Matrix4f LookAtMatrix(const Vector3f& eyePos, const Vector3f& lookat, const Vector3f& up);
 		static Matrix4f ScreenToRasterMatrix(const Rect2f& screenBound, const Point2i& resolution);
@@ -45,5 +44,6 @@ namespace Core
 		static void VectorToRotation(const Vector3f& vec, Float& pitch, Float& yaw, Float& roll);
 		static Vector3f RotateVector(const Quaternion& q, const Vector3f& vec);
 		static BoundingBox TransformBoundingBox(const BoundingBox& boundingBox, const Matrix4f& mat);
+		static Matrix3f MakeNormalTransform(const Vector3f& normal);
 	};
 }
