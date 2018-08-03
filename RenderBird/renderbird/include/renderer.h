@@ -16,6 +16,7 @@ namespace RenderBird
 		int m_tileSizeY;
 		int m_resX;
 		int m_resY;
+		bool m_useJob;
 	};
 	class Renderer;
 
@@ -52,11 +53,11 @@ namespace RenderBird
 
 	};
 
-	class Renderer
+	class Renderer : public Singleton<Renderer>
 	{
 		friend class TileRenderer;
 	public:
-		Renderer(const RendererSetting& setting);
+		Renderer();
 		void Prepare();
 		void Render();
 		void Finish();
@@ -65,9 +66,9 @@ namespace RenderBird
 		void SetColor(int pixelX, int pixelY, const Core::RGB32& color);
 		Core::RGB32 GetColor(int pixelX, int pixelY)const;
 		void GenerateCameraRay(int pixelX, int pixelY, Ray* ray);
-	private:
+	public:
 		RendererSetting m_setting;
-		std::vector<std::shared_ptr<TileRenderer>> m_tileRenderers;
+		std::vector<TileRenderer*> m_tileRenderers;
 		Core::RGB32* m_data;
 		PathTracing* m_integrator;
 		RenderContext m_renderContext;

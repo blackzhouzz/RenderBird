@@ -4,6 +4,11 @@
 #include "trianglemesh.h"
 #include "rayhitinfo.h"
 #include "material.h"
+#include <fjs/Manager.h>
+#include <fjs/Counter.h>
+#include <fjs/List.h>
+#include <fjs/Queue.h>
+
 using namespace effolkronium;
 
 namespace RenderBird
@@ -37,9 +42,8 @@ namespace RenderBird
 		return m_setting;
 	}
 
-	Renderer::Renderer(const RendererSetting& setting)
-		: m_setting(setting)
-		, m_integrator(new PathTracing(this))
+	Renderer::Renderer()
+		: m_integrator(new PathTracing(this))
 		, m_scene(new Scene())
 	{
 		m_scene->SetupSceneTest();
@@ -58,7 +62,7 @@ namespace RenderBird
 		{
 			for (int y = 0; y < numY; ++y)
 			{
-				std::shared_ptr<TileRenderer> tileRenderer = std::shared_ptr<TileRenderer>(new TileRenderer(this, x, y, m_setting.m_tileSizeX, m_setting.m_tileSizeY));
+				TileRenderer* tileRenderer = (new TileRenderer(this, x, y, m_setting.m_tileSizeX, m_setting.m_tileSizeY));
 				m_tileRenderers.push_back(tileRenderer);
 			}
 		}
@@ -101,14 +105,50 @@ namespace RenderBird
 		ray->m_direction = rayDir;
 	}
 
+	static void RenderJob(TileRenderer* tileRenderer)
+	{
+		tileRenderer->Render();
+	}
+
+	static void JobMain(fjs::Manager* mgr)
+	{
+		fjs::List list(mgr);
+		for (int i = 0; i < Renderer::Instance().m_tileRenderers.size();++i)
+		{
+			list.Add(fjs::JobPriority::Normal, RenderJob, Renderer::Instance().m_tileRenderers[i]);
+		}
+		list.Wait();
+
+		ImageOutput::WriteBMP("c:/test.bmp", Renderer::Instance().m_data, Renderer::Instance().m_setting.m_resX, Renderer::Instance().m_setting.m_resY);
+	}
+
 	void Renderer::Render()
 	{
-		for (int i = 0; i < m_tileRenderers.size();++i)
+		if (m_setting.m_useJob)
 		{
-			m_tileRenderers[i]->Render();
-		}
+			fjs::ManagerOptions managerOptions;
+			managerOptions.NumFibers = managerOptions.NumThreads * 10;
+			managerOptions.ThreadAffinity = true;
 
-		ImageOutput::WriteBMP("c:/test.bmp", m_data, m_setting.m_resX, m_setting.m_resY);
+			managerOptions.HighPriorityQueueSize = 256;
+			managerOptions.NormalPriorityQueueSize = 512;
+			managerOptions.LowPriorityQueueSize = 512;
+
+			managerOptions.ShutdownAfterMainCallback = true;
+
+			// Manager
+			fjs::Manager manager(managerOptions);
+
+			manager.Run(JobMain);
+		}
+		else
+		{
+			for (int i = 0; i < m_tileRenderers.size();++i)
+			{
+				m_tileRenderers[i]->Render();
+			}
+			ImageOutput::WriteBMP("c:/test.bmp", m_data, m_setting.m_resX, m_setting.m_resY);
+		}
 	}
 
 	void Renderer::Finish()
@@ -116,6 +156,7 @@ namespace RenderBird
 		for (int i = 0; i < m_tileRenderers.size();++i)
 		{
 			m_tileRenderers[i]->Finish();
+			delete m_tileRenderers[i];
 		}
 		m_tileRenderers.clear();
 		delete[] m_data;

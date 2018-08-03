@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{6D1AF61B-2FD8-4CAA-99D9-168C7F01003B}</ProjectGuid>
-    <RootNamespace>renderbird</RootNamespace>
+    <ProjectGuid>{8F57C8ED-2D18-4408-8DDE-02D8D662623A}</ProjectGuid>
+    <RootNamespace>fjs</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -70,37 +70,31 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)libs\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Intermediates\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)/build/fjs_$(Configuration)_$(Platform)/</OutDir>
+    <IntDir>$(SolutionDir)/build/.temp/fjs_$(Configuration)_$(Platform)/</IntDir>
     <TargetExt>.lib</TargetExt>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)libs\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Intermediates\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)/build/fjs_$(Configuration)_$(Platform)/</OutDir>
+    <IntDir>$(SolutionDir)/build/.temp/fjs_$(Configuration)_$(Platform)/</IntDir>
     <TargetExt>.lib</TargetExt>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)libs\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Intermediates\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)/build/fjs_$(Configuration)_$(Platform)/</OutDir>
+    <IntDir>$(SolutionDir)/build/.temp/fjs_$(Configuration)_$(Platform)/</IntDir>
     <TargetExt>.lib</TargetExt>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)libs\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Intermediates\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)/build/fjs_$(Configuration)_$(Platform)/</OutDir>
+    <IntDir>$(SolutionDir)/build/.temp/fjs_$(Configuration)_$(Platform)/</IntDir>
     <TargetExt>.lib</TargetExt>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\runtime\include;$(SolutionDir)\3rdparty;D:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include</AdditionalIncludeDirectories>
-      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>include/</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -108,9 +102,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\runtime\include;$(SolutionDir)\3rdparty;D:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include</AdditionalIncludeDirectories>
-      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>include/</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -120,10 +112,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\3rdparty;D:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include</AdditionalIncludeDirectories>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>include/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -137,10 +126,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\3rdparty;D:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include</AdditionalIncludeDirectories>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>include/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -148,53 +134,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\3rdparty\CImg\CImg.h" />
-    <ClInclude Include="include\camera.h" />
-    <ClInclude Include="include\camera_component.h" />
-    <ClInclude Include="include\disk.h" />
-    <ClInclude Include="include\fbx_import_utils.h" />
-    <ClInclude Include="include\geometrycomponent.h" />
-    <ClInclude Include="include\geometry_generator.h" />
-    <ClInclude Include="include\integrator.h" />
-    <ClInclude Include="include\light_component.h" />
-    <ClInclude Include="include\material.h" />
-    <ClInclude Include="include\mesh_component.h" />
-    <ClInclude Include="include\pathtracing.h" />
-    <ClInclude Include="include\raycastsys.h" />
-    <ClInclude Include="include\rayhitinfo.h" />
-    <ClInclude Include="include\renderbird_private.h" />
-    <ClInclude Include="include\renderbird_register.h" />
-    <ClInclude Include="include\renderer.h" />
-    <ClInclude Include="include\image_output.h" />
-    <ClInclude Include="include\sampler.h" />
-    <ClInclude Include="include\sample_utils.h" />
-    <ClInclude Include="include\scene.h" />
-    <ClInclude Include="include\shape.h" />
-    <ClInclude Include="include\texture.h" />
-    <ClInclude Include="include\trianglemesh.h" />
+    <ClCompile Include="src\Fiber.cpp" />
+    <ClCompile Include="src\Counter.cpp" />
+    <ClCompile Include="src\Job.cpp" />
+    <ClCompile Include="src\List.cpp" />
+    <ClCompile Include="src\Manager.cpp" />
+    <ClCompile Include="src\ManagerCallbacks.cpp" />
+    <ClCompile Include="src\ManagerJobs.cpp" />
+    <ClCompile Include="src\ManagerThreads.cpp" />
+    <ClCompile Include="src\Queue.cpp" />
+    <ClCompile Include="src\Thread.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="include\geometry_generator.cpp" />
-    <ClCompile Include="src\camera.cpp" />
-    <ClCompile Include="src\camera_component.cpp" />
-    <ClCompile Include="src\disk.cpp" />
-    <ClCompile Include="src\fbx_import_utils.cpp" />
-    <ClCompile Include="src\geometrycomponent.cpp" />
-    <ClCompile Include="src\image_output.cpp" />
-    <ClCompile Include="src\integrator.cpp" />
-    <ClCompile Include="src\light_component.cpp" />
-    <ClCompile Include="src\material.cpp" />
-    <ClCompile Include="src\mesh_component.cpp" />
-    <ClCompile Include="src\pathtracing.cpp" />
-    <ClCompile Include="src\raycastsys.cpp" />
-    <ClCompile Include="src\renderbird_register.cpp" />
-    <ClCompile Include="src\renderer.cpp" />
-    <ClCompile Include="src\sampler.cpp" />
-    <ClCompile Include="src\sample_utils.cpp" />
-    <ClCompile Include="src\scene.cpp" />
-    <ClCompile Include="src\shape.cpp" />
-    <ClCompile Include="src\texture.cpp" />
-    <ClCompile Include="src\trianglemesh.cpp" />
+    <ClInclude Include="include\fjs\Common.h" />
+    <ClInclude Include="include\fjs\detail\delegate.h" />
+    <ClInclude Include="include\fjs\detail\detail.h" />
+    <ClInclude Include="include\fjs\detail\function_checks.h" />
+    <ClInclude Include="include\fjs\detail\function_traits.h" />
+    <ClInclude Include="include\fjs\detail\mpmc_queue.h" />
+    <ClInclude Include="include\fjs\Fiber.h" />
+    <ClInclude Include="include\fjs\Job.h" />
+    <ClInclude Include="include\fjs\Counter.h" />
+    <ClInclude Include="include\fjs\List.h" />
+    <ClInclude Include="include\fjs\Manager.h" />
+    <ClInclude Include="include\fjs\Queue.h" />
+    <ClInclude Include="include\fjs\Thread.h" />
+    <ClInclude Include="include\fjs\TLS.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
