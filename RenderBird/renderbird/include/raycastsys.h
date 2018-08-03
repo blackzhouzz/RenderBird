@@ -2,7 +2,7 @@
 #include "system.h"
 #include "math/ray.h"
 #include "rayhitinfo.h"
-using namespace Runtime;
+using namespace Core;
 using namespace Core;
 
 namespace RenderBird

@@ -15,13 +15,52 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\core_public.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\entity.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\entitymanager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="include\event.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\fastdelegate.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\object.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\pool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\simplesignal.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\system.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\timer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\transform.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\transform_parent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\typeinfo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\typelist.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="include\math\boundingbox.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\math\euler_rotation.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\math\mathcore.h">
@@ -42,6 +81,9 @@
     <ClInclude Include="include\math\ray.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\math\rect2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="include\math\spectrum.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -51,42 +93,60 @@
     <ClInclude Include="include\math\vector.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\pool.h">
+    <ClInclude Include="include\archetype.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\simplesignal.h">
+    <ClInclude Include="include\component.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\typeinfo.h">
+    <ClInclude Include="include\component_chunk.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\typelist.h">
+    <ClInclude Include="include\component_group.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\core_public.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\math\euler_rotation.h">
+    <ClInclude Include="include\component_typelist.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\core_private.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\timer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\3rdparty\random.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\math\rect2.h">
+    <ClInclude Include="include\core_register.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\archetype.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component_chunk.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component_group.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component_typelist.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core_private.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entitymanager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="src\event.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\math\boundingbox.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\euler_rotation.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\math\mathcore.cpp">
@@ -116,16 +176,25 @@
     <ClCompile Include="src\math\vector.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\object.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="src\pool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transform.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transform_parent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\typeinfo.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\math\euler_rotation.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core_private.cpp">
+    <ClCompile Include="src\core_register.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

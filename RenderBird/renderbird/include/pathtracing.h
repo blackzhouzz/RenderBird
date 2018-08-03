@@ -1,38 +1,59 @@
 #pragma once
+#include "renderbird_private.h"
 #include "math/ray.h"
 #include "math/spectrum.h"
-using namespace Core;
+#include "rayhitinfo.h"
+#include "sampler.h"
 
 namespace RenderBird
 {
 	struct Radiance
 	{
-
+		RGBA32 m_diffuse;
+		RGBA32 m_specular;
 	};
 
 	struct SurfaceData
 	{
-
+		Vector3f m_position;
+		Vector3f m_geomNormal;
+		Vector3f m_normal;
+		Vector3f m_wo;
+		Material* m_material;
+		bool m_isBackfacing;
 	};
 
-	struct PathTracingState
-	{
-		int m_bounceCount;
-		RGB32 m_throughtPut;
-	};
+	class Renderer;
 
 	class PathTracing
 	{
 	public:
-		void Integrate(Radiance& Lo);
+		struct State
+		{
+			int m_pixelX;
+			int m_pixelY;
+			int m_bounceCount;
+			Ray m_cameraRay;
+			RGB32 m_throughtPut;
+		};
+		struct Setting
+		{
+			int m_maxBounce;
+			int m_numSamples;
+		};
+		PathTracing(Renderer* renderer);
+		void Render(int pixelX, int pixelY, Radiance& Lo);
 	private:
-		void Pass0_Preprocess(int x, int y, Ray& ray) {}
-		bool Pass1_SceneIntersect() {}
-		void Pass2_ShaderSetup() {}
-		void Pass3_SurfaceSetup() {}
-		void Pass4_DirectLighting() {}
-		void Pass5_SurfaceBounce() {}
-		void Pass6_Output() {}
+		void InitState(int pixelX, int pixelY, State& state);
+		void InitSurfaceData(SurfaceData& surfData, const Ray& ray, const RayHitInfo& hitInfo);
+		bool SurfaceBounce(State& state, Ray& ray);
+		void Integrate(State& state, Radiance& Lo);
+		void SurfaceLighting(State& state);
+		bool ProbabilityTerminate(State& state);
+	private:
+		Renderer* m_renderer;
+		Setting m_setting;
+		Sampler* m_sampler;
 	};
 
 }

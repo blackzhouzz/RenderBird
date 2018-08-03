@@ -54,6 +54,7 @@ namespace RenderBird
 
 	class Renderer
 	{
+		friend class TileRenderer;
 	public:
 		Renderer(const RendererSetting& setting);
 		void Prepare();

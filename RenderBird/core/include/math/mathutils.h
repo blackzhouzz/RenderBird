@@ -41,7 +41,6 @@ namespace Core
 		static EulerRotation QuaternionToEulerRotation(const Quaternion& rotate);
 		static Quaternion EulerRotationToQuaternion(const EulerRotation& rotate);
 		static Matrix4f MakeTransform(const Vector3f& position, const Quaternion& orient, const Vector3f& scale = Vector3f::ONE);
-		static Matrix4f MakeTransform(const Vector3f& position, const EulerRotation& pitchYawRoll, const Vector3f& scale = Vector3f::ONE);
 		static void CalcBinormalTangent(Vector3f normal, Vector3f& binormal, Vector3f& tangent);
 		static void VectorToRotation(const Vector3f& vec, Float& pitch, Float& yaw, Float& roll);
 		static Vector3f RotateVector(const Quaternion& q, const Vector3f& vec);

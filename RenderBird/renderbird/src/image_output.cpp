@@ -2,8 +2,22 @@
 
 namespace RenderBird
 {
+	static void HorizontalFlip(Core::RGB32* data, int resX, int resY)
+	{
+		for (int y = 0; y < resY; ++y)
+		{
+			for (int x = 0; x < resX / 2; ++x)
+			{
+				int index = y * resX + x;
+				int index2 = y * resX + resX - x - 1;
+				std::swap(data[index], data[index2]);
+			}
+		}
+	}
+
 	void ImageOutput::WriteBMP(std::string filePath, RGB32* data, size_t resX, size_t resY)
 	{
+		HorizontalFlip(data, resX, resY);
 		size_t size = resX * resY;
 		RGB8* rgb8 = new RGB8[size];
 
@@ -24,7 +38,6 @@ namespace RenderBird
 			*(pG++) = (uint8)*(ptrs++);
 			*(pB++) = (uint8)*(ptrs++);
 		}
-
 		img.save_bmp(filePath.c_str());
 	}
 }

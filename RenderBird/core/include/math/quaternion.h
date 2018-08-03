@@ -1,4 +1,5 @@
 #pragma once
+#include "core_private.h"
 #include "mathcore.h"
 //#include "vector.h"
 
@@ -8,12 +9,12 @@ namespace Core
 	{
 	public:
 		Quaternion() = default;
-		Quaternion(Float w1, Float x1, Float y1, Float z1);
+		Quaternion(Float x1, Float y1, Float z1, Float w1);
 		Quaternion(Float* val);
 		Float operator [] (unsigned int i)const;
 		Float& operator [] (unsigned int i);
-		void Zero();
-		void Identity();
+		void SetZero();
+		void SetIdentity();
 		Quaternion operator + (const Quaternion& quat)const;
 		Quaternion operator - (const Quaternion& quat)const;
 		Quaternion operator * (const Quaternion& quat)const;
@@ -33,13 +34,13 @@ namespace Core
 		Float GetPitch(bool reprojectAxis = true)const;
 		Float GetYaw(bool reprojectAxis = true)const;
 	public:
-		Float w, x, y, z;
+		Float x, y, z, w;
 		static const Quaternion ZERO;
 		static const Quaternion IDENTITY;
 		static const Quaternion DEFAULT;
 	};
 	inline Quaternion operator * (Float scalar, const Quaternion& quat)
 	{
-		return Quaternion(scalar*quat.w, scalar*quat.x, scalar*quat.y, scalar*quat.z);
+		return Quaternion(scalar * quat.x, scalar * quat.y, scalar * quat.z, scalar * quat.w);
 	}
 }

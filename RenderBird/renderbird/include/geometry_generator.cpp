@@ -49,35 +49,35 @@ namespace RenderBird
 	TriangleMesh* GeometryGenerator::GeneratePlane(Vector2f size)
 	{
 		TriangleMesh* triMesh = new TriangleMesh();
-		TriangleMesh::MeshData* meshData = new TriangleMesh::MeshData();
-		meshData->m_position = new Vector3f[4];
-		meshData->m_normal = new Vector3f[4];
-		meshData->m_faceData = new TriangleMesh::FaceData[2];
-		meshData->m_vertexCount = 4;
-		meshData->m_faceCount = 2;
+		//TriangleMesh::MeshData* meshData = new TriangleMesh::MeshData();
+		//meshData->m_position = new Vector3f[4];
+		//meshData->m_normal = new Vector3f[4];
+		//meshData->m_faceData = new TriangleMesh::FaceData[2];
+		//meshData->m_vertexCount = 4;
+		//meshData->m_faceCount = 2;
 
-		const Vector2f halfSize = size * 0.5f;
+		//const Vector2f halfSize = size * 0.5f;
 
-		//top
-		meshData->m_position[0] = Vector3f(-halfSize.x, +halfSize.y, 0);	//a
-		meshData->m_position[1] = Vector3f(+halfSize.x, +halfSize.y, 0);	//b	
-		meshData->m_position[2] = Vector3f(+halfSize.x, -halfSize.y, 0);	//c
-		meshData->m_position[3] = Vector3f(-halfSize.x, -halfSize.y, 0);	//d
+		////top
+		//meshData->m_position[0] = Vector3f(-halfSize.x, +halfSize.y, 0);	//a
+		//meshData->m_position[1] = Vector3f(+halfSize.x, +halfSize.y, 0);	//b	
+		//meshData->m_position[2] = Vector3f(+halfSize.x, -halfSize.y, 0);	//c
+		//meshData->m_position[3] = Vector3f(-halfSize.x, -halfSize.y, 0);	//d
 
-		meshData->m_normal[0] = Vector3f(0, 0, 1);	//a
-		meshData->m_normal[1] = Vector3f(0, 0, 1);	//b	
-		meshData->m_normal[2] = Vector3f(0, 0, 1);	//c
-		meshData->m_normal[3] = Vector3f(0, 0, 1);	//d
+		//meshData->m_normal[0] = Vector3f(0, 0, 1);	//a
+		//meshData->m_normal[1] = Vector3f(0, 0, 1);	//b	
+		//meshData->m_normal[2] = Vector3f(0, 0, 1);	//c
+		//meshData->m_normal[3] = Vector3f(0, 0, 1);	//d
 
-		meshData->m_faceData[0].m_v0 = 0;
-		meshData->m_faceData[0].m_v1 = 3;
-		meshData->m_faceData[0].m_v2 = 1;
+		//meshData->m_faceData[0].m_v0 = 0;
+		//meshData->m_faceData[0].m_v1 = 3;
+		//meshData->m_faceData[0].m_v2 = 1;
 
-		meshData->m_faceData[1].m_v0 = 1;
-		meshData->m_faceData[1].m_v1 = 3;
-		meshData->m_faceData[1].m_v2 = 2;
+		//meshData->m_faceData[1].m_v0 = 1;
+		//meshData->m_faceData[1].m_v1 = 3;
+		//meshData->m_faceData[1].m_v2 = 2;
 
-		triMesh->SetMeshData(meshData);
+		//triMesh->SetMeshData(meshData);
 		return triMesh;
 	}
 }

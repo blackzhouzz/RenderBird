@@ -607,28 +607,8 @@ namespace Core
 		scale3x3[2][2] = scale.z;
 
 		ret = scale3x3 * rot3x3;
-		ret.SetTranslation(position);
-
-		ret.m[0][3] = 0;
-		ret.m[1][3] = 0;
-		ret.m[2][3] = 0;
-		ret.m[3][3] = 1;
-		return ret;
-	}
-
-	Matrix4f MathUtils::MakeTransform(const Vector3f& position, const EulerRotation& pitchYawRoll, const Vector3f& scale)
-	{
-		Matrix4f ret;
-		Matrix3f rot3x3, scale3x3;
-		const Vector3f radPitchYawRoll = ToRadian(pitchYawRoll);
-		rot3x3 = EulerAnglesYXZToRotationMatrix(radPitchYawRoll.x, radPitchYawRoll.y, radPitchYawRoll.z);
-		scale3x3 = Matrix3f::ZERO;
-		scale3x3[0][0] = scale.x;
-		scale3x3[1][1] = scale.y;
-		scale3x3[2][2] = scale.z;
-
-		ret = scale3x3 * rot3x3;
-		ret.SetTranslation(position);
+		Vector3f trans = position * rot3x3;
+		ret.SetTranslation(trans);
 
 		ret.m[0][3] = 0;
 		ret.m[1][3] = 0;

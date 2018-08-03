@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <cmath>
 #include <string.h>
+#include <limits>
 
 namespace Core
 {
@@ -11,11 +12,12 @@ namespace Core
 	using Float = double;
 #endif
 
-	static const Float C_FLOAT_EPSILON = (Float)1e-06;
-	static const Float C_FLOAT_EPSILON_HIGH = (Float)1e-09;
+	static const Float C_FLOAT_EPSILON = 1e-06;//(Float)std::numeric_limits<Float>::epsilon();
+	static const Float C_FLOAT_EPSILON_HIGH = (Float)1e-12;
 	static const Float C_PI = (Float)3.14159265358979323846;
 	static const Float C_INV_PI = (Float)0.3183098861837907;
 	static const Float C_HALF_PI = (Float)1.57079632679489661923;
+	static const Float C_QUARTER_PI = (Float)0.785398163397448;
 	static const Float C_TWO_PI = (Float)6.28318530717958647692;
 
 	inline Float DegToRad(Float val)
@@ -54,4 +56,69 @@ namespace Core
 		Y = 1,
 		Z = 2,
 	};
+
+	inline Float xor_signmask(Float x, int y)
+	{
+		return Float(int(x) ^ y);
+	}
+
+	/**
+	* checks whether a <= b with epsilon window
+	*/
+	template <typename T>
+	bool eq(T a, T b, T epsilon = std::numeric_limits<T>::epsilon())
+	{
+		return std::fabs(a - b) <= epsilon;
+	}
+	/**
+	* checks whether a < b with epsilon window
+	*/
+	template <typename T>
+	bool lt(T a, T b) 
+	{
+		if (!eq(a, b)) 
+		{ // if a < b then a != b
+			return a < b;
+		}
+		return false;
+	}
+
+	/**
+	* checks whether a <= b with epsilon window
+	*/
+	template <typename T>
+	bool lte(T a, T b) 
+	{
+		if (eq(a, b)) 
+		{
+			return true;
+		}
+		return a < b;
+	}
+
+	/**
+	* checks whether a > b with epsilon window
+	*/
+	template <typename T>
+	bool gt(T a, T b)
+	{
+		if (!eq(a, b))
+		{ // if a > b then a != b
+			return a > b;
+		}
+		return false;
+	}
+
+	/**
+	* checks whether a >= b with epsilon window
+	*/
+	template <typename T>
+	bool gte(T a, T b)
+	{
+		if (eq(a, b))
+		{
+			return true;
+		}
+		return a > b;
+	}
 }

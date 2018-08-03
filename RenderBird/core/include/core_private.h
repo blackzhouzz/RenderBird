@@ -88,3 +88,48 @@ namespace Core
 		NonCopyable& operator=(const NonCopyable&);
 	};
 }
+
+template <typename T>
+struct TypeId
+{
+	static const int value = 0;
+};
+
+#ifndef TYPE_ID_GROUP
+#define TYPE_ID_GROUP(name, id) static const int TYPE_ID_GROUP_##name = id;
+#endif
+
+#ifndef TYPE_ID_CLASS
+#define	TYPE_ID_CLASS(group, cls, id)\
+	namespace group\
+	{\
+		class cls;\
+	}\
+	template <>\
+	struct TypeId<group::cls>\
+	{\
+		static const int value = id + TYPE_ID_GROUP_##group;\
+	};
+#endif
+
+#ifndef TYPE_ID_STRUCT
+#define	TYPE_ID_STRUCT(group, cls, id)\
+	namespace group\
+	{\
+		struct cls;\
+	}\
+	template <>\
+	struct TypeId<group::cls>\
+	{\
+		static const int value = id + TYPE_ID_GROUP_##group;\
+	};
+#endif
+
+
+#ifndef REGISTER_TYPEINFO
+#define REGISTER_TYPEINFO(cls) \
+	{ \
+		extern void RegisterTypeInfo##cls(); \
+		RegisterTypeInfo##cls(); \
+	}
+#endif

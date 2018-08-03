@@ -18,3 +18,12 @@
 #include "pool.h"
 #include "event.h"
 #include "fastdelegate.hpp"
+#include "component.h"
+#include "entity.h"
+#include "entitymanager.h"
+#include "system.h"
+#include "object.h"
+#include "transform.h"
+#include "component_group.h"
+#include "core_register.h"
+

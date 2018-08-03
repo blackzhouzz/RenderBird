@@ -1,6 +1,6 @@
 #pragma once
 #include "renderbird_private.h"
-#include "CImg.h"
+#include "CImg\CImg.h"
 using namespace cimg_library;
 
 namespace RenderBird

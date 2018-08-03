@@ -249,10 +249,10 @@ namespace Core
 		TVector3<T>& Normalize();
 		TVector3<T> GetNormalized()const;
 		bool IsNaN()const;
+		bool IsZero()const;
 		bool IsNormalized()const;
 		void Floor(const TVector3<T>& v);
 		void Ceil(const TVector3<T>& v);
-
 		T x, y, z;
 		static const TVector3<T> ZERO;
 		static const TVector3<T> UNIT_X;
@@ -440,6 +440,12 @@ namespace Core
 	}
 
 	template<typename T>
+	inline bool TVector3<T>::IsZero()const
+	{
+		return ((std::abs(x) < C_FLOAT_EPSILON) && (std::abs(y) < C_FLOAT_EPSILON) && (std::abs(z) < C_FLOAT_EPSILON));
+	}
+
+	template<typename T>
 	inline bool TVector3<T>::IsNormalized()const
 	{
 		return std::abs(LengthSQ() - 1.0) < C_FLOAT_EPSILON;
@@ -450,7 +456,7 @@ namespace Core
 	{
 		x = v.x < x ? v.x : x;
 		y = v.y < y ? v.y : y;
-		y = v.z < z ? v.z : z;
+		z = v.z < z ? v.z : z;
 	}
 
 	template<typename T>
@@ -458,7 +464,7 @@ namespace Core
 	{
 		x = v.x > x ? v.x : x;
 		y = v.y > y ? v.y : y;
-		y = v.z > z ? v.z : z;
+		z = v.z > z ? v.z : z;
 	}
 
 	template <typename T>

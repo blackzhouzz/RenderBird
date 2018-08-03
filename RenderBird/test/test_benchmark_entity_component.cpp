@@ -5,6 +5,7 @@
 #include <set>
 #include "component_group.h"
 #include "timer.h"
+#include "light_component.h"
 using namespace std;
 
 
@@ -43,7 +44,6 @@ void Test_BenchmarkEntitySlow()
 	for (std::list<Transform>::iterator itr = trans.begin(); itr != trans.end(); ++itr)
 	{
 		itr->m_position = Vector3f::ZERO;
-		//itr->m_rotation = Quaternion(0, 1, 0, 1);
 		//itr->m_needUpdate = false;
 		//itr->m_scale = Vector3f(0, 1, 0);
 	}
@@ -60,7 +60,7 @@ void Test_BenchmarkEntityFastest()
 
 	static EntityId entities[MAX_ENTITY_COUNT];
 	static Transform* components[MAX_ENTITY_COUNT];
-	Archetype* archtype = EntityManager::IntancePtr()->CreateArchetype(1, TypeOf<Transform>::Value());
+	Archetype* archtype = EntityManager::IntancePtr()->CreateArchetype<Transform, RenderBird::LightProperty>();
 
 	IntervalTime time;
 
@@ -71,34 +71,27 @@ void Test_BenchmarkEntityFastest()
 	}
 	std::cout << "fastest create entity benchmark ms: " << time.End() << std::endl;
 
-	time.Begin();
-	for (int i = 0; i < MAX_ENTITY_COUNT; ++i)
-	{
-		components[i] = EntityManager::IntancePtr()->AddComponent<Transform>(entities[i]);
-	}
-	std::cout << "fastest create component benchmark ms: " << time.End() << std::endl;
-
-	ComponentGroup group(1, TypeOf<Transform>::Value());
-	ComponentArray* arr = group.GetComponentArray<Transform>();
-	time.Begin();
-
-	//ComponentVisitor* vis = arr->m_visitors[0];
-
-	//int count = vis->GetCount();
-	//for (int i = 0; i < count; ++i)
+	//time.Begin();
+	//for (int i = 0; i < MAX_ENTITY_COUNT; ++i)
 	//{
-	//	Transform* t = vis->GetDataAt<Transform>(i);
-	//	t->m_position = Vector3f::ZERO;
+	//	components[i] = EntityManager::IntancePtr()->AddComponent<Transform>(entities[i]);
 	//}
+	//std::cout << "fastest create component benchmark ms: " << time.End() << std::endl;
 
-	ComponentArray::Visitor<Transform> visitor(arr);
-	for (auto x : visitor)
+	time.Begin();
+	//ComponentGroup group(2, TypeOf<Transform>::Value(), TypeOf<RenderBird::LightProperty>::Value());
+	ComponentGroup group;
+	ComponentGroup::Create<Transform, RenderBird::LightProperty>(&group);
+	ComponentGroupVisitor<Transform> visitor(&group);
+
+	while (visitor.HasNext())
 	{
-		Transform* t = x;
-		t->m_position = Vector3f::ZERO;
-		//t->m_rotation = Quaternion(0, 1, 0, 1);
-		//t->m_needUpdate = false;
-		//t->m_scale = Vector3f(0, 1, 0);
+		auto transform = visitor.Get<Transform>();
+		transform->m_position = Vector3f::ZERO;
+
+		//auto lp = visitor.Get<RenderBird::LightProperty>();
+		//lp->m_intensity = 2;
+		visitor.MoveNext();
 	}
 	std::cout << "fastest iterator component benchmark ms: " << time.End() << std::endl;
 }
@@ -142,12 +135,6 @@ void Test_IteratorComponent()
 	}
 
 	ComponentGroup group(1, TypeOf<Transform>::Value());
-	ComponentArray* arr = group.GetComponentArray<Transform>();
-	ComponentArray::Visitor<Transform> visitor(arr);
-	for (auto x : visitor)
-	{
-		Transform* t = (Transform*)x;
-		t->m_position = t->m_position;
-	}
+	ComponentGroupVisitor<Transform> visitor(&group);
 }
 

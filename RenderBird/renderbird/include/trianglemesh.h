@@ -1,38 +1,38 @@
 #pragma once
 #include "renderbird_private.h"
-#include "geometry.h"
+#include "material.h"
 
 namespace RenderBird
 {
-	class TriangleMesh : public Geometry
+	class TriangleMesh : public Object
 	{
 	public:
-		enum FaceFlag
-		{
-			FF_DoubleSide = 1 << 0,
-		};
 		struct FaceData
 		{
-			FaceData()
-				: m_flags(0)
-			{
-			}
 			int m_v0;
 			int m_v1;
 			int m_v2;
 			int m_materialId;
 			uint32 m_flags;
 		};
+
+		struct VertexData
+		{
+			Vector3f m_position;
+			Vector3f m_normal;
+			Vector3f m_tangent;
+			RGBA32 m_color;
+			Vector2f m_uv0;
+		};
+
 		struct MeshData
 		{
-			Vector3f* m_position;
-			Vector3f* m_normal;
-			Vector3f* m_tangent;
-			FaceData* m_faceData;
-			Vector2f* m_uv0;
-			uint32 m_faceCount;
-			uint32 m_vertexCount;
+			std::string m_name;
+			std::vector<VertexData> m_vertexData;
+			std::vector<FaceData> m_faceData;
+			BoundingBox m_localBoundingBox;
 		};
+
 		TriangleMesh()
 			: m_triMeshData(nullptr)
 		{
@@ -41,71 +41,35 @@ namespace RenderBird
 		{
 			m_triMeshData = meshData;
 		}
-		virtual GeometryType GetGeometryType()const
+		MeshData* GetMeshData()const
 		{
-			return GT_TriangleMesh;
+			return m_triMeshData;
 		}
-		Vector3f* GetPosition()
+		size_t GetFaceCount()const
 		{
 			if (m_triMeshData != nullptr)
 			{
-				return m_triMeshData->m_position;
-			}
-			return nullptr;
-		}
-		Vector3f* GetNormal()
-		{
-			if (m_triMeshData != nullptr)
-			{
-				return m_triMeshData->m_normal;
-			}
-			return nullptr;
-		}
-		Vector3f* GetTangent()
-		{
-			if (m_triMeshData != nullptr)
-			{
-				return m_triMeshData->m_tangent;
-			}
-			return nullptr;
-		}
-		FaceData* GetFaceData()
-		{
-			if (m_triMeshData != nullptr)
-			{
-				return m_triMeshData->m_faceData;
-			}
-			return nullptr;
-		}
-		Vector2f* GetUV0()
-		{
-			if (m_triMeshData != nullptr)
-			{
-				return m_triMeshData->m_uv0;
-			}
-			return nullptr;
-		}
-		uint32 GetFaceCount()const
-		{
-			if (m_triMeshData != nullptr)
-			{
-				return m_triMeshData->m_faceCount;
+				return m_triMeshData->m_faceData.size();
 			}
 			return 0;
 		}
-		uint32 GetVertexCount()const
+		size_t GetVertexCount()const
 		{
 			if (m_triMeshData != nullptr)
 			{
-				return m_triMeshData->m_vertexCount;
+				return m_triMeshData->m_vertexData.size();
 			}
 			return 0;
 		}
-		bool IntersectTriangle(const Ray& ray, RayHitInfo* hitInfo, uint32 faceIndex);
-		virtual bool Intersect(const Ray& ray, RayHitInfo* hitInfo);
-	private:
+
 		MeshData* m_triMeshData;
+		std::vector<Material*> m_materials;
+	};
+
+	class TriangleMeshUtils
+	{
+		static void SampleTriangleMesh(const Vector2f& uv, Float* pdf);
 	};
 }
 
-DECLEAR_TYPE(RenderBird, TriangleMesh, RenderBird::Geometry);
+DECLEAR_TYPE(RenderBird, TriangleMesh, Core::Object);

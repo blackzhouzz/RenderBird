@@ -3,36 +3,36 @@
 namespace Core
 {
 	const Quaternion Quaternion::ZERO(0.0, 0.0, 0.0, 0.0);
-	const Quaternion Quaternion::IDENTITY(1.0, 0.0, 0.0, 0.0);
+	const Quaternion Quaternion::IDENTITY(0.0, 0.0, 0.0, 1.0);
 
-	Quaternion::Quaternion(Float w1, Float x1, Float y1, Float z1)
+	Quaternion::Quaternion(Float x1, Float y1, Float z1, Float w1)
 		: x(x1), y(y1), z(z1), w(w1)
 	{
 	}
 
 	Quaternion::Quaternion(Float* val)
 	{
-		memcpy(&w, val, sizeof(Float) * 4);
+		memcpy(&x, val, sizeof(Float) * 4);
 	}
 
 	Float Quaternion::operator [] (unsigned int i)const
 	{
 		assert(i < 4);
-		return *(&w + i);
+		return *(&x + i);
 	}
 
 	Float& Quaternion::operator [] (unsigned int i)
 	{
 		assert(i < 4);
-		return *(&w + i);
+		return *(&x + i);
 	}
 
-	void Quaternion::Zero()
+	void Quaternion::SetZero()
 	{
-		w = x = y = z = 0.0;
+		x = y = z = w = 0.0;
 	}
 
-	void Quaternion::Identity()
+	void Quaternion::SetIdentity()
 	{
 		x = y = z = 0.0;
 		w = 1.0;
@@ -40,12 +40,12 @@ namespace Core
 
 	Quaternion Quaternion::operator + (const Quaternion& quat)const
 	{
-		return Quaternion(w + quat.w, x + quat.x, y + quat.y, z + quat.z);
+		return Quaternion(x + quat.x, y + quat.y, z + quat.z, w + quat.w);
 	}
 
 	Quaternion Quaternion::operator - (const Quaternion& quat)const
 	{
-		return Quaternion::Quaternion(w - quat.w, x - quat.x, y - quat.y, z - quat.z);
+		return Quaternion::Quaternion(x - quat.x, y - quat.y, z - quat.z, w - quat.w);
 	}
 
 	Quaternion Quaternion::operator * (const Quaternion& quat)const
@@ -53,25 +53,26 @@ namespace Core
 		// NOTE:  Multiplication is not generally commutative, so in most
 		// cases p*q != q*p.
 		return Quaternion(
-			w * quat.w - x * quat.x - y * quat.y - z * quat.z,
 			w * quat.x + x * quat.w + y * quat.z - z * quat.y,
 			w * quat.y + y * quat.w + z * quat.x - x * quat.z,
-			w * quat.z + z * quat.w + x * quat.y - y * quat.x);
+			w * quat.z + z * quat.w + x * quat.y - y * quat.x,
+			w * quat.w - x * quat.x - y * quat.y - z * quat.z
+		);
 	}
 
 	Quaternion Quaternion::operator * (Float scalar)const
 	{
-		return Quaternion(scalar*w, scalar*x, scalar*y, scalar*z);
+		return Quaternion(scalar*x, scalar*y, scalar*z, scalar*w);
 	}
 
 	Quaternion Quaternion::operator - ()const
 	{
-		return Quaternion(-w, -x, -y, -z);
+		return Quaternion(-x, -y, -z, -w);
 	}
 
 	bool Quaternion::operator == (const Quaternion& quat)const
 	{
-		return (quat.w == w) && (quat.x == x) && (quat.y == y) && (quat.z == z);
+		return (quat.x == x) && (quat.y == y) && (quat.z == z) &&  (quat.w == w);
 	}
 
 	bool Quaternion::operator != (const Quaternion& quat)const
@@ -81,12 +82,12 @@ namespace Core
 
 	Float Quaternion::Dot(const Quaternion& quat)const
 	{
-		return w * quat.w + x * quat.x + y * quat.y + z * quat.z;
+		return x * quat.x + y * quat.y + z * quat.z + w * quat.w;
 	}
 
 	Float Quaternion::NormSQ()const
 	{
-		return w * w + x * x + y * y + z * z;
+		return x * x + y * y + z * z + w * w;
 	}
 
 	Float Quaternion::Normalize(void)
@@ -99,11 +100,11 @@ namespace Core
 
 	Quaternion Quaternion::Inverse()const
 	{
-		Float norm = w * w + x * x + y * y + z * z;
+		Float norm = x * x + y * y + z * z + w * w;
 		if (norm > 0.0)
 		{
 			Float invNorm = 1.0 / norm;
-			return Quaternion(w * invNorm, -x * invNorm, -y * invNorm, -z * invNorm);
+			return Quaternion(-x * invNorm, -y * invNorm, -z * invNorm, w * invNorm);
 		}
 		else
 		{
@@ -114,7 +115,7 @@ namespace Core
 
 	Quaternion Quaternion::UnitInverse()const
 	{
-		return Quaternion(w, -x, -y, -z);
+		return Quaternion(-x, -y, -z, w);
 	}
 
 	Quaternion Quaternion::Exp()const

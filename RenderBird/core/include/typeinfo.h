@@ -135,48 +135,6 @@ private:
 	TypeInfoMap m_typeMap;
 };
 
-#define REGISTER_TYPEINFO(cls) \
-	{ \
-		extern void RegisterTypeInfo##cls(); \
-		RegisterTypeInfo##cls(); \
-	}
-
-#ifndef TYPE_ID_GROUP
-#define TYPE_ID_GROUP(name, id) static const int TYPE_ID_GROUP_##name = id;
-#endif
-
-#ifndef TYPE_ID_CLASS
-#define	TYPE_ID_CLASS(cls, group, id)\
-	namespace group\
-	{\
-		class cls;\
-	}\
-	template <>\
-	struct TypeId<group::cls>\
-	{\
-		static const int value = id + TYPE_ID_GROUP_##group;\
-	};
-#endif
-
-#ifndef TYPE_ID_STRUCT
-#define	TYPE_ID_STRUCT(cls, group, id)\
-	namespace group\
-	{\
-		struct cls;\
-	}\
-	template <>\
-	struct TypeId<group::cls>\
-	{\
-		static const int value = id + TYPE_ID_GROUP_##group;\
-	};
-#endif
-
-template <typename T>
-struct TypeId
-{
-	static const int value = 0;
-};
-
 template<typename T>
 struct TypeOf
 {
@@ -189,19 +147,26 @@ struct DefaultOf
 	static const T* Value() { return nullptr; }
 };
 
+#ifndef DEFAULT_BEGIN
 #define DEFAULT_BEGIN(Module, Type)\
 template<>\
 inline const Module::Type* DefaultOf<Module::Type>::Value()\
 {\
 	static Module::Type value = {
+#endif 
 
+#ifndef DEFAULT_DATA
 #define DEFAULT_DATA(Data) Data,
+#endif
 
+#ifndef DEFAULT_END
 #define DEFAULT_END()\
 	};\
 	return &value;\
 }
+#endif
 
+#ifndef DECLEAR_TYPE_BASE
 #define DECLEAR_TYPE_BASE(Module, Type)\
 	template<>\
 	struct TypeOf<Module::Type>\
@@ -216,7 +181,9 @@ inline const Module::Type* DefaultOf<Module::Type>::Value()\
 			return typeInfo;\
 		}\
 	};
+#endif
 
+#ifndef DECLEAR_TYPE
 #define DECLEAR_TYPE(Module, Type, SuperType)\
 	template<>\
 	struct TypeOf<Module::Type>\
@@ -232,9 +199,12 @@ inline const Module::Type* DefaultOf<Module::Type>::Value()\
 			return typeInfo;\
 		}\
 	};
+#endif
 
+#ifndef IMPLEMENT_TYPE
 #define IMPLEMENT_TYPE(Module, Type)\
 	void RegisterTypeInfo##Type()\
 	{\
 		GlobalTypeList::IntancePtr()->RegisterTypeInfo(TypeOf<Module::Type>::Value());\
 	}
+#endif

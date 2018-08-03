@@ -18,9 +18,6 @@
     <ClInclude Include="include\disk.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\geometry.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\geometrycomponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -28,9 +25,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\material.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\montecarlo.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\pathtracing.h">
@@ -66,18 +60,36 @@
     <ClInclude Include="include\image_output.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\3rdparty\CImg.h">
+    <ClInclude Include="include\light_component.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\light.h">
+    <ClInclude Include="include\mesh_component.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\camera_component.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdparty\CImg\CImg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\fbx_import_utils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\texture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sampler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\shape.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sample_utils.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\disk.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\geometry.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\geometrycomponent.cpp">
@@ -87,9 +99,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\material.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\montecarlo.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\pathtracing.cpp">
@@ -119,7 +128,28 @@
     <ClCompile Include="src\image_output.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\light.cpp">
+    <ClCompile Include="src\light_component.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mesh_component.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\camera_component.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fbx_import_utils.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\texture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sampler.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shape.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sample_utils.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

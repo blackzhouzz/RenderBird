@@ -1,21 +1,15 @@
 #include "renderer.h"
-#include "random.hpp"
+#include "random\random.hpp"
+#include "camera_component.h"
+#include "trianglemesh.h"
+#include "rayhitinfo.h"
+#include "material.h"
 using namespace effolkronium;
 
 namespace RenderBird
 {
 	void TileRenderer::Render()
 	{
-		static Core::RGB32 randomColorList[6];
-
-		randomColorList[0] = Core::RGB32::WHITE;
-		randomColorList[1] = Core::RGB32::BLACK;
-		randomColorList[2] = Core::RGB32::YELLOW;
-		randomColorList[3] = Core::RGB32::BLUE;
-		randomColorList[4] = Core::RGB32::RED;
-		randomColorList[5] = Core::RGB32::GREEN;
-		auto random_number = random_static::get(0, 5);
-		static int index = 0;
 		int startPixelX = m_x * m_sizeX;
 		int endPixelX = (m_x + 1) * m_sizeX;
 		int startPixelY = m_y * m_sizeY;
@@ -28,20 +22,10 @@ namespace RenderBird
 				{
 					continue;
 				}
-				Ray ray;
-				m_renderer->GenerateCameraRay(pixelX, pixelY, &ray);
-				RayHitInfo hitInfo;
-				if (m_renderer->m_scene->Intersect(ray, &hitInfo))
-				{
-					m_renderer->SetColor(pixelX, pixelY, Core::RGB32::WHITE);
-				}
-				else
-				{
-					m_renderer->SetColor(pixelX, pixelY, Core::RGB32::BLACK);
-				}
+				Radiance radiance;
+				m_renderer->m_integrator->Render(pixelX, pixelY, radiance);
 			}
 		}
-		index++;
 	}
 
 	void TileRenderer::Finish()
@@ -55,10 +39,10 @@ namespace RenderBird
 
 	Renderer::Renderer(const RendererSetting& setting)
 		: m_setting(setting)
-		, m_integrator(nullptr)
+		, m_integrator(new PathTracing(this))
 		, m_scene(new Scene())
 	{
-		m_scene->SetupTestScene();
+		m_scene->SetupSceneTest();
 	}
 
 	bool Renderer::IsInBound(int x, int y)const
@@ -80,28 +64,29 @@ namespace RenderBird
 		}
 		m_data = new Core::RGB32[m_setting.m_resX * m_setting.m_resY];
 
-		PerspectiveCamera* m_camera = new PerspectiveCamera();
-		const Float dist = 10;
-		Vector3f pos = Vector3f(0, 1, 1) * dist;
-		m_camera->LookAt(pos, Vector3f::ZERO, Vector3f::UNIT_Z);
-		m_camera->PerspectiveFovLH(39.0f, 1.0, 1e-2f, 1000.f);
-
-		//OrthoCamera* m_camera = new OrthoCamera();
-		//const Float dist = 5.0;
-		//Vector3f pos = Vector3f(0, 0, 1) * dist;
+		//PerspectiveCamera* m_camera = new PerspectiveCamera();
+		//const Float dist = 10;
+		//Vector3f pos = Vector3f(0, 1, 1) * dist;
 		//m_camera->LookAt(pos, Vector3f::ZERO, Vector3f::UNIT_Z);
-		//m_camera->OrthoLH(m_setting.m_resX, m_setting.m_resY, 0, 100);
+		//m_camera->PerspectiveFovLH(39.0f, 1.0, 1e-2f, 1000.f);
+		//auto oldView = m_camera->GetViewMatrix();
+		//auto oldProj = m_camera->GetProjMatrix();
+
+		EntityId cameraId = m_scene->GetCamera();
+		auto cameraComponent = EntityManager::IntancePtr()->GetComponent<CameraComponent>(cameraId);
+		auto cameraTransform = EntityManager::IntancePtr()->GetComponent<Transform>(cameraId);
+		auto viewMatrix = cameraTransform->m_cached;
+		auto projMatrix = cameraComponent->m_proj;
 
 		m_renderContext.m_camera.m_screenBound = Rect2f(-1.0, -1.0, 1.0, 1.0);
-		m_renderContext.m_camera.m_cameraToWorld = m_camera->GetViewMatrix().InverseSafe();
+		m_renderContext.m_camera.m_cameraToWorld = viewMatrix.InverseSafe();
 		Matrix4f screenToRaster = MathUtils::ScreenToRasterMatrix(m_renderContext.m_camera.m_screenBound, Point2i(m_setting.m_resX, m_setting.m_resY));
-		Matrix4f cameraToRaster = m_camera->GetProjMatrix() * screenToRaster;
+		Matrix4f cameraToRaster = projMatrix * screenToRaster;
 		Vector3f vec = Vector3f(0, 0, 0);
 		m_renderContext.m_camera.m_rasterToCamera = cameraToRaster.InverseSafe();
 		vec = m_renderContext.m_camera.m_rasterToCamera.TransformDirection(vec);
 
-
-		m_renderContext.m_camera.m_rasterToWorld = (m_camera->GetViewMatrix() * m_camera->GetProjMatrix() * screenToRaster).InverseSafe();
+		m_renderContext.m_camera.m_rasterToWorld = (viewMatrix * projMatrix * screenToRaster).InverseSafe();
 	}
 
 	void Renderer::GenerateCameraRay(int pixelX, int pixelY, Ray* ray)

@@ -4,10 +4,10 @@
 
 void TestRayTracingApp::Init()
 {
-	m_settings.m_resX = 700;
-	m_settings.m_resY = 700;
-	m_settings.m_tileSizeX = 700;
-	m_settings.m_tileSizeY = 700;
+	m_settings.m_resX = 512;
+	m_settings.m_resY = 512;
+	m_settings.m_tileSizeX = 512;
+	m_settings.m_tileSizeY = 512;
 
 	m_renderer = new Renderer(m_settings);
 	m_renderer->Prepare();
