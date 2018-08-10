@@ -124,7 +124,7 @@ namespace Core
 		return ret;
 	}
 
-	void Archetype::MoveChunk(ComponentChunk* chunk)
+	void Archetype::UpdateChunk(ComponentChunk* chunk)
 	{
 		if (chunk->IsFull())
 		{

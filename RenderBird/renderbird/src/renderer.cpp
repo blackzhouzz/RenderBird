@@ -1,5 +1,4 @@
 #include "renderer.h"
-#include "random\random.hpp"
 #include "camera_component.h"
 #include "trianglemesh.h"
 #include "rayhitinfo.h"
@@ -8,8 +7,6 @@
 #include <fjs/Counter.h>
 #include <fjs/List.h>
 #include <fjs/Queue.h>
-
-using namespace effolkronium;
 
 namespace RenderBird
 {
@@ -27,8 +24,7 @@ namespace RenderBird
 				{
 					continue;
 				}
-				Radiance radiance;
-				m_renderer->m_integrator->Render(pixelX, pixelY, radiance);
+				m_renderer->m_integrator->Render(pixelX, pixelY);
 			}
 		}
 	}
@@ -127,7 +123,7 @@ namespace RenderBird
 		if (m_setting.m_useJob)
 		{
 			fjs::ManagerOptions managerOptions;
-			managerOptions.NumFibers = managerOptions.NumThreads * 10;
+			managerOptions.NumFibers = managerOptions.NumThreads * 20;
 			managerOptions.ThreadAffinity = true;
 
 			managerOptions.HighPriorityQueueSize = 256;

@@ -213,6 +213,12 @@ namespace RenderBird
 		meshData->m_vertexData.reserve(numTriangles * 3);
 		meshData->m_faceData.resize(numTriangles);
 
+		FbxAMatrix LeftToRightMatrix;
+		FbxAMatrix LeftToRightMatrixForNormal;
+		LeftToRightMatrix.SetS(FbxVector4(1.0, -1.0, 1.0));
+		LeftToRightMatrixForNormal = LeftToRightMatrix.Inverse();
+		LeftToRightMatrixForNormal = LeftToRightMatrixForNormal.Transpose();
+
 		// vertex deduplication
 		UnorderedMapGenerator<TriangleMesh::VertexData, uint32>::Type hashMap;
 		meshData->m_localBoundingBox = BoundingBox::INVALID;
@@ -224,10 +230,10 @@ namespace RenderBird
 				int iPoint = fbxmesh->GetPolygonVertex(t, v);
 
 				//FbxVector4 point = totalMatrix.MultT(fbxmesh->GetControlPointAt(iPoint));
-				FbxVector4 point = (fbxmesh->GetControlPointAt(iPoint));
-				FbxVector4 normal = GetVertexElement(pNormals, iPoint, t, v, FbxVector4(0, 0, 0, 0));
+				FbxVector4 point = LeftToRightMatrix.MultT(fbxmesh->GetControlPointAt(iPoint));
+				FbxVector4 normal = LeftToRightMatrixForNormal.MultT(GetVertexElement(pNormals, iPoint, t, v, FbxVector4(0, 0, 0, 0)));
 				FbxVector2 uv = GetVertexElement(pUVs, iPoint, t, v, FbxVector2(0, 1));
-				FbxVector4 tangent = GetVertexElement(pTangents, iPoint, t, v, FbxVector4(0, 0, 0, 0));
+				FbxVector4 tangent = LeftToRightMatrixForNormal.MultT(GetVertexElement(pTangents, iPoint, t, v, FbxVector4(0, 0, 0, 0)));
 				FbxColor vertexColor = GetVertexElement(pVertexColors, iPoint, t, v, FbxColor(0, 0, 0, 0));
 
 				TriangleMesh::VertexData vertex = {};

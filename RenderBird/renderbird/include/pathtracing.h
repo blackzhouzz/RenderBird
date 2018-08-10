@@ -4,25 +4,10 @@
 #include "math/spectrum.h"
 #include "rayhitinfo.h"
 #include "sampler.h"
+#include "pathtracing_common.h"
 
 namespace RenderBird
 {
-	struct Radiance
-	{
-		RGBA32 m_diffuse;
-		RGBA32 m_specular;
-	};
-
-	struct SurfaceData
-	{
-		Vector3f m_position;
-		Vector3f m_geomNormal;
-		Vector3f m_normal;
-		Vector3f m_wo;
-		Material* m_material;
-		bool m_isBackfacing;
-	};
-
 	class Renderer;
 
 	class PathTracing
@@ -32,9 +17,10 @@ namespace RenderBird
 		{
 			int m_pixelX;
 			int m_pixelY;
-			int m_currentBounceCount;
-			Ray m_cameraRay;
-			RGB32 m_throughtPut;
+			int m_currentBounce;
+			RGB32 m_throughtput;
+			Sampler* m_sampler;
+			int m_curSamplerIndex;
 		};
 		struct Setting
 		{
@@ -42,18 +28,21 @@ namespace RenderBird
 			int m_numSamples;
 		};
 		PathTracing(Renderer* renderer);
-		void Render(int pixelX, int pixelY, Radiance& Lo);
+		void Render(int pixelX, int pixelY);
 	private:
-		void InitState(int pixelX, int pixelY, State& state);
-		void InitSurfaceData(SurfaceData& surfData, const Ray& ray, const RayHitInfo& hitInfo);
-		bool SurfaceBounce(State& state, Ray& ray);
-		void Integrate(State& state, Radiance& Lo);
-		void SurfaceLighting(State& state);
-		bool ProbabilityTerminate(State& state);
+		void InitState(int pixelX, int pixelY, State* state);
+		void InitSurfaceData(State* state, SurfaceSample* ss, const Ray& ray, const RayHitInfo& hitInfo);
+		bool SurfaceBounce(State* state, SurfaceSample* ss, Ray& ray);
+		void Integrate(State* state, Radiance* L);
+		void EvalLight(State* state, SurfaceSample* ss, Radiance* L);
+		void EvalBSDF(State* state, SurfaceSample* ss, const Vector3f& wi, Float* pdf, BsdfSpectrum* bs);
+		void AccumRadianceSpectrum(State* state, BsdfSpectrum* bs, Radiance* L);
+		void AccumBSDFSpectrum(SurfaceSample* ss, BsdfSpectrum* bs, const RGB32& value);
+		bool ProbabilityStop();
+		//void WritePixelData();
 	private:
 		Renderer* m_renderer;
 		Setting m_setting;
-		Sampler* m_sampler;
 	};
 
 }

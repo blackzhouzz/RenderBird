@@ -18,12 +18,12 @@ namespace RenderBird
 		EntityId GetCamera()const { return m_camera; }
 		void AddTriangleMesh(TriangleMesh* mesh);
 		void AddTestDiskLight(const Vector3f& pos);
-	private:
+	public:
 		std::set<EntityId> m_entities;
 		ComponentGroup* m_meshEntitiesGroup;
 		ComponentGroup* m_lightsGroup;
 		std::vector<TriangleMesh*> m_meshResources;
 		EntityId m_camera;
-		EntityId m_diskId;
+		EntityId m_diskLightId;
 	};
 }

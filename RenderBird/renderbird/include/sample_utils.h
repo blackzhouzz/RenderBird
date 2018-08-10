@@ -1,24 +1,17 @@
 #pragma once
 #include "renderbird_private.h"
-#include "disk.h"
 
 namespace RenderBird
 {
-	struct LightSample
-	{
-		Vector3f m_position;
-		Vector3f m_normal;
-		Vector3f m_direction;
-		Float m_distance;
-		Vector2f m_uv;
-		Float m_pdf;
-	};
-
 	class SampleUtils
 	{
 	public:
 		static Vector2f ToUnitDisk(const Vector2f &u);
-		static void SampleDiskLight(Disk* disk, const Matrix4f& objToWorld, const Vector2f& randuv, LightSample& lightSample);
-		static void CosHemisphere(const Vector3f& normal, const Vector2f& randuv, Float* pdf);
+		static void CosHemisphere(const Vector3f& normal, const Vector2f& rand2d, Vector3f* wi, Float* pdf);
+		static void UniformHemisphere(const Vector3f& normal, const Vector2f& rand2d, Vector3f* wi, Float* pdf);
+		static void UniformSphere(const Vector3f& normal, const Vector2f& rand2d, Vector3f* wi, Float* pdf);
+		static void UniformCone(const Vector3f& normal, const Vector2f& rand2d, Float angle, Vector3f* wi, Float* pdf);
+		static Float PowerHeuristic(Float pdf1, Float pdf2);
+		static Float BalanceHeuristic(Float pdf1, Float pdf2);
 	};
 }

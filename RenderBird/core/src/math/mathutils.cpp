@@ -575,22 +575,26 @@ namespace Core
 
 	Matrix4f MathUtils::MakeTransform(const Vector3f& position, const Quaternion& orient, const Vector3f& scale)
 	{
-		Matrix4f ret;
-		Matrix3f rot3x3, scale3x3;
+		Matrix4f ret = Matrix4f::IDENTITY;
+		Matrix3f rot3x3;
 		rot3x3 = QuaternionToRotationMatrix(orient);
-		scale3x3 = Matrix3f::ZERO;
-		scale3x3[0][0] = scale.x;
-		scale3x3[1][1] = scale.y;
-		scale3x3[2][2] = scale.z;
 
-		ret = scale3x3 * rot3x3;
+		ret = QuaternionToRotationMatrix(orient);
+
+		ret.m16[0] *= scale[0];
+		ret.m16[1] *= scale[0];
+		ret.m16[2] *= scale[0];
+
+		ret.m16[4] *= scale[1];
+		ret.m16[5] *= scale[1];
+		ret.m16[6] *= scale[1];
+
+		ret.m16[8] *= scale[2];
+		ret.m16[9] *= scale[2];
+		ret.m16[10] *= scale[2];
+
 		Vector3f trans = position * rot3x3;
-		ret.SetTranslation(trans);
-
-		ret.m[0][3] = 0;
-		ret.m[1][3] = 0;
-		ret.m[2][3] = 0;
-		ret.m[3][3] = 1;
+		ret.SetTranslation(position);
 
 		return ret;
 	}
@@ -745,15 +749,18 @@ namespace Core
 		return ret;
 	}
 
-	//Matrix3f MathUtils::MakeNormalTransform(const Vector3f& normal)
-	//{
-	//	Vector3f axisX, axisY;
-	//	if (normal.x != normal.y || normal.x != normal.z)
-	//		axisX = Vector3f(normal.z - normal.y, normal.x - normal.z, normal.y - normal.x);
-	//	else
-	//		axisX = Vector3f(normal.z - normal.y, normal.x + normal.z, -normal.y - normal.x);
+	Matrix3f MathUtils::MakeNormalTransform(const Vector3f& normal)
+	{
+		Vector3f axisX, axisY;
+		if (normal.x != normal.y || normal.x != normal.z)
+			axisX = -Vector3f(normal.z - normal.y, normal.x - normal.z, normal.y - normal.x);
+		else
+			axisX = -Vector3f(normal.z - normal.y, normal.x + normal.z, -normal.y - normal.x);
 
-	//	*a = normalize(axisX);
-	//	*b = cross(normal, axisX);
-	//}
+		axisX.Normalize();
+		axisY = Cross(normal, axisX);
+		Matrix3f ret;
+		ret.FromAxes(axisX, axisY, normal);
+		return ret;
+	}
 }

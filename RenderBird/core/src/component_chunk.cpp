@@ -1,4 +1,6 @@
 #include "component_chunk.h"
+#include "entity.h"
+#include "entitymanager.h"
 
 namespace Core
 {
@@ -7,8 +9,10 @@ namespace Core
 		, m_archetype(archetype)
 		, m_lastIndex(0)
 	{
-		size_t blockSize = (archetype->GetStrideSize()) * capacity;
+		size_t blockSize = (archetype->GetStrideSize() + sizeof(EntityId)) * capacity;
 		m_blockData = new uint8[blockSize];
+		m_componentData = m_blockData + sizeof(EntityId) * capacity;
+		m_entityData = (EntityId*)m_blockData;
 	}
 
 	ComponentChunk::~ComponentChunk()
@@ -16,20 +20,24 @@ namespace Core
 		PurgeMemory();
 	}
 
-	size_t ComponentChunk::Allocate()
+	size_t ComponentChunk::Allocate(EntityId entity)
 	{
-		if (m_lastIndex == m_capacity)
+		if (m_lastIndex >= m_capacity)
 		{
 			assert("allocate chunk failed");
 		}
 		size_t id = m_lastIndex++;
-		m_archetype->MoveChunk(this);
+		m_entityData[id] = entity;
+		m_archetype->UpdateChunk(this);
 		return id;
 	}
 
-	void ComponentChunk::CopyData(size_t srcChunkIndex, size_t destChunkIndex)
+	void ComponentChunk::MoveData(size_t srcChunkIndex, size_t destChunkIndex)
 	{
-		uint8* compData = m_blockData;
+		EntityData* entityData = EntityManager::Instance().GetEntityData(m_entityData[srcChunkIndex]);
+		entityData->m_chunkIndex = destChunkIndex;
+
+		uint8* compData = m_componentData;
 		for (auto type : *m_archetype)
 		{
 			size_t typeSize = type.m_typeInfo->GetTypeSize();
@@ -44,9 +52,9 @@ namespace Core
 	{
 		if (chunkIndex != m_lastIndex - 1)
 		{
-			CopyData(m_lastIndex - 1, chunkIndex);
+			MoveData(m_lastIndex - 1, chunkIndex);
 			--m_lastIndex;
-			m_archetype->MoveChunk(this);
+			m_archetype->UpdateChunk(this);
 		}
 	}
 
@@ -57,12 +65,17 @@ namespace Core
 		{
 			return nullptr;
 		}
-		return m_blockData + (typeOffset)* m_capacity + compTypeInfo->GetTypeSize() * entityIndex;
+		return m_componentData + typeOffset * m_capacity + compTypeInfo->GetTypeSize() * entityIndex;
+	}
+
+	EntityId ComponentChunk::GetEntityId(size_t entityIndex)const
+	{
+		return m_entityData[entityIndex];
 	}
 
 	void ComponentChunk::SetAllComponentDefault(size_t entityIndex)
 	{
-		uint8* compData = m_blockData;
+		uint8* compData = m_componentData;
 		for (auto compTypeInfo : *m_archetype)
 		{
 			size_t typeSize = compTypeInfo.m_typeInfo->GetTypeSize();
@@ -79,7 +92,7 @@ namespace Core
 		{
 			return nullptr;
 		}
-		void* data = m_blockData + (typeOffset)* m_capacity + compTypeInfo->GetTypeSize() * entityIndex;
+		void* data = m_componentData + typeOffset * m_capacity + compTypeInfo->GetTypeSize() * entityIndex;
 		memcpy(data, compTypeInfo->GetDefaultValue(), compTypeInfo->GetTypeSize());
 		return data;
 	}

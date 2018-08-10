@@ -1,6 +1,7 @@
 #pragma once
 #include "renderbird_private.h"
 #include "rayhitinfo.h"
+#include "sample_utils.h"
 
 namespace RenderBird
 {

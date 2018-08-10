@@ -87,12 +87,18 @@
     <ClInclude Include="include\sample_utils.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\bsdf.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\pathtracing_common.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\arealight.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\disk.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\geometrycomponent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\integrator.cpp">
@@ -150,6 +156,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\sample_utils.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bsdf.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\arealight.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pathtracing_common.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

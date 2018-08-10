@@ -64,18 +64,24 @@ namespace Core
 		return nullptr;
 	}
 
+	EntityData* EntityManager::GetEntityData(EntityId entity)const
+	{
+		return m_entityPool.Get(entity.m_id);
+	}
+
 	EntityId EntityManager::CreateEntity(Archetype* archetype)
 	{
-		EntityId ret;
+		EntityId id;
 		auto handle = m_entityPool.Malloc();
+		id = EntityId{ handle.first };
+
 		ComponentChunk* chunk = archetype->GetOrCreateChunk();
-		size_t chunkIndex = chunk->Allocate();
+		size_t chunkIndex = chunk->Allocate(id);
 		handle.second->m_chunk = chunk;
 		handle.second->m_chunkIndex = chunkIndex;
-		ret = EntityId{ handle.first };
 		chunk->SetAllComponentDefault(chunkIndex);
-		EventManager::IntancePtr()->emit<EntityCreatedEvent>(ret);
-		return ret;
+		EventManager::IntancePtr()->emit<EntityCreatedEvent>(id);
+		return id;
 	}
 
 	void EntityManager::DestroyEntity(EntityId entity)
@@ -86,21 +92,23 @@ namespace Core
 		EventManager::IntancePtr()->emit<EntityDestroyedEvent>(entity);
 	}
 
-	void EntityManager::SetArchetype(EntityData* entityData, Archetype* destArchetype)
+	ComponentChunk* EntityManager::SetNewArchetype(EntityId entityId, EntityData* entityData, Archetype* destArchetype)
 	{
 		ComponentChunk* srcChunk = entityData->m_chunk;
 		Archetype* srcArchetype = srcChunk->GetArchetype();
 		if (srcArchetype->IsEqual(destArchetype))
 		{
-			return;
+			return srcChunk;
 		}
-		ComponentChunk* destChunk = destArchetype->GetOrCreateChunk();
-
 		size_t srcChunkIndex = entityData->m_chunkIndex;
-		size_t destChunkIndex = destChunk->Allocate();
 
-		uint8* srcBlockData = srcChunk->GetBlockData();
-		uint8* destBlockData = destChunk->GetBlockData();
+		ComponentChunk* destChunk = destArchetype->GetOrCreateChunk();
+		size_t destChunkIndex = destChunk->Allocate(entityId);
+		entityData->m_chunk = destChunk;
+		entityData->m_chunkIndex = destChunkIndex;
+
+		uint8* srcData = srcChunk->GetComponentData();
+		uint8* destData = destChunk->GetComponentData();
 
 		size_t srcOffset = 0;
 		for (auto srcTypeId : *srcArchetype)
@@ -112,8 +120,8 @@ namespace Core
 				size_t destTypeSize = destTypeId.m_typeInfo->GetTypeSize();
 				if (srcTypeId.m_typeInfo->GetTypeId() == destTypeId.m_typeInfo->GetTypeId())
 				{
-					uint8* srcCompData = srcBlockData + srcOffset * srcChunk->GetCapacity() + srcTypeSize * srcChunkIndex;
-					uint8* destCompData = destBlockData + destOffset * destChunk->GetCapacity() + destTypeSize * destChunkIndex;
+					uint8* srcCompData = srcData + srcOffset * srcChunk->GetCapacity() + srcTypeSize * srcChunkIndex;
+					uint8* destCompData = destData + destOffset * destChunk->GetCapacity() + destTypeSize * destChunkIndex;
 					memcpy(destCompData, srcCompData, destTypeSize);
 					break;
 				}
@@ -122,9 +130,9 @@ namespace Core
 			srcOffset += srcTypeSize;
 		}
 
-		entityData->m_chunk->Deallocate(entityData->m_chunkIndex);
-		entityData->m_chunk = destChunk;
-		entityData->m_chunkIndex = destChunkIndex;
+		srcChunk->Deallocate(srcChunkIndex);
+
+		return destChunk;
 	}
 
 	void* EntityManager::AddComponent(EntityId entity, TypeInfo* typeinfo)
@@ -142,7 +150,7 @@ namespace Core
 		typeIdList.sort();
 
 		Archetype* destArchetype = GetOrCreateArchetype(typeIdList);
-		SetArchetype(entityData, destArchetype);
+		chunk = SetNewArchetype(entity, entityData, destArchetype);
 
 		return chunk->SetComponentDefault(entityData->m_chunkIndex, typeinfo);
 	}
@@ -159,7 +167,7 @@ namespace Core
 		typeIdList.erase(std::remove(typeIdList.begin(), typeIdList.end(), ComponentTypeId(typeinfo)), typeIdList.end());
 
 		Archetype* destArchetype = GetOrCreateArchetype(typeIdList);
-		SetArchetype(entityData, destArchetype);
+		SetNewArchetype(entity, entityData, destArchetype);
 		return true;
 	}
 
@@ -167,11 +175,7 @@ namespace Core
 	{
 		EntityData* entityData = m_entityPool.Get(entity.m_id);
 		ComponentChunk* chunk = entityData->m_chunk;
-		if (chunk->GetArchetype()->HasComponentTypeId(typeinfo))
-		{
-			return chunk->GetEntityComponentPtr(entityData->m_chunkIndex, typeinfo);
-		}
-		return nullptr;
+		return chunk->GetEntityComponentPtr(entityData->m_chunkIndex, typeinfo);
 	}
 
 }

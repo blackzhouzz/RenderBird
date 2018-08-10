@@ -9,10 +9,10 @@ namespace Core
 	static const Float C_FLOAT_EPSILON = 1e-06f;//(Float)std::numeric_limits<Float>::epsilon();
 	static const Float C_FLOAT_EPSILON_HIGH = (Float)1e-12f;
 	static const Float C_PI = (Float)3.14159265358979323846f;
-	static const Float C_INV_PI = (Float)0.3183098861837907f;
+	static const Float C_1_INV_PI = (Float)0.3183098861837907f;
 	static const Float C_HALF_PI = (Float)1.57079632679489661923f;
 	static const Float C_QUARTER_PI = (Float)0.785398163397448f;
-	static const Float C_TWO_PI = (Float)6.28318530717958647692f;
+	static const Float C_2_PI = (Float)6.28318530717958647692f;
 
 	inline Float DegToRad(Float val)
 	{
@@ -21,12 +21,12 @@ namespace Core
 
 	inline Float RadToDeg(Float val)
 	{
-		return (val) * (Float)(180.0f * C_INV_PI);
+		return (val) * (Float)(180.0f * C_1_INV_PI);
 	}
 
 	inline Float AngleModRad(Float a)
 	{
-		return std::fmod(a, C_TWO_PI);
+		return std::fmod(a, C_2_PI);
 	}
 
 	inline Float AngleModEuler(Float a)

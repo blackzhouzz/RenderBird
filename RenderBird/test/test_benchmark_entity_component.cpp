@@ -22,7 +22,7 @@ struct EntityDestroyedEventReceiver
 		//printf("destroyed\n");
 	}
 };
-static const int MAX_ENTITY_COUNT = 4096*1000;
+static const int MAX_ENTITY_COUNT = 4096 * 1000;
 
 void Test_BenchmarkEntitySlow()
 {
@@ -87,6 +87,7 @@ void Test_BenchmarkEntityFastest()
 	while (visitor.HasNext())
 	{
 		auto transform = visitor.Get<Transform>();
+		auto id = visitor.GetEntityId();
 		transform->m_position = Vector3f::ZERO;
 
 		//auto lp = visitor.Get<RenderBird::LightProperty>();
@@ -107,32 +108,36 @@ void Test_IteratorComponent()
 	for (int i = 0; i < testEntityCount; ++i)
 	{
 		test_entities[i] = EntityManager::IntancePtr()->CreateEntity(archtype);
+		auto ed = EntityManager::IntancePtr()->GetEntityData(test_entities[9]);
+		ed = ed;
 	}
-
+	auto ed = EntityManager::IntancePtr()->GetEntityData(test_entities[9]);
 	for (int i = 0; i < testEntityCount; ++i)
 	{
 		test_components[i] = EntityManager::IntancePtr()->AddComponent<Transform>(test_entities[i]);
-
+		auto ed = EntityManager::IntancePtr()->GetEntityData(test_entities[9]);
 		auto comp = EntityManager::IntancePtr()->GetComponent<Transform>(test_entities[i]);
 		comp->m_position = Vector3f(0, i, 0);
-		Vector3f temp = EntityManager::IntancePtr()->GetComponent<Transform>(test_entities[i])->m_position;
+		auto temp = EntityManager::IntancePtr()->GetComponent<Transform>(test_entities[i]);
 		temp = temp;
-	}
-	EntityManager::IntancePtr()->DestroyEntity(test_entities[0]);
-	for (int i = 0; i < testEntityCount; ++i)
-	{
-		auto tran = EntityManager::IntancePtr()->GetComponent<Transform>(test_entities[i]);
-		if (tran != nullptr)
-		{
-			Vector3f temp = tran->m_position;
-			temp = temp;
-		}
-		else
-		{
-			break;
-		}
+		EntityManager::IntancePtr()->RemoveComponent<Transform>(test_entities[i]);
 
 	}
+	EntityManager::IntancePtr()->DestroyEntity(test_entities[0]);
+	//for (int i = 0; i < testEntityCount; ++i)
+	//{
+	//	auto tran = EntityManager::IntancePtr()->GetComponent<Transform>(test_entities[i]);
+	//	if (tran != nullptr)
+	//	{
+	//		Vector3f temp = tran->m_position;
+	//		temp = temp;
+	//	}
+	//	else
+	//	{
+	//		break;
+	//	}
+
+	//}
 
 	ComponentGroup group(1, TypeOf<Transform>::Value());
 	ComponentGroupVisitor<Transform> visitor(&group);

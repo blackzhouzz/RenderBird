@@ -25,7 +25,7 @@ namespace Core
 		size_t GetStrideSize()const { return m_strideSize; }
 		const std::list<ComponentTypeId>& GetComponentTypeList()const { return m_typeIdList; }
 		ComponentChunk* GetOrCreateChunk();
-		void MoveChunk(ComponentChunk* chunk);
+		void UpdateChunk(ComponentChunk* chunk);
 		std::vector<ComponentChunk*> GetAllChunks()const;
 	private:
 		std::list<ComponentTypeId> m_typeIdList;

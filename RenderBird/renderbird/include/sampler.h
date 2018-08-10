@@ -9,7 +9,7 @@ namespace RenderBird
 		Sampler(uint32 numSamplers);
 		Float Random1D();
 		Vector2f Random2D();
-	private:
+	public:
 		uint32 m_numSamplers;
 	};
 }

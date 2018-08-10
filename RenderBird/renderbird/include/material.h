@@ -1,5 +1,6 @@
 #pragma once
 #include "renderbird_private.h"
+#include "bsdf.h"
 
 namespace RenderBird
 {
@@ -11,6 +12,8 @@ namespace RenderBird
 		RGBA32 m_specularColor;
 		Float m_glossiness;
 		Float m_opacity;
+		uint32 m_flags;
+		BSDF* m_bsdf;
 	};
 }
 

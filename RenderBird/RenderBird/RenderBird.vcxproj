@@ -149,6 +149,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\3rdparty\CImg\CImg.h" />
+    <ClInclude Include="include\arealight.h" />
+    <ClInclude Include="include\bsdf.h" />
     <ClInclude Include="include\camera.h" />
     <ClInclude Include="include\camera_component.h" />
     <ClInclude Include="include\disk.h" />
@@ -160,6 +162,7 @@
     <ClInclude Include="include\material.h" />
     <ClInclude Include="include\mesh_component.h" />
     <ClInclude Include="include\pathtracing.h" />
+    <ClInclude Include="include\pathtracing_common.h" />
     <ClInclude Include="include\raycastsys.h" />
     <ClInclude Include="include\rayhitinfo.h" />
     <ClInclude Include="include\renderbird_private.h" />
@@ -175,17 +178,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\geometry_generator.cpp" />
+    <ClCompile Include="src\arealight.cpp" />
+    <ClCompile Include="src\bsdf.cpp" />
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\camera_component.cpp" />
     <ClCompile Include="src\disk.cpp" />
     <ClCompile Include="src\fbx_import_utils.cpp" />
-    <ClCompile Include="src\geometrycomponent.cpp" />
     <ClCompile Include="src\image_output.cpp" />
     <ClCompile Include="src\integrator.cpp" />
     <ClCompile Include="src\light_component.cpp" />
     <ClCompile Include="src\material.cpp" />
     <ClCompile Include="src\mesh_component.cpp" />
     <ClCompile Include="src\pathtracing.cpp" />
+    <ClCompile Include="src\pathtracing_common.cpp" />
     <ClCompile Include="src\raycastsys.cpp" />
     <ClCompile Include="src\renderbird_register.cpp" />
     <ClCompile Include="src\renderer.cpp" />

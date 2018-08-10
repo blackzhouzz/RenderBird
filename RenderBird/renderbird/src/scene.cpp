@@ -12,13 +12,13 @@ namespace RenderBird
 {
 	bool Scene::Intersect(const Ray& ray, RayHitInfo* hitInfo)
 	{
-		{
-			auto trans = EntityManager::Instance().GetComponent<Transform>(m_diskId);
-			auto disk = EntityManager::Instance().GetComponent<Disk>(m_diskId);
+		//{
+		//	auto trans = EntityManager::Instance().GetComponent<Transform>(m_diskLightId);
+		//	auto disk = EntityManager::Instance().GetComponent<Disk>(m_diskLightId);
 
-			if (disk != nullptr && DiskUtils::Intersect(disk, TransformUtils::GetMatrix(trans), ray, hitInfo))
-				return true;
-		}
+		//	if (disk != nullptr && DiskUtils::Intersect(disk, TransformUtils::GetMatrix(trans), ray, hitInfo))
+		//		return true;
+		//}
 
 		ComponentGroupVisitor<Transform, MeshComponent> visitor(m_meshEntitiesGroup);
 		bool hasIntersected = false;
@@ -36,7 +36,7 @@ namespace RenderBird
 	void Scene::SetupSceneTest()
 	{
 		CreateMeshTest();
-		CreateLightTest();
+		//CreateLightTest();
 		CreateCameraTest();
 	}
 
@@ -64,7 +64,7 @@ namespace RenderBird
 
 	void Scene::CreateMeshTest()
 	{
-		FBXImportUtils::LoadFBX("c:/1234.fbx", this);
+		FBXImportUtils::LoadFBX("c:/123.fbx", this);
 
 		//auto plane1 = GeometryGenerator::GeneratePlane(Vector2f(2.0f, 2.0f));
 		//m_meshResources.push_back(plane1);
@@ -83,7 +83,7 @@ namespace RenderBird
 			meshComp->m_trimesh = m_meshResources[i];
 			if (i == 0)
 			{
-				//trans->m_position = Vector3f(0, 0, 0.5f);
+				trans->m_position = Vector3f(0, 0, 0.5f);
 			}
 			m_entities.insert(planeEntity);
 		}
@@ -102,30 +102,39 @@ namespace RenderBird
 		m_camera = EntityManager::IntancePtr()->CreateEntity(camArchetype);
 		auto comp = EntityManager::IntancePtr()->GetComponent<CameraComponent>(m_camera);
 
-		CameraComponentUtils::PerspectiveFovMatrix(comp, 60, 1.0f, 1e-2, 1000);
+		CameraComponentUtils::PerspectiveFovMatrix(comp, 60.0f, 1.0f, 1e-2f, 1000.0f);
 
 		auto trans = EntityManager::IntancePtr()->GetComponent<Transform>(m_camera);
 		const Float dist = 4;
-		Vector3f pos = Vector3f(0, -3, 1);
-		Vector3f dir = Vector3f(0, 1, 0) * dist;
+		Vector3f pos = Vector3f(0, 6, 1);
+		Vector3f dir = Vector3f(0, -1, 0);
 
-		TransformUtils::LookAt(trans, pos, pos + dir, Vector3f::UNIT_Z);
+		TransformUtils::LookDir(trans, pos, dir, Vector3f::UNIT_Z);
 
+		auto mat = TransformUtils::GetMatrix(trans);
+		auto vec = mat.TransformPoint(Vector3f::ZERO);
+		auto dir1 = mat.TransformDirection(Vector3f::UNIT_Y);
 		m_entities.insert(m_camera);
 	}
 
 	void Scene::AddTestDiskLight(const Vector3f& pos)
 	{
-		auto camArchetype = EntityManager::IntancePtr()->CreateArchetype<Transform, Disk>();
-		m_diskId = EntityManager::IntancePtr()->CreateEntity(camArchetype);
-		auto disk = EntityManager::IntancePtr()->GetComponent<Disk>(m_camera);
+		auto camArchetype = EntityManager::IntancePtr()->CreateArchetype<Transform, Disk, LightProperty>();
+		m_diskLightId = EntityManager::IntancePtr()->CreateEntity(camArchetype);
+		auto disk = EntityManager::IntancePtr()->GetComponent<Disk>(m_diskLightId);
 		disk->m_innerRadius = 0;
-		disk->m_radius = 0.2;
-		disk->m_phiMax = C_TWO_PI;
-		auto trans = EntityManager::IntancePtr()->GetComponent<Transform>(m_camera);
+		disk->m_radius = 0.2f;
+		disk->m_phiMax = C_2_PI;
+		auto trans = EntityManager::IntancePtr()->GetComponent<Transform>(m_diskLightId);
+		//TransformUtils::LookAt(trans, pos, pos + dir, Vector3f::UNIT_Z);
 		trans->m_position = pos;
+		trans->m_rotation = MathUtils::RotationMatrixToQuaternion(MathUtils::MakeNormalTransform(-Vector3f::UNIT_Z));
+		auto mat = TransformUtils::GetMatrix(trans);
+		auto vec = mat.TransformPoint(Vector3f::ZERO);
 
-		m_entities.insert(m_diskId);
+		auto light = EntityManager::IntancePtr()->GetComponent<LightProperty>(m_diskLightId);
+
+		m_entities.insert(m_diskLightId);
 	}
 
 	void Scene::AddTriangleMesh(TriangleMesh* mesh)

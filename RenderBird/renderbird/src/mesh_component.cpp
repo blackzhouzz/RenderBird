@@ -170,6 +170,7 @@ namespace RenderBird
 				const Vector3f& n1 = meshData->m_vertexData[faceData.m_v1].m_normal;
 				const Vector3f& n2 = meshData->m_vertexData[faceData.m_v2].m_normal;
 				hitInfo->m_normal = (n0 * (1.0f - u - v) + n1 * u + n2 * v).GetNormalized();
+				hitInfo->m_position = (v0 * (1.0f - u - v) + v1 * u + v2 * v);
 				hitInfo->m_hasHit = true;
 				return true;
 			}

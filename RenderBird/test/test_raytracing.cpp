@@ -4,8 +4,8 @@
 
 void TestRayTracingApp::Init()
 {
-	m_settings.m_resX = 512;
-	m_settings.m_resY = 512;
+	m_settings.m_resX = 256;
+	m_settings.m_resY = 256;
 	m_settings.m_tileSizeX = 64;
 	m_settings.m_tileSizeY = 64;
 	m_settings.m_useJob = true;

@@ -17,8 +17,8 @@ namespace Core
 		TVector2<T>& operator -= (const TVector2<T>& val);
 		TVector2<T> operator * (const TVector2<T>& val)const;
 		TVector2<T>& operator *= (const TVector2<T>& val);
-		TVector2<T> operator * (Float val)const;
-		TVector2<T>& operator *= (Float val);
+		TVector2<T> operator * (T val)const;
+		TVector2<T>& operator *= (T val);
 		TVector2<T> operator / (const TVector2<T>& val)const;
 		TVector2<T>& operator /= (const TVector2<T>& val);
 		bool operator == (const TVector2<T>& val)const;
@@ -102,13 +102,13 @@ namespace Core
 	}
 
 	template<typename T>
-	inline TVector2<T> TVector2<T>::operator * (Float val)const
+	inline TVector2<T> TVector2<T>::operator * (T val)const
 	{
 		return TVector2<T>(x * val, y * val);
 	}
 
 	template<typename T>
-	inline TVector2<T>& TVector2<T>::operator *= (Float val)
+	inline TVector2<T>& TVector2<T>::operator *= (T val)
 	{
 		x *= val;
 		y *= val;
@@ -196,19 +196,19 @@ namespace Core
 	}
 
 	template <typename T>
-	inline T Dot(const TVector2<T> v1, const TVector2<T> v2)
+	inline T Dot(const TVector2<T>& v1, const TVector2<T>& v2)
 	{
 		return (v1.x * v2.x + v1.y * v2.y);
 	}
 
 	template <typename T>
-	inline T AbsDot(const TVector2<T> v1, const TVector2<T> v2)
+	inline T AbsDot(const TVector2<T>& v1, const TVector2<T>& v2)
 	{
 		return std::abs(v1.x * v2.x + v1.y * v2.y);
 	}
 
 	template <typename T>
-	inline T Cross(const TVector2<T> v1, const TVector2<T> v2)
+	inline T Cross(const TVector2<T>& v1, const TVector2<T>& v2)
 	{
 		return (v1.x * v2.y - v1.y * v2.x);
 	}
@@ -236,9 +236,10 @@ namespace Core
 		TVector3<T>& operator -= (const TVector3<T>& val);
 		TVector3<T> operator * (const TVector3<T>& val)const;
 		TVector3<T>& operator *= (const TVector3<T>& val);
-		TVector3<T> operator * (Float val)const;
-		TVector3<T>& operator *= (Float val);
+		TVector3<T> operator * (T val)const;
+		TVector3<T>& operator *= (T val);
 		TVector3<T> operator / (const TVector3<T>& val)const;
+		TVector3<T> operator / (T val)const;
 		TVector3<T>& operator /= (const TVector3<T>& val);
 		bool operator == (const TVector3<T>& val)const;
 		bool operator != (const TVector3<T>& val)const;
@@ -339,13 +340,13 @@ namespace Core
 	}
 
 	template<typename T>
-	inline TVector3<T> TVector3<T>::operator * (Float val)const
+	inline TVector3<T> TVector3<T>::operator * (T val)const
 	{
 		return TVector3<T>(x * val, y * val, z * val);
 	}
 
 	template<typename T>
-	inline TVector3<T>& TVector3<T>::operator *= (Float val)
+	inline TVector3<T>& TVector3<T>::operator *= (T val)
 	{
 		x *= val;
 		y *= val;
@@ -357,6 +358,13 @@ namespace Core
 	inline TVector3<T> TVector3<T>::operator / (const TVector3<T>& val)const
 	{
 		return TVector3<T>(x / val.x, y / val.y, z / val.z);
+	}
+
+	template<typename T>
+	inline TVector3<T> TVector3<T>::operator / (T val)const
+	{
+		T invVal = 1.0f / val;
+		return TVector3<T>(x * invVal, y * invVal, z * invVal);
 	}
 
 	template<typename T>
@@ -468,19 +476,19 @@ namespace Core
 	}
 
 	template <typename T>
-	inline T Dot(const TVector3<T> v1, const TVector3<T> v2)
+	inline T Dot(const TVector3<T>& v1, const TVector3<T>& v2)
 	{
 		return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
 	}
 
 	template <typename T>
-	inline T AbsDot(const TVector3<T> v1, const TVector3<T> v2)
+	inline T AbsDot(const TVector3<T>& v1, const TVector3<T>& v2)
 	{
 		return std::abs(v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
 	}
 
 	template <typename T>
-	inline TVector3<T> Cross(const TVector3<T> v1, const TVector3<T> v2)
+	inline TVector3<T> Cross(const TVector3<T>& v1, const TVector3<T>& v2)
 	{
 		return TVector3<T>(
 			v1.y * v2.z - v1.z * v2.y,
@@ -489,13 +497,13 @@ namespace Core
 	}
 
 	template <typename T>
-	inline T Distance(const TVector3<T> v1, const TVector3<T> v2)
+	inline T Distance(const TVector3<T>& v1, const TVector3<T>& v2)
 	{
 		return (v1 - v2).Length();
 	}
 
 	template <typename T>
-	inline T DistanceSQ(const TVector3<T> v1, const TVector3<T> v2)
+	inline T DistanceSQ(const TVector3<T>& v1, const TVector3<T>& v2)
 	{
 		return (v1 - v2).LengthSQ();
 	}
@@ -503,7 +511,7 @@ namespace Core
 	template <typename T>
 	inline TVector3<T> ReflectVector(const TVector3<T>& v, const TVector3<T>& n)
 	{
-		return v - 2 * (Dot(v, n)) * n;
+		return v - (Dot(v, n)) * n * 2.0;
 	}
 
 	template <typename T>
@@ -570,6 +578,12 @@ namespace Core
 	inline TVector3<T> AbsVector(const TVector3<T>& vec)
 	{
 		return TVector3<T>(std::abs(vec.x), std::abs(vec.y), std::abs(vec.z));
+	}
+
+	template <typename T>
+	inline TVector3<T> operator * (Float scalar, const TVector3<T>& vec)
+	{
+		return TVector3<T>(scalar * vec.x, scalar * vec.y, scalar * vec.z);
 	}
 
 #pragma endregion TVector3

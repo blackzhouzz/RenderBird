@@ -17,13 +17,17 @@ namespace Core
 			{
 				size_t typeOffset = 0;
 				m_chunk->GetArchetype()->GetComponentTypeOffset(compTypeInfo, typeOffset);
-				m_address = m_chunk->GetBlockData() + (typeOffset)* m_chunk->GetCapacity();
+				m_address = m_chunk->GetComponentData() + (typeOffset)* m_chunk->GetCapacity();
 			}
 		public:
 			template<typename T>
 			T* GetDataAt(size_t index)const
 			{
 				return ((T*)m_address) + index;
+			}
+			EntityId GetEntityId(size_t index)const
+			{
+				return m_chunk->GetEntityId(index);
 			}
 			size_t GetCount()const { return m_chunk->GetCount(); }
 		private:
@@ -35,17 +39,21 @@ namespace Core
 	public:
 		TypeInfo* GetTypeInfo()const { return m_typeInfo; }
 		template<typename T>
-		class ArrayVisitor
+		class Visitor
 		{
 		public:
-			ArrayVisitor() {}
-			ArrayVisitor(ComponentArray* componentArray)
+			Visitor() {}
+			Visitor(ComponentArray* componentArray)
 				: m_componentArray(componentArray)
 			{
 			}
 			T* Get(size_t firstIndex, size_t secondIndex)const
 			{
 				return m_componentArray->m_compVisitors[firstIndex].GetDataAt<T>(secondIndex);
+			}
+			EntityId GetEntityId(size_t firstIndex, size_t secondIndex)const
+			{
+				return m_componentArray->m_compVisitors[firstIndex].GetEntityId(secondIndex);
 			}
 			void MoveNext(size_t& firstIndex, size_t& secondIndex)
 			{
@@ -104,9 +112,9 @@ namespace Core
 			CreateImpl<N + 1, C1, Cn...>(typeIdList);
 		}
 		template<typename T>
-		ComponentArray::ArrayVisitor<T> GetComponentArrayVisitor()const
+		ComponentArray::Visitor<T> GetComponentArrayVisitor()const
 		{
-			return ComponentArray::ArrayVisitor<T>(GetComponentArray<T>());
+			return ComponentArray::Visitor<T>(GetComponentArray<T>());
 		}
 		size_t GetComponentCount()const { return m_componentCount; }
 		void CreateFromTypeList(const std::list<ComponentTypeId>& typeIdList);
@@ -138,6 +146,10 @@ namespace Core
 		T* Get()const
 		{
 			return std::get<type_index<T>::value>(m_visitors).Get(m_firstIndex, m_secondIndex);
+		}
+		EntityId GetEntityId()const
+		{
+			return std::get<0>(m_visitors).GetEntityId(m_firstIndex, m_secondIndex);
 		}
 		void MoveNext()
 		{
@@ -181,7 +193,7 @@ namespace Core
 		template<typename T>
 		using type_index = typename index_of<T, ComponentGroupVisitor<Types...>>;
 	private:
-		std::tuple<ComponentArray::ArrayVisitor<Types> ...> m_visitors;
+		std::tuple<ComponentArray::Visitor<Types> ...> m_visitors;
 		ComponentGroup* m_group;
 		size_t m_firstIndex;
 		size_t m_secondIndex;

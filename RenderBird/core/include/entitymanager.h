@@ -27,6 +27,7 @@ namespace Core
 			return GetOrCreateArchetype(typeIdList);
 		}
 		Archetype* CreateEmptyArchetype();
+		EntityData* GetEntityData(EntityId entity)const;
 		EntityId CreateEntity(Archetype* archetype);
 		void DestroyEntity(EntityId entity);
 		void* AddComponent(EntityId entity, TypeInfo* typeinfo);
@@ -41,11 +42,6 @@ namespace Core
 		std::vector<Archetype*>::const_iterator ArchetypesBegin()const { return m_archetypes.begin(); }
 		std::vector<Archetype*>::const_iterator ArchetypesEnd()const { return m_archetypes.end(); }
 	private:
-		struct EntityData
-		{
-			size_t m_chunkIndex;
-			ComponentChunk* m_chunk;
-		};
 		Archetype* FindArchetype(const std::list<ComponentTypeId>& typeIdList);
 		Archetype* GetOrCreateArchetype(const std::list<ComponentTypeId>& typeIdList);
 		template <int N, typename C>
@@ -63,7 +59,7 @@ namespace Core
 			typeIdList.push_back(compTypeId);
 			CreateArchetypeImpl<N + 1, C1, Cn...>(typeIdList);
 		}
-		void SetArchetype(EntityData* entityData, Archetype* destArchetype);
+		ComponentChunk* SetNewArchetype(EntityId entityId, EntityData* entityData, Archetype* destArchetype);
 	private:
 		PODPool<EntityData> m_entityPool;
 		std::vector<Archetype*> m_archetypes;

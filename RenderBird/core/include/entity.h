@@ -5,6 +5,12 @@
 
 namespace Core
 {
+	struct EntityData
+	{
+		size_t m_chunkIndex;
+		class ComponentChunk* m_chunk;
+	};
+
 	struct EntityId
 	{
 		EntityId() = default;

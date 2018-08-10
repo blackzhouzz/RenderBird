@@ -17,6 +17,8 @@ namespace Core
 		T & operator *= (const TSpectrum<T, DT, N>& val);
 		T  operator * (DT val)const;
 		T & operator *= (DT val);
+		T  operator / (DT val)const;
+		T & operator /= (DT val);
 		T  operator / (const TSpectrum<T, DT, N>& val)const;
 		T & operator /= (const TSpectrum<T, DT, N>& val);
 		bool operator == (const TSpectrum<T, DT, N>& val)const;
@@ -35,7 +37,7 @@ namespace Core
 		T ret;
 		for (int i = 0; i < N; ++i)
 		{
-			ret.m_bands[i] = this->m_bands[i] + val->m_bands[i];
+			ret.m_bands[i] = this->m_bands[i] + val.m_bands[i];
 		}
 		return ret;
 	}
@@ -45,9 +47,9 @@ namespace Core
 	{
 		for (int i = 0; i < N; ++i)
 		{
-			this.m_bands[i] += val->m_bands[i];
+			this->m_bands[i] += val.m_bands[i];
 		}
-		return *this;
+		return *(static_cast<T*>(this));
 	}
 
 	template<typename T, typename DT, int N>
@@ -56,7 +58,7 @@ namespace Core
 		T ret;
 		for (int i = 0; i < N; ++i)
 		{
-			ret.m_bands[i] = this->m_bands[i] - val->m_bands[i];
+			ret.m_bands[i] = this->m_bands[i] - val.m_bands[i];
 		}
 		return ret;
 	}
@@ -66,9 +68,9 @@ namespace Core
 	{
 		for (int i = 0; i < N; ++i)
 		{
-			this.m_bands[i] -= val->m_bands[i];
+			this->m_bands[i] -= val.m_bands[i];
 		}
-		return *this;
+		return *(static_cast<T*>(this));
 	}
 
 	template<typename T, typename DT, int N>
@@ -77,7 +79,7 @@ namespace Core
 		T ret;
 		for (int i = 0; i < N; ++i)
 		{
-			ret.m_bands[i] = this->m_bands[i] * val->m_bands[i];
+			ret.m_bands[i] = this->m_bands[i] * val.m_bands[i];
 		}
 		return ret;
 	}
@@ -87,9 +89,9 @@ namespace Core
 	{
 		for (int i = 0; i < N; ++i)
 		{
-			this.m_bands[i] *= val->m_bands[i];
+			this->m_bands[i] *= val.m_bands[i];
 		}
-		return *this;
+		return *(static_cast<T*>(this));
 	}
 
 	template<typename T, typename DT, int N>
@@ -108,9 +110,30 @@ namespace Core
 	{
 		for (int i = 0; i < N; ++i)
 		{
-			this.m_bands[i] *= val;
+			this->m_bands[i] *= val;
 		}
-		return *this;
+		return *(static_cast<T*>(this));
+	}
+
+	template<typename T, typename DT, int N>
+	inline T TSpectrum<T, DT, N>::operator / (DT val)const
+	{
+		T ret;
+		for (int i = 0; i < N; ++i)
+		{
+			ret.m_bands[i] = this->m_bands[i] / val;
+		}
+		return ret;
+	}
+
+	template<typename T, typename DT, int N>
+	inline T& TSpectrum<T, DT, N>::operator /= (DT val)
+	{
+		for (int i = 0; i < N; ++i)
+		{
+			this->m_bands[i] /= val;
+		}
+		return *(static_cast<T*>(this));
 	}
 
 	template<typename T, typename DT, int N>
@@ -119,7 +142,7 @@ namespace Core
 		T ret;
 		for (int i = 0; i < N; ++i)
 		{
-			ret.m_bands[i] = this->m_bands[i] / val->m_bands[i];
+			ret.m_bands[i] = this->m_bands[i] / val.m_bands[i];
 		}
 		return ret;
 	}
@@ -129,9 +152,9 @@ namespace Core
 	{
 		for (int i = 0; i < N; ++i)
 		{
-			this.m_bands[i] /= val->m_bands[i];
+			this->m_bands[i] /= val.m_bands[i];
 		}
-		return *this;
+		return *(static_cast<T*>(this));
 	}
 
 	template<typename T, typename DT, int N>
