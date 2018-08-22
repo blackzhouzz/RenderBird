@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\archetype.h" />
+    <ClInclude Include="include\boundingbox.h" />
     <ClInclude Include="include\component.h" />
     <ClInclude Include="include\component_chunk.h" />
     <ClInclude Include="include\component_group.h" />
@@ -30,22 +31,17 @@
     <ClInclude Include="include\entitymanager.h" />
     <ClInclude Include="include\event.h" />
     <ClInclude Include="include\fastdelegate.hpp" />
-    <ClInclude Include="include\math\boundingbox.h" />
-    <ClInclude Include="include\math\euler_rotation.h" />
-    <ClInclude Include="include\math\mathcore.h" />
-    <ClInclude Include="include\math\mathutils.h" />
-    <ClInclude Include="include\math\matrix.h" />
-    <ClInclude Include="include\math\plane.h" />
-    <ClInclude Include="include\math\quaternion.h" />
-    <ClInclude Include="include\math\ray.h" />
-    <ClInclude Include="include\math\rect2.h" />
-    <ClInclude Include="include\math\spectrum.h" />
-    <ClInclude Include="include\math\sphere.h" />
-    <ClInclude Include="include\math\vector.h" />
+    <ClInclude Include="include\math_core.h" />
+    <ClInclude Include="include\math_utils.h" />
     <ClInclude Include="include\object.h" />
+    <ClInclude Include="include\plane.h" />
     <ClInclude Include="include\pool.h" />
     <ClInclude Include="include\core_register.h" />
+    <ClInclude Include="include\ray.h" />
+    <ClInclude Include="include\rect2.h" />
     <ClInclude Include="include\simplesignal.h" />
+    <ClInclude Include="include\spectrum.h" />
+    <ClInclude Include="include\sphere.h" />
     <ClInclude Include="include\system.h" />
     <ClInclude Include="include\timer.h" />
     <ClInclude Include="include\transform.h" />
@@ -55,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\archetype.cpp" />
+    <ClCompile Include="src\boundingbox.cpp" />
     <ClCompile Include="src\component.cpp" />
     <ClCompile Include="src\component_chunk.cpp" />
     <ClCompile Include="src\component_group.cpp" />
@@ -63,20 +60,15 @@
     <ClCompile Include="src\entity.cpp" />
     <ClCompile Include="src\entitymanager.cpp" />
     <ClCompile Include="src\event.cpp" />
-    <ClCompile Include="src\math\boundingbox.cpp" />
-    <ClCompile Include="src\math\euler_rotation.cpp" />
-    <ClCompile Include="src\math\mathcore.cpp" />
-    <ClCompile Include="src\math\mathutils.cpp" />
-    <ClCompile Include="src\math\matrix.cpp" />
-    <ClCompile Include="src\math\plane.cpp" />
-    <ClCompile Include="src\math\quaternion.cpp" />
-    <ClCompile Include="src\math\ray.cpp" />
-    <ClCompile Include="src\math\spectrum.cpp" />
-    <ClCompile Include="src\math\sphere.cpp" />
-    <ClCompile Include="src\math\vector.cpp" />
+    <ClCompile Include="src\math_core.cpp" />
+    <ClCompile Include="src\math_utils.cpp" />
     <ClCompile Include="src\object.cpp" />
+    <ClCompile Include="src\plane.cpp" />
     <ClCompile Include="src\pool.cpp" />
     <ClCompile Include="src\core_register.cpp" />
+    <ClCompile Include="src\ray.cpp" />
+    <ClCompile Include="src\spectrum.cpp" />
+    <ClCompile Include="src\sphere.cpp" />
     <ClCompile Include="src\system.cpp" />
     <ClCompile Include="src\transform.cpp" />
     <ClCompile Include="src\transform_parent.cpp" />
@@ -163,7 +155,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\3rdparty</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\3rdparty;$(SolutionDir)\3rdparty\mathfu\include</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>core_private.h</PrecompiledHeaderFile>
       <IntrinsicFunctions>false</IntrinsicFunctions>
@@ -175,7 +167,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\3rdparty</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\3rdparty;$(SolutionDir)\3rdparty\mathfu\include</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>core_private.h</PrecompiledHeaderFile>
       <IntrinsicFunctions>false</IntrinsicFunctions>
@@ -189,7 +181,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\3rdparty</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\3rdparty;$(SolutionDir)\3rdparty\mathfu\include</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>core_private.h</PrecompiledHeaderFile>
       <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -208,7 +200,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\3rdparty</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\3rdparty;$(SolutionDir)\3rdparty\mathfu\include</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>core_private.h</PrecompiledHeaderFile>
       <WholeProgramOptimization>true</WholeProgramOptimization>

@@ -5,22 +5,22 @@ IMPLEMENT_TYPE(RenderBird, AreaLight)
 
 namespace RenderBird
 {
-	bool AreaLightUtils::SampleDisk(EntityId areaLightId, const Vector2f& rand2d, SurfaceSample* ss, LightSample* ls)
+	bool AreaLightUtils::SampleDisk(EntityId id, const Vector2f& rand2d, SurfaceSample* ss, LightSample* ls)
 	{
-		Disk* disk = EntityManager::Instance().GetComponent<Disk>(areaLightId);
-		Transform* trans = EntityManager::Instance().GetComponent<Transform>(areaLightId);
-		LightProperty* lightProp = EntityManager::Instance().GetComponent<LightProperty>(areaLightId);
-		if (disk == nullptr || trans == nullptr || lightProp == nullptr)
+		DiskComponent* comp = EntityManager::Instance().GetComponent<DiskComponent>(id);
+		Transform* trans = EntityManager::Instance().GetComponent<Transform>(id);
+		LightProperty* lightProp = EntityManager::Instance().GetComponent<LightProperty>(id);
+		if (comp == nullptr || trans == nullptr || lightProp == nullptr)
 		{
 			return false;
 		}
 		const Matrix4f objToWorld = TransformUtils::GetMatrix(trans);
 
 		Vector2f pd = SampleUtils::ToUnitDisk(rand2d);
-		Vector3f objPos(pd.x * disk->m_radius, pd.y * disk->m_radius, 0);
-		ls->m_normal = objToWorld.TransformDirection(Vector3f::UNIT_Z).GetNormalized();
-		ls->m_position = objToWorld.TransformPoint(objPos);
-		ls->m_pdf = 1.0f / DiskUtils::GetArea(disk);
+		Vector3f objPos(pd.x * comp->m_radius, pd.y * comp->m_radius, 0);
+		ls->m_normal = MathUtils::TransformDirection(objToWorld, C_AxisZ_v3f).Normalized();
+		ls->m_position = objToWorld * (objPos);
+		ls->m_pdf = 1.0f / DiskComponentUtils::GetArea(comp);
 		Vector3f vecLight = ls->m_position - ss->m_position;
 		ls->m_distance = vecLight.Length();
 		if (ls->m_distance == 0 || !PathTracingUtils::SampleHemisphere(-vecLight, ls->m_normal))

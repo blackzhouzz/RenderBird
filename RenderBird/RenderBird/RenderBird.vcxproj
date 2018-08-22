@@ -99,7 +99,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\runtime\include;$(SolutionDir)\3rdparty;D:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\3rdparty;D:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include;$(SolutionDir)\3rdparty\mathfu\include;$(SolutionDir)\3rdparty\fiber-job-system\include</AdditionalIncludeDirectories>
       <IntrinsicFunctions>false</IntrinsicFunctions>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -109,7 +109,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\runtime\include;$(SolutionDir)\3rdparty;D:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\3rdparty;D:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include;$(SolutionDir)\3rdparty\mathfu\include;$(SolutionDir)\3rdparty\fiber-job-system\include</AdditionalIncludeDirectories>
       <IntrinsicFunctions>false</IntrinsicFunctions>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -121,7 +121,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\3rdparty;D:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\3rdparty;D:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include;$(SolutionDir)\3rdparty\mathfu\include;$(SolutionDir)\3rdparty\fiber-job-system\include</AdditionalIncludeDirectories>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
@@ -138,7 +138,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\3rdparty;D:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\3rdparty;D:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include;$(SolutionDir)\3rdparty\mathfu\include;$(SolutionDir)\3rdparty\fiber-job-system\include</AdditionalIncludeDirectories>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
@@ -151,9 +151,8 @@
     <ClInclude Include="..\3rdparty\CImg\CImg.h" />
     <ClInclude Include="include\arealight.h" />
     <ClInclude Include="include\bsdf.h" />
-    <ClInclude Include="include\camera.h" />
     <ClInclude Include="include\camera_component.h" />
-    <ClInclude Include="include\disk.h" />
+    <ClInclude Include="include\disk_component.h" />
     <ClInclude Include="include\fbx_import_utils.h" />
     <ClInclude Include="include\geometrycomponent.h" />
     <ClInclude Include="include\geometry_generator.h" />
@@ -163,8 +162,6 @@
     <ClInclude Include="include\mesh_component.h" />
     <ClInclude Include="include\pathtracing.h" />
     <ClInclude Include="include\pathtracing_common.h" />
-    <ClInclude Include="include\raycastsys.h" />
-    <ClInclude Include="include\rayhitinfo.h" />
     <ClInclude Include="include\renderbird_private.h" />
     <ClInclude Include="include\renderbird_register.h" />
     <ClInclude Include="include\renderer.h" />
@@ -173,6 +170,7 @@
     <ClInclude Include="include\sample_utils.h" />
     <ClInclude Include="include\scene.h" />
     <ClInclude Include="include\shape.h" />
+    <ClInclude Include="include\sphere_component.h" />
     <ClInclude Include="include\texture.h" />
     <ClInclude Include="include\trianglemesh.h" />
   </ItemGroup>
@@ -180,9 +178,8 @@
     <ClCompile Include="include\geometry_generator.cpp" />
     <ClCompile Include="src\arealight.cpp" />
     <ClCompile Include="src\bsdf.cpp" />
-    <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\camera_component.cpp" />
-    <ClCompile Include="src\disk.cpp" />
+    <ClCompile Include="src\disk_component.cpp" />
     <ClCompile Include="src\fbx_import_utils.cpp" />
     <ClCompile Include="src\image_output.cpp" />
     <ClCompile Include="src\integrator.cpp" />
@@ -191,13 +188,13 @@
     <ClCompile Include="src\mesh_component.cpp" />
     <ClCompile Include="src\pathtracing.cpp" />
     <ClCompile Include="src\pathtracing_common.cpp" />
-    <ClCompile Include="src\raycastsys.cpp" />
     <ClCompile Include="src\renderbird_register.cpp" />
     <ClCompile Include="src\renderer.cpp" />
     <ClCompile Include="src\sampler.cpp" />
     <ClCompile Include="src\sample_utils.cpp" />
     <ClCompile Include="src\scene.cpp" />
     <ClCompile Include="src\shape.cpp" />
+    <ClCompile Include="src\sphere_component.cpp" />
     <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\trianglemesh.cpp" />
   </ItemGroup>

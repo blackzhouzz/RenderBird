@@ -1,6 +1,6 @@
 #pragma once
 #include "renderbird_private.h"
-#include "disk.h"
+#include "disk_component.h"
 
 namespace RenderBird
 {

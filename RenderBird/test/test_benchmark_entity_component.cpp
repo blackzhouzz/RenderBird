@@ -43,8 +43,7 @@ void Test_BenchmarkEntitySlow()
 	time.Begin();
 	for (std::list<Transform>::iterator itr = trans.begin(); itr != trans.end(); ++itr)
 	{
-		itr->m_position = Vector3f::ZERO;
-		//itr->m_needUpdate = false;
+		itr->m_position = C_Zero_v3f;
 		//itr->m_scale = Vector3f(0, 1, 0);
 	}
 	std::cout << "slow iterator component benchmark ms: " << time.End() << std::endl;
@@ -88,7 +87,7 @@ void Test_BenchmarkEntityFastest()
 	{
 		auto transform = visitor.Get<Transform>();
 		auto id = visitor.GetEntityId();
-		transform->m_position = Vector3f::ZERO;
+		transform->m_position = C_Zero_v3f;
 
 		//auto lp = visitor.Get<RenderBird::LightProperty>();
 		//lp->m_intensity = 2;

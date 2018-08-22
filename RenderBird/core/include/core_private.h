@@ -3,6 +3,7 @@
 #include <memory>
 #include <assert.h>
 #include <vector>
+#include <type_traits>
 
 #  ifdef CORE_DLL
 #    ifdef CORE_DLL_INTERNAL
@@ -26,6 +27,7 @@ using uint16 = unsigned short;
 using uint32 = unsigned int;
 using uint64 = unsigned long long;
 
+#define USE_HIGH_PRECISE
 #ifdef USE_HIGH_PRECISE
 using Float = double;
 #else

@@ -1,6 +1,6 @@
 #pragma once
 #include "renderbird_private.h"
-#include "rayhitinfo.h"
+#include "trianglemesh.h"
 
 namespace RenderBird
 {
@@ -10,7 +10,7 @@ namespace RenderBird
 	};
 	struct MeshComponentUtils
 	{
-		static bool Intersect(MeshComponent* comp, const Matrix4f& objToWorld,const Ray& ray, RayHitInfo* hitInfo);
+		static bool Intersect(EntityId id, const Ray& ray, RayHitInfo* hitInfo);
 		static bool IntersectTriangle(TriangleMesh* trimesh, TriangleMesh::MeshData* meshData, const Ray& ray, RayHitInfo* hitInfo, uint32 faceIndex);
 	};
 }

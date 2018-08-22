@@ -12,7 +12,7 @@ namespace Core
 	{\
 		static TypeInfo* Value()\
 		{\
-			static_assert(std::is_pod<Module::Type>::value, "Component type must be pod!");\
+			static_assert(std::is_trivially_copyable<Module::Type>::value, "Component type must be copyable!");\
 			static TypeInfo* typeInfo = nullptr;\
 			if (typeInfo == nullptr)\
 			{\

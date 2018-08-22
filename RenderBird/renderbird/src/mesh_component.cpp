@@ -25,9 +25,9 @@ namespace RenderBird
 
 		/* Perform edge tests. */
 
-		const Float U = Dot(Cross(v0 + v1, e0), ray_dir);
-		const Float V = Dot(Cross(v1 + v2, e1), ray_dir);
-		const Float W = Dot(Cross(v2 + v0, e2), ray_dir);
+		const Float U = Vector3f::DotProduct(Vector3f::CrossProduct(v0 + v1, e0), ray_dir);
+		const Float V = Vector3f::DotProduct(Vector3f::CrossProduct(v1 + v2, e1), ray_dir);
+		const Float W = Vector3f::DotProduct(Vector3f::CrossProduct(v2 + v0, e2), ray_dir);
 		const Float minUVW = std::min(U, std::min(V, W));
 		const Float maxUVW = std::max(U, std::max(V, W));
 
@@ -36,10 +36,10 @@ namespace RenderBird
 		}
 
 		/* Calculate geometry normal and denominator. */
-		const Vector3f Ng1 = Cross(e1, e0);
+		const Vector3f Ng1 = Vector3f::CrossProduct(e1, e0);
 		//const Vec3vfM Ng1 = stable_triangle_normal(e2,e1,e0);
 		const Vector3f Ng = Ng1 + Ng1;
-		const Float den = Dot(Ng, dir);
+		const Float den = Vector3f::DotProduct(Ng, dir);
 		/* Avoid division by 0. */
 		if (den == 0.0f)
 		{
@@ -47,7 +47,7 @@ namespace RenderBird
 		}
 
 		/* Perform depth test. */
-		const Float T = Dot(v0, Ng);
+		const Float T = Vector3f::DotProduct(v0, Ng);
 		const int sign_den = ((int)(den) & 0x80000000);
 		const Float sign_T = xor_signmask(T, sign_den);
 		if ((sign_T < 0.0f) ||
@@ -75,11 +75,11 @@ namespace RenderBird
 
 		// Begin calculating determinant; also used to calculate U parameter
 
-		Vector3f pvec = Cross(ray_dir, edge2);
+		Vector3f pvec = Vector3f::CrossProduct(ray_dir, edge2);
 
 		// If determinant is near zero, ray lies in plane of triangle
 
-		const Float det = Dot(edge1, pvec);
+		const Float det = Vector3f::DotProduct(edge1, pvec);
 		Float u, v, t;
 		if (doubleSide)
 		{
@@ -96,25 +96,25 @@ namespace RenderBird
 			Vector3f tvec = ray_P - v0;
 
 			// Calculate U parameter and test bounds
-			u = Dot(tvec, pvec) * inv_det;
+			u = Vector3f::DotProduct(tvec, pvec) * inv_det;
 			if (u < 0.0f || u > 1.0f)
 				return false;
 
 			// Prepare to test V parameter
 
-			Vector3f qvec = Cross(tvec, edge1);
+			Vector3f qvec = Vector3f::CrossProduct(tvec, edge1);
 
 			// Calculate V parameter and test bounds
 
-			v = Dot(ray_dir, qvec) * inv_det;
-			//sub C_FLOAT_EPSILON_HIGH solve z fighting
-			if (v < 0.0f || u + v >= 1.0f - C_FLOAT_EPSILON_HIGH)
+			v = Vector3f::DotProduct(ray_dir, qvec) * inv_det;
+			//sub epsilon solve z fighting
+			if (v < 0.0f || u + v >= 1.0f - C_FLOAT_EPSILON)
 				return false;
 
 			// Calculate t, final check to see if ray intersects triangle. Test to
 			// see if t > tFar added for consistency with other algorithms in experiment.
 
-			t = Dot(edge2, qvec) * inv_det;
+			t = Vector3f::DotProduct(edge2, qvec) * inv_det;
 			if (t <= C_FLOAT_EPSILON || t >= ray_t)
 				return false;
 		}
@@ -124,17 +124,17 @@ namespace RenderBird
 				return false;
 			Vector3f tvec = ray_P - v0;
 
-			u = Dot(tvec, pvec);
+			u = Vector3f::DotProduct(tvec, pvec);
 			if (u < 0.0f || u > det)
 				return false;
 
-			Vector3f qvec = Cross(tvec, edge1);
+			Vector3f qvec = Vector3f::CrossProduct(tvec, edge1);
 
-			v = Dot(ray_dir, qvec);
+			v = Vector3f::DotProduct(ray_dir, qvec);
 			if (v < 0.0f || u + v > det)
 				return false;
 
-			t = Dot(edge2, qvec);
+			t = Vector3f::DotProduct(edge2, qvec);
 			const Float inv_det = 1.0f / det;
 
 			t *= inv_det;
@@ -158,34 +158,39 @@ namespace RenderBird
 		Float u, v, t;
 		if (ray_triangle_intersect_ex(ray.m_origin, ray.m_direction, ray.m_maxT, v0, v1, v2, &u, &v, &t, true))
 		{
-			if (hitInfo->m_hasHit == false || lt(t, hitInfo->m_t))
+			if (!hitInfo->HasHit() || lt(t, hitInfo->m_t))
 			{
 				hitInfo->m_u = u;
 				hitInfo->m_v = v;
 				hitInfo->m_t = t;
 				if (faceData.m_materialId < trimesh->m_materials.size())
 					hitInfo->m_material = trimesh->m_materials[faceData.m_materialId];
-				hitInfo->m_geomNormal = (Cross(v1 - v0, v2 - v0)).GetNormalized();
+				hitInfo->m_geomNormal = (Vector3f::CrossProduct(v2 - v0, v1 - v0)).Normalized();
 				const Vector3f& n0 = meshData->m_vertexData[faceData.m_v0].m_normal;
 				const Vector3f& n1 = meshData->m_vertexData[faceData.m_v1].m_normal;
 				const Vector3f& n2 = meshData->m_vertexData[faceData.m_v2].m_normal;
-				hitInfo->m_normal = (n0 * (1.0f - u - v) + n1 * u + n2 * v).GetNormalized();
+				hitInfo->m_normal = (n0 * (1.0f - u - v) + n1 * u + n2 * v).Normalized();
 				hitInfo->m_position = (v0 * (1.0f - u - v) + v1 * u + v2 * v);
-				hitInfo->m_hasHit = true;
 				return true;
 			}
 		}
 		return false;
 	}
 
-	bool MeshComponentUtils::Intersect(MeshComponent* comp, const Matrix4f& objToWorld, const Ray& ray, RayHitInfo* hitInfo)
+	bool MeshComponentUtils::Intersect(EntityId id, const Ray& ray, RayHitInfo* hitInfo)
 	{
+		MeshComponent* comp = EntityManager::Instance().GetComponent<MeshComponent>(id);
+		Transform* trans = EntityManager::Instance().GetComponent<Transform>(id);
+		if (comp == nullptr || trans == nullptr)
+			return false;
+		const Matrix4f objToWorld = TransformUtils::GetMatrix(trans);
+
 		TriangleMesh* trimesh = comp->m_trimesh;
 		if (trimesh->m_triMeshData == nullptr)
 			return false;
 
-		Matrix4f worldToObj = objToWorld.InverseSafe();
-		Ray objRay = Ray::TransformRay(ray, worldToObj);
+		Matrix4f worldToObj = objToWorld.Inverse();
+		Ray objRay = Ray::TransformBy(ray, worldToObj);
 
 		auto faceCount = trimesh->GetFaceCount();
 		bool hasIntersected = false;

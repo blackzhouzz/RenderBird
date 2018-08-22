@@ -2,10 +2,7 @@
 #include <vector>
 #include <memory>
 #include "image_output.h"
-#include "math/spectrum.h"
-#include "camera.h"
 #include "pathtracing.h"
-#include "math/rect2.h"
 #include "scene.h"
 
 namespace RenderBird
@@ -17,31 +14,33 @@ namespace RenderBird
 		int m_resX;
 		int m_resY;
 		bool m_useJob;
+		int m_maxBounce;
+		int m_numSamples;
 	};
 	class Renderer;
 
 	class TileRenderer
 	{
 	public:
-		TileRenderer(Renderer* renderer, int x, int y, int sizeX, int sizeY)
-			: m_renderer(renderer), m_x(x), m_y(y), m_sizeX(sizeX), m_sizeY(sizeY)
-		{
-		}
+		TileRenderer(Renderer* renderer, int x, int y, int sizeX, int sizeY);
 		void Render();
 		void Finish();
+		const Vector2i& GetBoundMin()const { return m_boundMin; }
+		const Vector2i& GetBoundMax()const { return m_boundMax; }
 	private:
 		Renderer* m_renderer;
 		int m_sizeX;
 		int m_sizeY;
 		int m_x;
 		int m_y;
+		Vector2i m_boundMin;
+		Vector2i m_boundMax;
 	};
 
 	struct CameraData
 	{
 		Matrix4f m_worldToCamera;
 		Matrix4f m_cameraToWorld;
-		Matrix4f m_rasterToWorld;
 		Matrix4f m_worldToScreen;
 		Matrix4f m_rasterToCamera;
 		Rect2f m_screenBound;
@@ -50,7 +49,6 @@ namespace RenderBird
 	struct RenderContext
 	{
 		CameraData m_camera;
-
 	};
 
 	class Renderer : public Singleton<Renderer>
@@ -63,13 +61,13 @@ namespace RenderBird
 		void Finish();
 		bool IsInBound(int x, int y)const;
 		const RendererSetting& GetRendererSetting()const;
-		void SetColor(int pixelX, int pixelY, const Core::RGB32& color);
-		Core::RGB32 GetColor(int pixelX, int pixelY)const;
-		void GenerateCameraRay(int pixelX, int pixelY, Ray* ray);
+		void AddSample(const Vector2f& uv, const Vector2i& boundMin, const Vector2i& boundMax, const Radiance& L);
+		PixelData& GetPixelDataAt(int pixelX, int pixelY);
+		void GenerateCameraRay(const CameraSample& cameraSample, Ray* ray);
 	public:
 		RendererSetting m_setting;
 		std::vector<TileRenderer*> m_tileRenderers;
-		Core::RGB32* m_data;
+		PixelData* m_data;
 		PathTracing* m_integrator;
 		RenderContext m_renderContext;
 	public:

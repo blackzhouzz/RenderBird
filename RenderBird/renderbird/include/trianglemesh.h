@@ -65,11 +65,6 @@ namespace RenderBird
 		MeshData* m_triMeshData;
 		std::vector<Material*> m_materials;
 	};
-
-	class TriangleMeshUtils
-	{
-		static void SampleTriangleMesh(const Vector2f& uv, Float* pdf);
-	};
 }
 
 DECLEAR_TYPE(RenderBird, TriangleMesh, Core::Object);

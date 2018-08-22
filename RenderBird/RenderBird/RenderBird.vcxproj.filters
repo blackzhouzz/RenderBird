@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\disk.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\geometrycomponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -28,12 +25,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\pathtracing.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\raycastsys.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rayhitinfo.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\renderer.h">
@@ -52,9 +43,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\geometry_generator.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\camera.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\image_output.h">
@@ -96,11 +84,14 @@
     <ClInclude Include="include\arealight.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\disk_component.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sphere_component.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\disk.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\integrator.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -108,9 +99,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\pathtracing.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\raycastsys.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\renderer.cpp">
@@ -126,9 +114,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="include\geometry_generator.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\camera.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\image_output.cpp">
@@ -165,6 +150,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\pathtracing_common.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\disk_component.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sphere_component.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

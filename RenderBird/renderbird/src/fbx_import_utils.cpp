@@ -111,10 +111,10 @@ namespace RenderBird
 		auto lS = mat.GetS();
 		auto lQ = mat.GetQ();
 
-		return MathUtils::MakeTransform(
+		return MathUtils::TRS(
 			Vector3f(Float(lT[0]), Float(lT[1]), Float(lT[2])),
 			Quaternion(Float(lQ[0]), Float(lQ[1]), Float(lQ[2]), Float(lQ[3])),
-			Vector3f::ONE
+			C_One_v3f
 		);
 	}
 
@@ -126,7 +126,7 @@ namespace RenderBird
 
 		auto lM = FbxAMatrix(lT, lR, lS);
 		auto lQ = lM.GetQ();
-		return MathUtils::MakeTransform(
+		return MathUtils::TRS(
 			Vector3f(Float(lT[0]), Float(lT[1]), Float(lT[2])),
 			Quaternion(Float(lQ[0]), Float(lQ[1]), Float(lQ[2]), Float(lQ[3])),
 			Vector3f(Float(lS[0]), Float(lS[1]), Float(lS[2]))
@@ -289,7 +289,7 @@ namespace RenderBird
 				{
 					TriangleMesh* trimesh = ImportMesh(state, fbxscene, node->GetMesh());
 					Vector3f center = trimesh->GetMeshData()->m_localBoundingBox.GetCenter();
-					scene->AddTestDiskLight(center);
+					//scene->AddTestDiskLight(center);
 				}
 				else
 				{

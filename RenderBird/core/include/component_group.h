@@ -140,6 +140,8 @@ namespace Core
 		}
 		bool HasNext()const
 		{
+			if (m_group == nullptr)
+				return false;
 			return m_currentIndex < m_group->GetComponentCount();
 		}
 		template<typename T>
@@ -159,7 +161,10 @@ namespace Core
 	private:
 		void Unpack()
 		{
-			UnpackImpl<0, Types...>();
+			if (m_group != nullptr)
+			{
+				UnpackImpl<0, Types...>();
+			}
 		}
 		template <int N, typename C>
 		void UnpackImpl()

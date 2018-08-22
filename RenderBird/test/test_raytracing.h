@@ -9,5 +9,4 @@ public:
 	void Run();
 private:
 	Renderer* m_renderer;
-	RendererSetting m_settings;
 };

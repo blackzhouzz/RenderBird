@@ -1,0 +1,6 @@
+[submodule "RenderBird/3rdparty/mathfu"]
+	path = RenderBird/3rdparty/mathfu
+	url = https://github.com/google/mathfu.git
+[submodule "RenderBird/3rdparty/fiber-job-system"]
+	path = RenderBird/3rdparty/fiber-job-system
+	url = https://github.com/Freeeaky/fiber-job-system.git

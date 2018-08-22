@@ -3,10 +3,52 @@
 
 namespace RenderBird
 {
+	class Material;
+	struct RayHitInfo
+	{
+		RayHitInfo()
+			: m_position(C_Zero_v3f)
+			, m_normal(C_Zero_v3f)
+			, m_material(nullptr)
+			, m_geomNormal(C_Zero_v3f)
+			, m_u(0)
+			, m_v(0)
+			, m_t(0)
+		{
+		}
+		void TransformBy(const Matrix4f& mat)
+		{
+			m_position = mat * m_position;
+			m_geomNormal = (mat * (m_geomNormal)).Normalized();
+			m_normal = (mat * (m_normal)).Normalized();
+		}
+		bool HasHit()const
+		{
+			return m_t != 0;
+		}
+		Vector3f m_position;
+		Vector3f m_normal;
+		Vector3f m_geomNormal;
+		Material* m_material;
+		Float m_u;
+		Float m_v;
+		Float m_t;
+	};
 	struct Radiance
 	{
+		Radiance()
+			: m_directDiffuse(RGB32::BLACK)
+		{
+		}
 		RGB32 m_directDiffuse;
 		//RGB32 m_indirect;
+	};
+
+	struct SampleInfo
+	{
+		Vector3f m_position;
+		Vector3f m_normal;
+		Float m_pdf;
 	};
 
 	struct SurfaceSample
@@ -15,18 +57,12 @@ namespace RenderBird
 		Vector3f m_geomNormal;
 		Vector3f m_normal;
 		Vector3f m_wo;
-		//Material* m_material;
 		bool m_isBackfacing;
 		class BSDF* m_bsdf;
 	};
 
 	struct LightSample
 	{
-		LightSample()
-			: m_pdf(0.0f)
-			, m_li(RGB32::BLACK)
-		{
-		}
 		Vector3f m_position;
 		Vector3f m_normal;
 		Vector3f m_wi;
@@ -56,10 +92,35 @@ namespace RenderBird
 		}
 	};
 
+	struct CameraSample
+	{
+		Vector2f m_pixel;
+	};
+
+	struct PixelData
+	{
+		PixelData()
+			: m_colorSum(RGB32::BLACK)
+			, m_weight(0.0f)
+		{
+		}
+		RGB32 m_colorSum;
+		Float m_weight;
+		RGB32 GetColor()const
+		{
+			if (m_weight == 0.0f)
+			{
+				return m_colorSum;
+			}
+			return m_colorSum / m_weight;
+		}
+	};
+
 	struct PathTracingUtils
 	{
-		static void InitRadiance(Radiance* L);
 		static RGB32 EvalEmissive(const Vector3f& geomNormal, const Vector3f& dir, const RGB32& lightColor);
 		static bool SampleHemisphere(const Vector3f& w1, const Vector3f& w2);
+		static Float GammaCorrect(Float value);
 	};
+
 }

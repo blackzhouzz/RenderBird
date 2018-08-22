@@ -1,4 +1,5 @@
 #include "image_output.h"
+#include "pathtracing_common.h"
 
 namespace RenderBird
 {
@@ -15,15 +16,19 @@ namespace RenderBird
 		}
 	}
 
-	void ImageOutput::WriteBMP(std::string filePath, RGB32* data, size_t resX, size_t resY)
+	void ImageOutput::WriteBMP(std::string filePath, PixelData* data, size_t resX, size_t resY)
 	{
-		HorizontalFlip(data, resX, resY);
+		//HorizontalFlip(data, resX, resY);
 		size_t size = resX * resY;
 		RGB8* rgb8 = new RGB8[size];
 
 		for (int i = 0; i < size; ++i)
 		{
-			rgb8[i] = RGB32toRGB8(data[i]);
+			RGB32 color = data[i].GetColor();
+			color[0] = PathTracingUtils::GammaCorrect(color[0]);
+			color[1] = PathTracingUtils::GammaCorrect(color[1]);
+			color[2] = PathTracingUtils::GammaCorrect(color[2]);
+			rgb8[i] = RGB32toRGB8(color);
 		}
 		const uint8* ptrs = (const uint8*)rgb8;
 		CImg<uint8> img = CImg<uint8>(resX, resY, 1, 3);
