@@ -20,6 +20,7 @@ namespace RenderBird
 			Sampler* m_sampler;
 			CameraSample m_cameraSample;
 			int m_curSamplerIndex;
+			bool m_useMis;
 		};
 		PathTracing(Renderer* renderer);
 		void Render(int pixelX, int pixelY, TileRenderer* tile);

@@ -76,6 +76,7 @@ public:
 		, m_superTypeInfo(superTypeInfo)
 		, m_flags(flags)
 	{
+		static_assert(TypeId<T>::value != 0, "type id not registered!");
 	}
 	virtual void* New()const { return Allocator::New();}
 	virtual void Delete(void* data)const { return Allocator::Delete(data); }

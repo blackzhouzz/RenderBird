@@ -1,5 +1,6 @@
 #pragma once
 #include "core_private.h"
+#include "core_register.h"
 #include "component.h"
 #include "typeinfo.h"
 #include "math_utils.h"

@@ -6,6 +6,7 @@ namespace RenderBird
 {
 	struct AreaLight
 	{
+		bool m_isDoubleSide;
 	};
 
 	struct AreaLightUtils
@@ -16,4 +17,5 @@ namespace RenderBird
 
 DECLEAR_TYPE_COMPONENT(RenderBird, AreaLight);
 DEFAULT_BEGIN(RenderBird, AreaLight)
+DEFAULT_DATA(true)
 DEFAULT_END()

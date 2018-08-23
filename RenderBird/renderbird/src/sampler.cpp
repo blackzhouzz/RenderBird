@@ -24,6 +24,7 @@ namespace RenderBird
 	{
 		CameraSample ret;
 		Vector2f rand2d = Random2D();
+		//rand2d = C_Zero_v2f;
 		ret.m_pixel = Vector2f(pixelX + rand2d.x, pixelY + rand2d.y);
 		return ret;
 	}

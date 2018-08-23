@@ -78,6 +78,10 @@ namespace RenderBird
 		{
 		}
 		RGB32 m_diffuse;
+		void Mul(Float value)
+		{
+			m_diffuse *= value;
+		}
 		void Mul(RGB32 value)
 		{
 			m_diffuse *= value;

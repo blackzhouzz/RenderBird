@@ -8,6 +8,7 @@
 #include "fbx_import_utils.h"
 #include "disk_component.h"
 #include "sphere_component.h"
+#include "arealight.h"
 
 namespace RenderBird
 {
@@ -42,7 +43,7 @@ namespace RenderBird
 		CreateMeshTest();
 		//CreateLightTest();
 		//AddTestDiskLight(Vector3f(0, 0, 1.2));
-		AddTestDiskLight(Vector3f(0, 0, 1.8));
+		AddTestDiskLight(Vector3f(0, 0, 2.0));
 		CreateCameraTest();
 	}
 
@@ -144,16 +145,17 @@ namespace RenderBird
 
 	void Scene::AddTestDiskLight(const Vector3f& pos)
 	{
-		auto archetype = EntityManager::IntancePtr()->CreateArchetype<Transform, DiskComponent, LightProperty>();
+		auto archetype = EntityManager::IntancePtr()->CreateArchetype<AreaLight, Transform, DiskComponent, LightProperty>();
 		m_lightId = EntityManager::IntancePtr()->CreateEntity(archetype);
 		auto disk = EntityManager::IntancePtr()->GetComponent<DiskComponent>(m_lightId);
+		auto area = EntityManager::IntancePtr()->GetComponent<AreaLight>(m_lightId);
 		disk->m_innerRadius = 0;
 		disk->m_radius = 1.0f;
 		disk->m_phiMax = C_2_PI;
 		auto trans = EntityManager::IntancePtr()->GetComponent<Transform>(m_lightId);
 		//TransformUtils::LookAt(trans, pos, pos + dir, C_AxisZ_v3f);
 		trans->m_position = pos;
-		trans->m_rotation = Quaternion::FromEulerAngles(Vector3f(0, DegToRad(180.0), 0));
+		//trans->m_rotation = Quaternion::FromEulerAngles(Vector3f(0, DegToRad(180.0), 0));
 		auto mat = TransformUtils::GetMatrix(trans);
 		auto vec = MathUtils::TransformDirection(mat, C_AxisZ_v3f);
 

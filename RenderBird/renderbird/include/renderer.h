@@ -16,6 +16,7 @@ namespace RenderBird
 		bool m_useJob;
 		int m_maxBounce;
 		int m_numSamples;
+		bool m_useMis;
 	};
 	class Renderer;
 

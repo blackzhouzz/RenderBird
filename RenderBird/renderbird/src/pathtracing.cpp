@@ -87,6 +87,12 @@ namespace RenderBird
 			BsdfSpectrum bs;
 			Float pdf = 0.0;
 			EvalBSDF(state, ss, ls.m_wi, &pdf, &bs);
+			if (state->m_useMis)
+			{
+				Float weight = SampleUtils::PowerHeuristic(ls.m_pdf, pdf);
+				bs.Mul(weight);
+			}
+
 			bs.Mul(ls.m_li / ls.m_pdf);
 			if (!bs.IsZero())
 			{
@@ -138,16 +144,18 @@ namespace RenderBird
 
 	void PathTracing::InitState(int pixelX, int pixelY, State* state)
 	{
+		auto setting = m_renderer->GetRendererSetting();
 		state->m_pixelX = pixelX;
 		state->m_pixelY = pixelY;
 		state->m_currentBounce = 0;
 		state->m_throughtput = RGB32::WHITE;
-		state->m_sampler = new Sampler(m_renderer->GetRendererSetting().m_numSamples);
+		state->m_sampler = new Sampler(setting.m_numSamples);
+		state->m_useMis = setting.m_useMis;
 	}
 
 	void PathTracing::Render(int pixelX, int pixelY, TileRenderer* tile)
 	{
-		if (pixelX == 93 && pixelY == 56)
+		if (pixelX == 28 && pixelY == 39)
 		{
 			pixelX = pixelX;
 		}
