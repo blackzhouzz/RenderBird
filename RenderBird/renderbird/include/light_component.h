@@ -22,7 +22,7 @@ namespace RenderBird
 
 	struct DistantLightComponentUtils
 	{
-		static bool Sample(EntityId id, const Vector2f& rand2d, SurfaceSample* ss, LightSample* ls);
+		static bool Sample(EntityId id, const Vector2f& rand2d, SurfaceSample* ss, LightSample* ls, Float* pdf);
 	};
 }
 

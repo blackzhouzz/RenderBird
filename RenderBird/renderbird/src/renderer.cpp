@@ -50,7 +50,7 @@ namespace RenderBird
 		m_setting.m_resY = 256;
 		m_setting.m_tileSizeX = 16;
 		m_setting.m_tileSizeY = 16;
-		m_setting.m_useJob = false;
+		m_setting.m_useJob = true;
 		m_setting.m_maxBounce = 3;
 		m_setting.m_numSamples = 10;
 		m_setting.m_useMis = false;

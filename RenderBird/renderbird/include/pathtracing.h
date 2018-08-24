@@ -31,9 +31,9 @@ namespace RenderBird
 		void Integrate(State* state, Radiance* L);
 		bool SampleLight(State* state, SurfaceSample* ss, Radiance* L);
 		void EvalBSDF(State* state, SurfaceSample* ss, const Vector3f& wi, Float* pdf, BsdfSpectrum* bs);
-		void AccumRadianceSpectrum(State* state, BsdfSpectrum* bs, Radiance* L);
-		void AccumBSDFSpectrum(SurfaceSample* ss, BsdfSpectrum* bs, const RGB32& value);
+		void AccumRadiance(State* state, BsdfSpectrum* bs, Radiance* L);
 		bool ProbabilityStop();
+		bool ShadowBlocked();
 	private:
 		Renderer* m_renderer;
 	};

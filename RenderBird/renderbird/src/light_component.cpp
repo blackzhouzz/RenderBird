@@ -6,7 +6,7 @@ IMPLEMENT_TYPE(RenderBird, DistantLightComponent)
 
 namespace RenderBird
 {
-	bool DistantLightComponentUtils::Sample(EntityId id, const Vector2f& rand2d, SurfaceSample* ss, LightSample* ls)
+	bool DistantLightComponentUtils::Sample(EntityId id, const Vector2f& rand2d, SurfaceSample* ss, LightSample* ls, Float* pdf)
 	{
 		DistantLightComponent* comp = EntityManager::Instance().GetComponent<DistantLightComponent>(id);
 		Transform* trans = EntityManager::Instance().GetComponent<Transform>(id);
@@ -19,7 +19,7 @@ namespace RenderBird
 		ls->m_wi = -lightDir;
 		ls->m_distance = FLT_MAX;
 		ls->m_li = lightProp->m_color;
-		ls->m_pdf = 1.0f;
+		*pdf = 1.0f;
 		return true;
 	}
 }

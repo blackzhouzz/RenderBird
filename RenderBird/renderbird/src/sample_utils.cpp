@@ -75,7 +75,9 @@ namespace RenderBird
 
 	Float SampleUtils::PowerHeuristic(Float pdf1, Float pdf2)
 	{
-		return (pdf1 * pdf1) / (pdf1 * pdf1 + pdf2 * pdf2);
+		const Float sqrPdf1 = pdf1 * pdf1;
+		const Float sqrPdf2 = pdf2 * pdf2;
+		return sqrPdf1 / (sqrPdf1 + sqrPdf2);
 	}
 
 	Float SampleUtils::BalanceHeuristic(Float pdf1, Float pdf2)

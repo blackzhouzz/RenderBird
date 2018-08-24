@@ -19,8 +19,8 @@ namespace RenderBird
 		void TransformBy(const Matrix4f& mat)
 		{
 			m_position = mat * m_position;
-			m_geomNormal = (mat * (m_geomNormal)).Normalized();
-			m_normal = (mat * (m_normal)).Normalized();
+			m_geomNormal = MathUtils::TransformDirection(mat, m_geomNormal).Normalized();
+			m_normal = MathUtils::TransformDirection(mat, m_normal).Normalized();
 		}
 		bool HasHit()const
 		{
@@ -40,6 +40,7 @@ namespace RenderBird
 			: m_directDiffuse(RGB32::BLACK)
 		{
 		}
+		bool IsZero()const { return m_directDiffuse.IsZero(); }
 		RGB32 m_directDiffuse;
 		//RGB32 m_indirect;
 	};
@@ -67,7 +68,6 @@ namespace RenderBird
 		Vector3f m_normal;
 		Vector3f m_wi;
 		Float m_distance;
-		Float m_pdf;
 		RGB32 m_li;
 	};
 

@@ -177,7 +177,7 @@ namespace RenderBird
 		return false;
 	}
 
-	bool MeshComponentUtils::Intersect(EntityId id, const Ray& ray, RayHitInfo* hitInfo)
+	bool MeshComponentUtils::Intersect(EntityId id, const Ray& worldRay, RayHitInfo* hitInfo)
 	{
 		MeshComponent* comp = EntityManager::Instance().GetComponent<MeshComponent>(id);
 		Transform* trans = EntityManager::Instance().GetComponent<Transform>(id);
@@ -190,13 +190,17 @@ namespace RenderBird
 			return false;
 
 		Matrix4f worldToObj = objToWorld.Inverse();
-		Ray objRay = Ray::TransformBy(ray, worldToObj);
+		Ray ray = Ray::TransformBy(worldRay, worldToObj);
 
 		auto faceCount = trimesh->GetFaceCount();
 		bool hasIntersected = false;
 		for (uint32 faceIndex = 0; faceIndex < faceCount; ++faceIndex)
 		{
-			hasIntersected |= IntersectTriangle(trimesh, trimesh->m_triMeshData, objRay, hitInfo, faceIndex);
+			hasIntersected |= IntersectTriangle(trimesh, trimesh->m_triMeshData, ray, hitInfo, faceIndex);
+		}
+		if (hasIntersected)
+		{
+			hitInfo->TransformBy(objToWorld);
 		}
 		return hasIntersected;
 	}

@@ -18,9 +18,6 @@
     <ClInclude Include="include\geometrycomponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\integrator.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\material.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -90,11 +87,11 @@
     <ClInclude Include="include\sphere_component.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\render_statistic.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\integrator.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\material.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -156,6 +153,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\sphere_component.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render_statistic.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

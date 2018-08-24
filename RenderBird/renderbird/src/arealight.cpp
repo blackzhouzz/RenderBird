@@ -5,7 +5,7 @@ IMPLEMENT_TYPE(RenderBird, AreaLight)
 
 namespace RenderBird
 {
-	bool AreaLightUtils::SampleDisk(EntityId id, const Vector2f& rand2d, SurfaceSample* ss, LightSample* ls)
+	bool AreaLightUtils::SampleDisk(EntityId id, const Vector2f& rand2d, SurfaceSample* ss, LightSample* ls, Float* pdf)
 	{
 		DiskComponent* comp = EntityManager::Instance().GetComponent<DiskComponent>(id);
 		Transform* trans = EntityManager::Instance().GetComponent<Transform>(id);
@@ -21,24 +21,23 @@ namespace RenderBird
 		Vector3f objPos(pd.x * comp->m_radius, pd.y * comp->m_radius, 0);
 		ls->m_normal = MathUtils::TransformDirection(objToWorld, C_AxisZ_v3f).Normalized();
 		ls->m_position = objToWorld * (objPos);
-		ls->m_pdf = 1.0f / DiskComponentUtils::GetArea(comp);
+		*pdf = 1.0f / DiskComponentUtils::GetArea(comp);
 		Vector3f vecLight = ls->m_position - ss->m_position;
 		ls->m_distance = vecLight.Length();
 		if (ls->m_distance == 0 || (!areaLight->m_isDoubleSide && !PathTracingUtils::SampleHemisphere(-vecLight, ls->m_normal)))
 		{
-			ls->m_pdf = 0.0;
+			*pdf = 0.0;
 		}
 		else
 		{
 			ls->m_wi = vecLight / ls->m_distance;
-			auto lensqr = vecLight.LengthSquared();
-			auto absdot = std::abs(Vector3f::DotProduct(ls->m_normal, -ls->m_wi));
-			ls->m_pdf *= lensqr / absdot;
+			// dw = dA * cos(theta) / (r*r)
+			*pdf *= vecLight.LengthSquared() / std::abs(Vector3f::DotProduct(ls->m_normal, -ls->m_wi));
 
 		}
 
 		ls->m_li = lightProp->m_color;
-		return ls->m_pdf > 0.0f;
+		return *pdf > 0.0f;
 	}
 }
 

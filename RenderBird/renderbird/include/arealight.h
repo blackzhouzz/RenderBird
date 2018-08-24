@@ -11,7 +11,7 @@ namespace RenderBird
 
 	struct AreaLightUtils
 	{
-		static bool SampleDisk(EntityId areaLightId, const Vector2f& rand2d, SurfaceSample* ss, LightSample* ls);
+		static bool SampleDisk(EntityId areaLightId, const Vector2f& rand2d, SurfaceSample* ss, LightSample* ls, Float* pdf);
 	};
 }
 

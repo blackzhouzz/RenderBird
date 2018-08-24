@@ -38,6 +38,7 @@ namespace RenderBird
 		m_renderer->GenerateCameraRay(state->m_cameraSample, &ray);
 		const int maxBounce = m_renderer->GetRendererSetting().m_maxBounce;
 		//path tracing loop begin
+
 		for (state->m_currentBounce = 0; ;state->m_currentBounce++)
 		{
 			RayHitInfo hitInfo;
@@ -46,6 +47,8 @@ namespace RenderBird
 			{
 				break;
 			}
+			if (state->m_currentBounce > 0)
+				state->m_currentBounce = state->m_currentBounce;
 
 			SurfaceSample ss;
 			ss.m_bsdf = new DiffuseBSDF();
@@ -81,22 +84,24 @@ namespace RenderBird
 		Vector2f lightRand2d = state->m_sampler->Random2D();
 		EntityId lightId = m_renderer->m_scene->m_lightId;
 		LightSample ls;
-		if (AreaLightUtils::SampleDisk(lightId, lightRand2d, ss, &ls))
-			//if (DistantLightComponentUtils::Sample(lightId, lightRand2d, ss, &ls))
+		Float lightPdf = 0;
+		if (AreaLightUtils::SampleDisk(lightId, lightRand2d, ss, &ls, &lightPdf) && lightPdf > 0)
+			//if (DistantLightComponentUtils::Sample(lightId, lightRand2d, ss, &ls, &lightPdf) && lightPdf > 0)
 		{
 			BsdfSpectrum bs;
-			Float pdf = 0.0;
-			EvalBSDF(state, ss, ls.m_wi, &pdf, &bs);
+			Float bsdfPdf = 0.0;
+			EvalBSDF(state, ss, ls.m_wi, &bsdfPdf, &bs);
+			Float weight = 1.0;
 			if (state->m_useMis)
 			{
-				Float weight = SampleUtils::PowerHeuristic(ls.m_pdf, pdf);
-				bs.Mul(weight);
+				weight = SampleUtils::PowerHeuristic(lightPdf, bsdfPdf);
 			}
 
-			bs.Mul(ls.m_li / ls.m_pdf);
+			bs.Mul(ls.m_li / lightPdf * weight);
+
 			if (!bs.IsZero())
 			{
-				AccumRadianceSpectrum(state, &bs, L);
+				AccumRadiance(state, &bs, L);
 				return true;
 			}
 		}
@@ -108,31 +113,27 @@ namespace RenderBird
 		Vector2f rand2d = state->m_sampler->Random2D();
 		RGB32 bdsf;
 		Vector3f wi;
-		Float pdf = 0.0;
+		Float bsdfPdf = 0.0;
 
-		ss->m_bsdf->Sample(ss, rand2d, &pdf, &wi, &bdsf);
+		ss->m_bsdf->Sample(ss, rand2d, &bsdfPdf, &wi, &bdsf);
 
-		if (pdf == 0.0 || bdsf.IsZero())
+		if (bsdfPdf == 0.0 || bdsf.IsZero())
 			return false;
 
 		BsdfSpectrum bs;
-		EvalBSDF(state, ss, wi, &pdf, &bs);
-		if (pdf == 0.0)
+		EvalBSDF(state, ss, wi, &bsdfPdf, &bs);
+		if (bsdfPdf == 0.0)
 			return false;
-		state->m_throughtput *= bs.m_diffuse / pdf;
-
+		state->m_throughtput *= bs.m_diffuse / bsdfPdf;
+		if (state->m_throughtput.IsZero())
+			return false;
 		ray.m_origin = ss->m_position;
 		ray.m_direction = wi;
 
 		return true;
 	}
 
-	void PathTracing::AccumBSDFSpectrum(SurfaceSample* ss, BsdfSpectrum* bs, const RGB32& value)
-	{
-		bs->m_diffuse += value;
-	}
-
-	void PathTracing::AccumRadianceSpectrum(State* state, BsdfSpectrum* bs, Radiance* L)
+	void PathTracing::AccumRadiance(State* state, BsdfSpectrum* bs, Radiance* L)
 	{
 		L->m_directDiffuse += state->m_throughtput * bs->m_diffuse;
 	}
@@ -147,15 +148,13 @@ namespace RenderBird
 		auto setting = m_renderer->GetRendererSetting();
 		state->m_pixelX = pixelX;
 		state->m_pixelY = pixelY;
-		state->m_currentBounce = 0;
-		state->m_throughtput = RGB32::WHITE;
 		state->m_sampler = new Sampler(setting.m_numSamples);
 		state->m_useMis = setting.m_useMis;
 	}
 
 	void PathTracing::Render(int pixelX, int pixelY, TileRenderer* tile)
 	{
-		if (pixelX == 28 && pixelY == 39)
+		if (pixelX == 23 && pixelY == 26)
 		{
 			pixelX = pixelX;
 		}
@@ -166,7 +165,14 @@ namespace RenderBird
 			Radiance L;
 			state.m_cameraSample = state.m_sampler->GetCameraSample(pixelX, pixelY);
 			state.m_curSamplerIndex = samplerIndex;
+			state.m_throughtput = RGB32::WHITE;
+			state.m_currentBounce = 0;
+
 			Integrate(&state, &L);
+			if (!L.IsZero())
+			{
+				L = L;
+			}
 			m_renderer->AddSample(state.m_cameraSample.m_pixel, tile->GetBoundMin(), tile->GetBoundMax(), L);
 		}
 	}
