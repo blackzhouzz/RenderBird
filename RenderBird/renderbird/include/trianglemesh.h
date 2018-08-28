@@ -18,19 +18,28 @@ namespace RenderBird
 
 		struct VertexData
 		{
-			Vector3f m_position;
-			Vector3f m_normal;
+			Vector3f m_pos;
+			Vector3f m_n;
 			Vector3f m_tangent;
 			RGBA32 m_color;
 			Vector2f m_uv0;
 		};
 
+		enum VertexChannelFlag
+		{
+			VCT_Position = 1 << 0,
+			VCT_Normal = 1 << 1,
+			VCT_TANGENT = 1 << 2,
+			VCT_UV0 = 1 << 3,
+			VCT_COLOR0 = 1 << 4,
+		};
 		struct MeshData
 		{
 			std::string m_name;
 			std::vector<VertexData> m_vertexData;
 			std::vector<FaceData> m_faceData;
 			BoundingBox m_localBoundingBox;
+			uint32 m_flags;
 		};
 
 		TriangleMesh()
@@ -64,6 +73,7 @@ namespace RenderBird
 
 		MeshData* m_triMeshData;
 		std::vector<Material*> m_materials;
+		Matrix4f m_localToWorld;
 	};
 }
 

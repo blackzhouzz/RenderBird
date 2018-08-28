@@ -51,9 +51,8 @@ namespace RenderBird
 		m_setting.m_tileSizeX = 16;
 		m_setting.m_tileSizeY = 16;
 		m_setting.m_useJob = true;
-		m_setting.m_maxBounce = 3;
+		m_setting.m_maxBounce = 5;
 		m_setting.m_numSamples = 10;
-		m_setting.m_useMis = false;
 		m_scene->SetupSceneTest();
 	}
 
@@ -192,16 +191,4 @@ namespace RenderBird
 		int index = pixelY * m_setting.m_resX + pixelX;
 		return m_data[index];
 	}
-
-	//void Renderer::SetColor(int pixelX, int pixelY, const Core::RGB32& color)
-	//{
-	//	int index = pixelY * m_setting.m_resX + pixelX;
-	//	m_data[index] = color;
-	//}
-
-	//Core::RGB32 Renderer::GetColor(int pixelX, int pixelY)const
-	//{
-	//	int index = pixelY * m_setting.m_resX + pixelX;
-	//	return m_data[index];
-	//}
 }

@@ -20,7 +20,17 @@ namespace RenderBird
 			ComponentGroupVisitor<Transform, MeshComponent> visitor(m_meshEntitiesGroup);
 			while (visitor.HasNext())
 			{
-				hasIntersected |= MeshComponentUtils::Intersect(visitor.GetEntityId(), ray, hitInfo);
+				RayHitInfo tempHitInfo;
+
+				if (MeshComponentUtils::Intersect(visitor.GetEntityId(), ray, &tempHitInfo))
+				{
+					if (!hitInfo->IsHit() || lt(tempHitInfo.m_t, hitInfo->m_t))
+					{
+						*hitInfo = tempHitInfo;
+					}
+					hasIntersected = true;
+				}
+
 				visitor.MoveNext();
 			}
 		}
@@ -29,7 +39,33 @@ namespace RenderBird
 			ComponentGroupVisitor<Transform, SphereComponent> visitor(m_sphereEntitiesGroup);
 			while (visitor.HasNext())
 			{
-				hasIntersected |= SphereComponentUtils::Intersect(visitor.GetEntityId(), ray, hitInfo);
+				RayHitInfo tempHitInfo;
+				if (SphereComponentUtils::Intersect(visitor.GetEntityId(), ray, &tempHitInfo))
+				{
+					if (!hitInfo->IsHit() || lt(tempHitInfo.m_t, hitInfo->m_t))
+					{
+						*hitInfo = tempHitInfo;
+					}
+					hasIntersected = true;
+				}
+				visitor.MoveNext();
+			}
+		}
+
+		{
+			ComponentGroupVisitor<AreaLight, Transform, DiskComponent, LightProperty> visitor(m_lightsGroup);
+			while (visitor.HasNext())
+			{
+				RayHitInfo tempHitInfo;
+				if (DiskComponentUtils::Intersect(visitor.GetEntityId(), ray, &tempHitInfo))
+				{
+					if (!hitInfo->IsHit() || lt(tempHitInfo.m_t, hitInfo->m_t))
+					{
+						*hitInfo = tempHitInfo;
+					}
+					hasIntersected = true;
+				}
+
 				visitor.MoveNext();
 			}
 		}
@@ -43,8 +79,13 @@ namespace RenderBird
 		CreateMeshTest();
 		//CreateLightTest();
 		//AddTestDiskLight(Vector3f(0, 0, 1.2));
-		AddTestDiskLight(Vector3f(0, 0, 2.0));
+		AddTestDiskLight(Vector3f(0, 0, 1.98));
 		CreateCameraTest();
+	}
+
+	bool Scene::IsLight(EntityId id)
+	{
+		return EntityManager::IntancePtr()->GetComponent<LightProperty>(id) != nullptr;
 	}
 
 	void Scene::CreateShapeTest()
@@ -77,8 +118,6 @@ namespace RenderBird
 
 		m_entities.insert(m_lightId);
 
-		m_lightsGroup = new ComponentGroup(archetype);
-
 		auto trans = EntityManager::IntancePtr()->GetComponent<Transform>(m_lightId);
 		Vector3f pos = Vector3f(40, 0, 40);
 
@@ -107,10 +146,11 @@ namespace RenderBird
 			auto planeEntity = EntityManager::IntancePtr()->CreateEntity(archetype);
 			auto meshComp = EntityManager::IntancePtr()->GetComponent<MeshComponent>(planeEntity);
 			auto trans = EntityManager::IntancePtr()->GetComponent<Transform>(planeEntity);
+			//trans->m_pos = Vector3f(0, 0, 1.0f);
 			meshComp->m_trimesh = m_meshResources[i];
 			if (i == 0)
 			{
-				//trans->m_position = Vector3f(0, 0, 0.5f);
+				//trans->m_pos = Vector3f(0, 0, 0.5f);
 			}
 			m_entities.insert(planeEntity);
 		}
@@ -146,6 +186,7 @@ namespace RenderBird
 	void Scene::AddTestDiskLight(const Vector3f& pos)
 	{
 		auto archetype = EntityManager::IntancePtr()->CreateArchetype<AreaLight, Transform, DiskComponent, LightProperty>();
+
 		m_lightId = EntityManager::IntancePtr()->CreateEntity(archetype);
 		auto disk = EntityManager::IntancePtr()->GetComponent<DiskComponent>(m_lightId);
 		auto area = EntityManager::IntancePtr()->GetComponent<AreaLight>(m_lightId);
@@ -154,7 +195,7 @@ namespace RenderBird
 		disk->m_phiMax = C_2_PI;
 		auto trans = EntityManager::IntancePtr()->GetComponent<Transform>(m_lightId);
 		//TransformUtils::LookAt(trans, pos, pos + dir, C_AxisZ_v3f);
-		trans->m_position = pos;
+		trans->m_pos = pos;
 		//trans->m_rotation = Quaternion::FromEulerAngles(Vector3f(0, DegToRad(180.0), 0));
 		auto mat = TransformUtils::GetMatrix(trans);
 		auto vec = MathUtils::TransformDirection(mat, C_AxisZ_v3f);
@@ -162,6 +203,8 @@ namespace RenderBird
 		auto light = EntityManager::IntancePtr()->GetComponent<LightProperty>(m_lightId);
 
 		m_entities.insert(m_lightId);
+		m_lightsGroup = new ComponentGroup(EntityManager::IntancePtr()->CreateArchetype<AreaLight, Transform, DiskComponent, LightProperty>());
+
 	}
 
 	void Scene::AddTriangleMesh(TriangleMesh* mesh)

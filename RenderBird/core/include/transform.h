@@ -9,7 +9,7 @@ namespace Core
 {
 	struct Transform
 	{
-		Vector3f m_position;
+		Vector3f m_pos;
 		Quaternion m_rotation;
 		Vector3f m_scale;
 		Matrix4f m_matrix;

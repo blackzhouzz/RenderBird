@@ -151,26 +151,78 @@ namespace RenderBird
 	bool MeshComponentUtils::IntersectTriangle(TriangleMesh* trimesh, TriangleMesh::MeshData* meshData, const Ray& ray, RayHitInfo* hitInfo, uint32 faceIndex)
 	{
 		const TriangleMesh::FaceData& faceData = meshData->m_faceData[faceIndex];
-		const Vector3f& v0 = meshData->m_vertexData[faceData.m_v0].m_position;
-		const Vector3f& v1 = meshData->m_vertexData[faceData.m_v1].m_position;
-		const Vector3f& v2 = meshData->m_vertexData[faceData.m_v2].m_position;
+		const Vector3f& v0 = meshData->m_vertexData[faceData.m_v0].m_pos;
+		const Vector3f& v1 = meshData->m_vertexData[faceData.m_v1].m_pos;
+		const Vector3f& v2 = meshData->m_vertexData[faceData.m_v2].m_pos;
+
+		Vector2f uv0 = meshData->m_vertexData[faceData.m_v0].m_uv0;
+		Vector2f uv1 = meshData->m_vertexData[faceData.m_v1].m_uv0;
+		Vector2f uv2 = meshData->m_vertexData[faceData.m_v2].m_uv0;
+
+		if ((meshData->m_flags & TriangleMesh::VCT_UV0) == false)
+		{
+			uv0 = Vector2f(0, 0);
+			uv1 = Vector2f(1, 0);
+			uv2 = Vector2f(1, 1);
+		}
+
+		const Vector3f& n0 = meshData->m_vertexData[faceData.m_v0].m_n;
+		const Vector3f& n1 = meshData->m_vertexData[faceData.m_v1].m_n;
+		const Vector3f& n2 = meshData->m_vertexData[faceData.m_v2].m_n;
 
 		Float u, v, t;
 		if (ray_triangle_intersect_ex(ray.m_origin, ray.m_direction, ray.m_maxT, v0, v1, v2, &u, &v, &t, true))
 		{
-			if (!hitInfo->HasHit() || lt(t, hitInfo->m_t))
+			if (lt(t, hitInfo->m_t))
 			{
 				hitInfo->m_u = u;
 				hitInfo->m_v = v;
 				hitInfo->m_t = t;
 				if (faceData.m_materialId < trimesh->m_materials.size())
 					hitInfo->m_material = trimesh->m_materials[faceData.m_materialId];
-				hitInfo->m_geomNormal = (Vector3f::CrossProduct(v2 - v0, v1 - v0)).Normalized();
-				const Vector3f& n0 = meshData->m_vertexData[faceData.m_v0].m_normal;
-				const Vector3f& n1 = meshData->m_vertexData[faceData.m_v1].m_normal;
-				const Vector3f& n2 = meshData->m_vertexData[faceData.m_v2].m_normal;
-				hitInfo->m_normal = (n0 * (1.0f - u - v) + n1 * u + n2 * v).Normalized();
-				hitInfo->m_position = (v0 * (1.0f - u - v) + v1 * u + v2 * v);
+				hitInfo->m_ng = (Vector3f::CrossProduct(v2 - v0, v1 - v0)).Normalized();
+
+				hitInfo->m_n = (n0 * (1.0f - u - v) + n1 * u + n2 * v).Normalized();
+				hitInfo->m_pos = (v0 * (1.0f - u - v) + v1 * u + v2 * v);
+
+				Vector3f dpdu, dpdv;
+				//Vector2f uv[3];
+				//if (meshData->uv) {
+				//	uv[0] = mesh->uv[v[0]];
+				//	uv[1] = mesh->uv[v[1]];
+				//	uv[2] = mesh->uv[v[2]];
+				//}
+				//else {
+				//	//uv[0] = Vector2f(0, 0);
+				//	//uv[1] = Vector2f(1, 0);
+				//	//uv[2] = Vector2f(1, 1);
+				//}
+
+				Vector2f duv02 = uv0 - uv2, duv12 = uv1 - uv2;
+				Vector3f dp02 = v0 - v2, dp12 = v1 - v2;
+				Float determinant = duv02[0] * duv12[1] - duv02[1] * duv12[0];
+				bool degenerateUV = std::abs(determinant) < 1e-8;
+				if (!degenerateUV) {
+					Float invdet = 1 / determinant;
+					dpdu = (duv12[1] * dp02 - duv02[1] * dp12) * invdet;
+					dpdv = (-duv12[0] * dp02 + duv02[0] * dp12) * invdet;
+				}
+
+				if (degenerateUV || Vector3f::CrossProduct(dpdu, dpdv).LengthSquared() == 0) {
+					// Handle zero determinant for triangle partial derivative matrix
+					Vector3f ng = Vector3f::CrossProduct(v2 - v0, v1 - v0);
+					if (ng.LengthSquared() == 0)
+						// The triangle is actually degenerate; the intersection is
+						// bogus.
+						return false;
+
+					CoordinateSystem(ng.Normalized(), &dpdu, &dpdv);
+				}
+
+				hitInfo->m_dpdu = dpdu;
+				hitInfo->m_dpdv = dpdv;
+				hitInfo->m_ns = Vector3f::CrossProduct(dpdu, dpdv).Normalized();
+
 				return true;
 			}
 		}
@@ -183,14 +235,15 @@ namespace RenderBird
 		Transform* trans = EntityManager::Instance().GetComponent<Transform>(id);
 		if (comp == nullptr || trans == nullptr)
 			return false;
-		const Matrix4f objToWorld = TransformUtils::GetMatrix(trans);
 
 		TriangleMesh* trimesh = comp->m_trimesh;
 		if (trimesh->m_triMeshData == nullptr)
 			return false;
 
-		Matrix4f worldToObj = objToWorld.Inverse();
-		Ray ray = Ray::TransformBy(worldRay, worldToObj);
+		const Matrix4f localToWorld = TransformUtils::GetMatrix(trans);
+		const Matrix4f worldToLocal = localToWorld.Inverse();
+
+		Ray ray = Ray::TransformBy(worldRay, worldToLocal);
 
 		auto faceCount = trimesh->GetFaceCount();
 		bool hasIntersected = false;
@@ -200,7 +253,8 @@ namespace RenderBird
 		}
 		if (hasIntersected)
 		{
-			hitInfo->TransformBy(objToWorld);
+			hitInfo->TransformBy(localToWorld);
+			hitInfo->m_id = id;
 		}
 		return hasIntersected;
 	}

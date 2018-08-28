@@ -43,7 +43,7 @@ void Test_BenchmarkEntitySlow()
 	time.Begin();
 	for (std::list<Transform>::iterator itr = trans.begin(); itr != trans.end(); ++itr)
 	{
-		itr->m_position = C_Zero_v3f;
+		itr->m_pos = C_Zero_v3f;
 		//itr->m_scale = Vector3f(0, 1, 0);
 	}
 	std::cout << "slow iterator component benchmark ms: " << time.End() << std::endl;
@@ -81,19 +81,19 @@ void Test_BenchmarkEntityFastest()
 	//ComponentGroup group(2, TypeOf<Transform>::Value(), TypeOf<RenderBird::LightProperty>::Value());
 	ComponentGroup group;
 	ComponentGroup::Create<Transform, RenderBird::LightProperty>(&group);
-	ComponentGroupVisitor<Transform> visitor(&group);
+	//ComponentGroupVisitor<Transform> visitor;
 
-	while (visitor.HasNext())
-	{
-		auto transform = visitor.Get<Transform>();
-		auto id = visitor.GetEntityId();
-		transform->m_position = C_Zero_v3f;
+	//while (visitor.HasNext())
+	//{
+	//	auto transform = visitor.Get<Transform>();
+	//	auto id = visitor.GetEntityId();
+	//	transform->m_pos = C_Zero_v3f;
 
-		//auto lp = visitor.Get<RenderBird::LightProperty>();
-		//lp->m_intensity = 2;
-		visitor.MoveNext();
-	}
-	std::cout << "fastest iterator component benchmark ms: " << time.End() << std::endl;
+	//	//auto lp = visitor.Get<RenderBird::LightProperty>();
+	//	//lp->m_intensity = 2;
+	//	visitor.MoveNext();
+	//}
+	//std::cout << "fastest iterator component benchmark ms: " << time.End() << std::endl;
 }
 
 void Test_IteratorComponent()
@@ -116,7 +116,7 @@ void Test_IteratorComponent()
 		test_components[i] = EntityManager::IntancePtr()->AddComponent<Transform>(test_entities[i]);
 		auto ed = EntityManager::IntancePtr()->GetEntityData(test_entities[9]);
 		auto comp = EntityManager::IntancePtr()->GetComponent<Transform>(test_entities[i]);
-		comp->m_position = Vector3f(0, i, 0);
+		comp->m_pos = Vector3f(0, i, 0);
 		auto temp = EntityManager::IntancePtr()->GetComponent<Transform>(test_entities[i]);
 		temp = temp;
 		EntityManager::IntancePtr()->RemoveComponent<Transform>(test_entities[i]);
@@ -128,7 +128,7 @@ void Test_IteratorComponent()
 	//	auto tran = EntityManager::IntancePtr()->GetComponent<Transform>(test_entities[i]);
 	//	if (tran != nullptr)
 	//	{
-	//		Vector3f temp = tran->m_position;
+	//		Vector3f temp = tran->m_pos;
 	//		temp = temp;
 	//	}
 	//	else
@@ -138,7 +138,7 @@ void Test_IteratorComponent()
 
 	//}
 
-	ComponentGroup group(1, TypeOf<Transform>::Value());
-	ComponentGroupVisitor<Transform> visitor(&group);
+	//ComponentGroup group(1, TypeOf<Transform>::Value());
+	//ComponentGroupVisitor<Transform> visitor;
 }
 

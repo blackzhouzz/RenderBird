@@ -16,9 +16,9 @@ namespace RenderBird
 		if (comp == nullptr || trans == nullptr)
 			return false;
 
-		const Matrix4f objToWorld = TransformUtils::GetMatrix(trans);
-		const Matrix4f worldToObj = objToWorld.Inverse();
-		Ray ray = Ray::TransformBy(worldRay, worldToObj);
+		const Matrix4f localToWorld = TransformUtils::GetMatrix(trans);
+		const Matrix4f worldToLocal = localToWorld.Inverse();
+		Ray ray = Ray::TransformBy(worldRay, worldToLocal);
 
 		if (ray.m_direction.z == 0) return false;
 		Float t = (-ray.m_origin.z) / ray.m_direction.z;
@@ -39,17 +39,21 @@ namespace RenderBird
 		Float sqrDist2 = std::sqrt(dist2);
 		Float oneMinusV = ((sqrDist2 - comp->m_innerRadius) / (comp->m_radius - comp->m_innerRadius));
 		Float v = 1 - oneMinusV;
-		//Vector3f dpdu(-comp->m_phiMax * hitPoint.y, comp->m_phiMax * hitPoint.x, 0);
-		//Vector3f dpdv = Vector3f(hitPoint.x, hitPoint.y, 0.) * (comp->m_radius - comp->m_innerRadius) / sqrDist2;
+		Vector3f dpdu(-comp->m_phiMax * hitPoint.y, comp->m_phiMax * hitPoint.x, 0);
+		Vector3f dpdv = Vector3f(hitPoint.x, hitPoint.y, 0.) * (comp->m_radius - comp->m_innerRadius) / sqrDist2;
 		//Vector3f dndu(0, 0, 0), dndv(0, 0, 0);
 		hitPoint.z = 0;
 
+		hitInfo->m_dpdu = dpdu;
+		hitInfo->m_dpdv = dpdv;
+		hitInfo->m_ns = Vector3f::CrossProduct(dpdu, dpdv).Normalized();
 		hitInfo->m_u = u;
 		hitInfo->m_v = v;
 		hitInfo->m_t = t;
-		hitInfo->m_position = hitPoint;
-		hitInfo->m_geomNormal = hitInfo->m_normal = C_AxisZ_v3f;
-		hitInfo->TransformBy(objToWorld);
+		hitInfo->m_pos = hitPoint;
+		hitInfo->m_ng = hitInfo->m_n = C_AxisZ_v3f;
+		hitInfo->TransformBy(localToWorld);
+		hitInfo->m_id = id;
 		return true;
 	}
 }

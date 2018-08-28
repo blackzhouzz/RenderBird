@@ -6,6 +6,13 @@ namespace Core
 	class Ray
 	{
 	public:
+		Ray(const Vector3f& o, const Vector3f& dir)
+			: m_origin(o)
+			, m_direction(dir)
+			, m_maxT(DefaultMaxT)
+		{
+
+		}
 		Ray()
 			: m_origin(C_Zero_v3f)
 			, m_direction(C_Zero_v3f)

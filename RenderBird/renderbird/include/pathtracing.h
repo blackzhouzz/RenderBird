@@ -26,14 +26,10 @@ namespace RenderBird
 		void Render(int pixelX, int pixelY, TileRenderer* tile);
 	private:
 		void InitState(int pixelX, int pixelY, State* state);
-		void InitSurfaceData(State* state, SurfaceSample* ss, const Ray& ray, const RayHitInfo& hitInfo);
-		bool SurfaceBounce(State* state, SurfaceSample* ss, Ray& ray);
 		void Integrate(State* state, Radiance* L);
 		bool SampleLight(State* state, SurfaceSample* ss, Radiance* L);
-		void EvalBSDF(State* state, SurfaceSample* ss, const Vector3f& wi, Float* pdf, BsdfSpectrum* bs);
 		void AccumRadiance(State* state, BsdfSpectrum* bs, Radiance* L);
 		bool ProbabilityStop();
-		bool ShadowBlocked();
 	private:
 		Renderer* m_renderer;
 	};

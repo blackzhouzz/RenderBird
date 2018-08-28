@@ -17,6 +17,7 @@ namespace RenderBird
 		EntityId GetCamera()const { return m_camera; }
 		void AddTriangleMesh(TriangleMesh* mesh);
 		void AddTestDiskLight(const Vector3f& pos);
+		bool IsLight(EntityId id);
 	public:
 		std::set<EntityId> m_entities;
 		ComponentGroup* m_sphereEntitiesGroup;

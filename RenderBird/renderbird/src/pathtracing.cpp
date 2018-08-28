@@ -3,6 +3,7 @@
 #include "arealight.h"
 #include "bsdf.h"
 #include "light_component.h"
+#include "arealight.h"
 
 namespace RenderBird
 {
@@ -12,71 +13,77 @@ namespace RenderBird
 
 	}
 
-	void PathTracing::InitSurfaceData(State* state, SurfaceSample* ss, const Ray& ray, const RayHitInfo& hitInfo)
-	{
-		ss->m_position = hitInfo.m_position;
-		ss->m_normal = hitInfo.m_normal;
-		ss->m_geomNormal = hitInfo.m_geomNormal;
-		if (ss->m_normal == C_Zero_v3f)
-		{
-			ss->m_normal = ss->m_geomNormal;
-		}
-
-		ss->m_wo = -ray.m_direction;
-
-		//ss->m_isBackfacing = (Vector3f::DotProduct(ss->m_geomNormal, ss->m_wo) < 0.0f);
-		//if (ss->m_isBackfacing)
-		//{
-		//	ss->m_normal = -ss->m_normal;
-		//	ss->m_geomNormal = -ss->m_geomNormal;
-		//}
-	}
-
 	void PathTracing::Integrate(State* state, Radiance* L)
 	{
 		Ray ray;
 		m_renderer->GenerateCameraRay(state->m_cameraSample, &ray);
 		const int maxBounce = m_renderer->GetRendererSetting().m_maxBounce;
 		//path tracing loop begin
+		RayHitInfo hitInfo;
+		m_renderer->m_scene->Intersect(ray, &hitInfo);
 
 		for (state->m_currentBounce = 0; ;state->m_currentBounce++)
 		{
-			RayHitInfo hitInfo;
-			bool isHit = m_renderer->m_scene->Intersect(ray, &hitInfo);
-			if (!isHit || state->m_currentBounce > maxBounce)
+			if (!hitInfo.IsHit() || state->m_currentBounce > maxBounce)
 			{
 				break;
 			}
-			if (state->m_currentBounce > 0)
-				state->m_currentBounce = state->m_currentBounce;
 
-			SurfaceSample ss;
-			ss.m_bsdf = new DiffuseBSDF();
-			InitSurfaceData(state, &ss, ray, hitInfo);
+			SurfaceSample ss(ray, hitInfo);
+
+			if (m_renderer->m_scene->IsLight(hitInfo.m_id))
+			{
+				L->m_directDiffuse += state->m_throughtput * AreaLightUtils::Le(hitInfo.m_id, &ss, -ray.m_direction);
+			}
 
 			//RGBA32 diffuseColor = RGBA32::WHITE;
 			//if (hitInfo.m_material != nullptr)
 			//{
 			//	diffuseColor = hitInfo.m_material->m_diffuseColor;
 			//}
-			//Float nol = std::max(Vector3f::DotProduct(hitInfo.m_normal.Normalized(), Vector3f(1, 0, 1).Normalized()), 0.0);
+			//Float nol = std::max(Vector3f::DotProduct(hitInfo.m_n.Normalized(), Vector3f(1, 0, 1).Normalized()), 0.0);
 			//RGB32 color = RGB32(diffuseColor[0], diffuseColor[1], diffuseColor[2]);
 			//L->m_directDiffuse = color;
 			//break;
 			
 			SampleLight(state, &ss, L);
-			break;
-			if (!SurfaceBounce(state, &ss, ray))
+			BsdfSpectrum bs;
+			Vector2f rand2d = state->m_sampler->Random2D();
+			RGB32 sampleWeight;
+			Vector3f wi;
+			Float bsdfPdf = 0.0;
+
+			ss.m_bsdf->Sample(&ss, rand2d, &wi, &bsdfPdf, &sampleWeight);
+
+			if (bsdfPdf == 0.0 || sampleWeight.IsZero())
 				break;
 
-			//if (ProbabilityStop())
-			//	break;
-		}
-	}
+			ray.m_origin = ss.m_pos;
+			ray.m_direction = wi;
 
-	void PathTracing::EvalBSDF(State* state, SurfaceSample* ss, const Vector3f& wi, Float* pdf, BsdfSpectrum* bs)
-	{
-		ss->m_bsdf->Eval(ss, wi, pdf, bs);
+			bool hitLight = false;
+
+			if (m_renderer->m_scene->Intersect(ray, &hitInfo))
+			{
+				if (m_renderer->m_scene->IsLight(hitInfo.m_id))
+				{
+					hitLight = true;
+				}
+			}
+			else
+			{
+				break;
+			}
+			state->m_throughtput *= sampleWeight / bsdfPdf;
+
+			if (hitLight)
+			{
+				auto li = AreaLightUtils::Le(hitInfo.m_id, &ss, -ray.m_direction);
+				Float lightPdf = AreaLightUtils::PdfDisk(hitInfo, &ss, wi);
+				Float misWeight = SampleUtils::PowerHeuristic(bsdfPdf, lightPdf);
+				L->m_directDiffuse += state->m_throughtput * li * misWeight;
+			}
+		}
 	}
 
 	bool PathTracing::SampleLight(State* state, SurfaceSample* ss, Radiance* L)
@@ -90,47 +97,33 @@ namespace RenderBird
 		{
 			BsdfSpectrum bs;
 			Float bsdfPdf = 0.0;
-			EvalBSDF(state, ss, ls.m_wi, &bsdfPdf, &bs);
-			Float weight = 1.0;
-			if (state->m_useMis)
+			RGB32 eval;
+			ss->m_bsdf->Eval(ss, ls.m_wi, &bsdfPdf, &eval);
+			if (bsdfPdf == 0.0)
+				return false;
+
+			Ray lightRay(ss->m_pos, ls.m_wi);
+			RayHitInfo lightHitInfo;
+			if (m_renderer->m_scene->Intersect(lightRay, &lightHitInfo))
 			{
-				weight = SampleUtils::PowerHeuristic(lightPdf, bsdfPdf);
+				if (lightHitInfo.m_id != lightId)
+				{
+					return false;
+				}
 			}
 
-			bs.Mul(ls.m_li / lightPdf * weight);
+			bs.Add(eval);
+			bs.Mul(ls.m_li / lightPdf);
 
 			if (!bs.IsZero())
 			{
-				AccumRadiance(state, &bs, L);
+				Float misWeight = SampleUtils::PowerHeuristic(lightPdf, bsdfPdf);
+				L->m_directDiffuse += state->m_throughtput * bs.m_diffuse * misWeight;
+				//AccumRadiance(state, &bs, L);
 				return true;
 			}
 		}
 		return false;
-	}
-
-	bool PathTracing::SurfaceBounce(State* state, SurfaceSample* ss, Ray& ray)
-	{
-		Vector2f rand2d = state->m_sampler->Random2D();
-		RGB32 bdsf;
-		Vector3f wi;
-		Float bsdfPdf = 0.0;
-
-		ss->m_bsdf->Sample(ss, rand2d, &bsdfPdf, &wi, &bdsf);
-
-		if (bsdfPdf == 0.0 || bdsf.IsZero())
-			return false;
-
-		BsdfSpectrum bs;
-		EvalBSDF(state, ss, wi, &bsdfPdf, &bs);
-		if (bsdfPdf == 0.0)
-			return false;
-		state->m_throughtput *= bs.m_diffuse / bsdfPdf;
-		if (state->m_throughtput.IsZero())
-			return false;
-		ray.m_origin = ss->m_position;
-		ray.m_direction = wi;
-
-		return true;
 	}
 
 	void PathTracing::AccumRadiance(State* state, BsdfSpectrum* bs, Radiance* L)
@@ -154,7 +147,7 @@ namespace RenderBird
 
 	void PathTracing::Render(int pixelX, int pixelY, TileRenderer* tile)
 	{
-		if (pixelX == 23 && pixelY == 26)
+		if (pixelX == 126 && pixelY == 41)
 		{
 			pixelX = pixelX;
 		}

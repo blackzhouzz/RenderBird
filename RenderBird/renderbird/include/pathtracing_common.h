@@ -4,36 +4,46 @@
 namespace RenderBird
 {
 	class Material;
+	class BSDF;
+
 	struct RayHitInfo
 	{
 		RayHitInfo()
-			: m_position(C_Zero_v3f)
-			, m_normal(C_Zero_v3f)
+			: m_pos(C_Zero_v3f)
+			, m_n(C_Zero_v3f)
 			, m_material(nullptr)
-			, m_geomNormal(C_Zero_v3f)
+			, m_ng(C_Zero_v3f)
 			, m_u(0)
 			, m_v(0)
-			, m_t(0)
+			, m_t(C_FLOAT_MAX)
+			, m_flags(0)
+			, m_id(EntityId::INVALID)
 		{
 		}
 		void TransformBy(const Matrix4f& mat)
 		{
-			m_position = mat * m_position;
-			m_geomNormal = MathUtils::TransformDirection(mat, m_geomNormal).Normalized();
-			m_normal = MathUtils::TransformDirection(mat, m_normal).Normalized();
+			m_pos = mat * m_pos;
+			m_ng = MathUtils::TransformDirection(mat, m_ng).Normalized();
+			m_n = MathUtils::TransformDirection(mat, m_n).Normalized();
 		}
-		bool HasHit()const
+		bool IsHit()const
 		{
-			return m_t != 0;
+			return m_id != EntityId::INVALID;
 		}
-		Vector3f m_position;
-		Vector3f m_normal;
-		Vector3f m_geomNormal;
+		Vector3f m_pos;
+		Vector3f m_dpdu;
+		Vector3f m_dpdv;
+		Vector3f m_ns;
+		Vector3f m_n;
+		Vector3f m_ng;
 		Material* m_material;
 		Float m_u;
 		Float m_v;
 		Float m_t;
+		uint32 m_flags;
+		EntityId m_id;
 	};
+
 	struct Radiance
 	{
 		Radiance()
@@ -43,32 +53,6 @@ namespace RenderBird
 		bool IsZero()const { return m_directDiffuse.IsZero(); }
 		RGB32 m_directDiffuse;
 		//RGB32 m_indirect;
-	};
-
-	struct SampleInfo
-	{
-		Vector3f m_position;
-		Vector3f m_normal;
-		Float m_pdf;
-	};
-
-	struct SurfaceSample
-	{
-		Vector3f m_position;
-		Vector3f m_geomNormal;
-		Vector3f m_normal;
-		Vector3f m_wo;
-		bool m_isBackfacing;
-		class BSDF* m_bsdf;
-	};
-
-	struct LightSample
-	{
-		Vector3f m_position;
-		Vector3f m_normal;
-		Vector3f m_wi;
-		Float m_distance;
-		RGB32 m_li;
 	};
 
 	struct BsdfSpectrum
@@ -118,6 +102,26 @@ namespace RenderBird
 			}
 			return m_colorSum / m_weight;
 		}
+	};
+
+	struct SurfaceSample
+	{
+		explicit SurfaceSample(const Ray& ray, const RayHitInfo& hitInfo);
+		~SurfaceSample();
+		Vector3f m_pos;
+		Vector3f m_ng;
+		Vector3f m_n;
+		Vector3f m_wo;
+		BSDF* m_bsdf;
+	};
+
+	struct LightSample
+	{
+		Vector3f m_pos;
+		Vector3f m_n;
+		Vector3f m_wi;
+		Float m_distance;
+		RGB32 m_li;
 	};
 
 	struct PathTracingUtils

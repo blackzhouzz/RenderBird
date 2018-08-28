@@ -153,6 +153,7 @@ namespace RenderBird
 	TriangleMesh* FBXImporter::ImportMesh(ImportState& state, FbxScene* fbxScene, FbxMesh* fbxmesh)
 	{
 		FbxNode* pNode = fbxmesh->GetNode();
+		auto name = pNode->GetName();
 		fbxmesh->RemoveBadPolygons();
 		if (!fbxmesh->IsTriangleMesh())
 		{
@@ -203,7 +204,7 @@ namespace RenderBird
 			default:
 				break;
 			}
-
+			 
 			int materialIndex = pPolygonMaterials->mIndexArray->GetAt(lookupIndex);
 			assert(materialIndex >= 0 && materialIndex < materialCount);
 			return uint32(materialIndex);
@@ -216,9 +217,10 @@ namespace RenderBird
 		FbxAMatrix LeftToRightMatrix;
 		FbxAMatrix LeftToRightMatrixForNormal;
 		LeftToRightMatrix.SetS(FbxVector4(1.0, -1.0, 1.0));
+		LeftToRightMatrix = LeftToRightMatrix * totalMatrix;
 		LeftToRightMatrixForNormal = LeftToRightMatrix.Inverse();
 		LeftToRightMatrixForNormal = LeftToRightMatrixForNormal.Transpose();
-
+		LeftToRightMatrixForNormal = LeftToRightMatrixForNormal * totalMatrixForNormal;
 		// vertex deduplication
 		UnorderedMapGenerator<TriangleMesh::VertexData, uint32>::Type hashMap;
 		meshData->m_localBoundingBox = BoundingBox::INVALID;
@@ -237,13 +239,13 @@ namespace RenderBird
 				FbxColor vertexColor = GetVertexElement(pVertexColors, iPoint, t, v, FbxColor(0, 0, 0, 0));
 
 				TriangleMesh::VertexData vertex = {};
-				vertex.m_position = Vector3f((point[0]), (point[1]), (point[2]));
-				vertex.m_normal = Vector3f((normal[0]), (normal[1]), (normal[2]));
+				vertex.m_pos = Vector3f((point[0]), (point[1]), (point[2]));
+				vertex.m_n = Vector3f((normal[0]), (normal[1]), (normal[2]));
 				vertex.m_tangent = Vector3f((tangent[0]), (tangent[1]), (tangent[2]));
 				vertex.m_color = RGBA32((vertexColor[0]), (vertexColor[1]), (vertexColor[2]), (vertexColor[3]));
 				vertex.m_uv0 = Vector2f((uv[0]), 1.0f - (uv[1]));
 
-				meshData->m_localBoundingBox += vertex.m_position;
+				meshData->m_localBoundingBox += vertex.m_pos;
 
 				auto it = hashMap.find(vertex);
 				if (it != hashMap.end()) 
@@ -267,12 +269,18 @@ namespace RenderBird
 				materialIndex = getMaterialIndex(t);
 			}
 
+
 			meshData->m_faceData[t].m_v0 = triIndices[0];
 			meshData->m_faceData[t].m_v1 = triIndices[1];
 			meshData->m_faceData[t].m_v2 = triIndices[2];
 			meshData->m_faceData[t].m_materialId = materialIndex;
 			meshData->m_name = pNode->GetName();
 		}
+
+		meshData->m_flags = TriangleMesh::VCT_Position | TriangleMesh::VCT_Normal | TriangleMesh::VCT_TANGENT | TriangleMesh::VCT_UV0 | TriangleMesh::VCT_COLOR0;
+
+		if (!pUVs || pUVs->GetMappingMode() == FbxGeometryElement::eNone)
+			meshData->m_flags &= ~TriangleMesh::VCT_UV0;
 
 		return trimesh;
 	}
@@ -414,15 +422,15 @@ namespace RenderBird
 		//	meshData->m_vertexCount = vertexCount;
 		//	meshData->m_faceCount = faceCount;
 
-		//	meshData->m_position = new Vector3f[vertexCount];
-		//	meshData->m_normal = new Vector3f[vertexCount];
+		//	meshData->m_pos = new Vector3f[vertexCount];
+		//	meshData->m_n = new Vector3f[vertexCount];
 		//	meshData->m_uv0 = new Vector2f[vertexCount];
 		//	meshData->m_faceData = new TriangleMesh::FaceData[faceCount];
 
 		//	for (int i = 0; i < vertexCount; ++i)
 		//	{
-		//		meshData->m_position[i] = Vector3f(geomVertices[i].x, geomVertices[i].y, geomVertices[i].z);
-		//		meshData->m_normal[i] = Vector3f(geomNormals[i].x, geomNormals[i].y, geomNormals[i].z);
+		//		meshData->m_pos[i] = Vector3f(geomVertices[i].x, geomVertices[i].y, geomVertices[i].z);
+		//		meshData->m_n[i] = Vector3f(geomNormals[i].x, geomNormals[i].y, geomNormals[i].z);
 		//		if (geomUv0 != nullptr)
 		//			meshData->m_uv0[i] = Vector2f(geomUv0[i].x, geomUv0[i].y);
 		//	}

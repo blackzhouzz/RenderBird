@@ -14,8 +14,8 @@ namespace RenderBird
 		if (comp == nullptr || trans == nullptr || lightProp == nullptr)
 			return false;
 		Vector3f lightDir = MathUtils::GetForward(trans->m_rotation);
-		ls->m_normal = lightDir;
-		ls->m_position = lightDir;
+		ls->m_n = lightDir;
+		ls->m_pos = lightDir;
 		ls->m_wi = -lightDir;
 		ls->m_distance = FLT_MAX;
 		ls->m_li = lightProp->m_color;

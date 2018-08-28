@@ -3,19 +3,23 @@
 
 namespace RenderBird
 {
-	void DiffuseBSDF::Eval(SurfaceSample* ss, const Vector3f& wi, Float* pdf, BsdfSpectrum* bs)
+	void DiffuseBSDF::Eval(SurfaceSample* ss, const Vector3f& wi, Float* pdf, RGB32* eval)
 	{
-		Float cos_pi = std::max(Vector3f::DotProduct(ss->m_normal, wi), 0.0) * C_1_INV_PI;
+		Float cos_pi = std::max(Vector3f::DotProduct(ss->m_n, wi), 0.0) * C_1_INV_PI;
 		*pdf = cos_pi;
-		bs->Add(m_color * cos_pi);
+		*eval = m_color * cos_pi;
 	}
 
-	void DiffuseBSDF::Sample(SurfaceSample* ss, const Vector2f& rand2d, Float* pdf, Vector3f* wi, RGB32* weight)
+	void DiffuseBSDF::Sample(SurfaceSample* ss, const Vector2f& rand2d, Vector3f* wi, Float* pdf, RGB32* sampleWeight)
 	{
-		SampleUtils::CosHemisphere(ss->m_normal, rand2d, wi, pdf);
-		if (Vector3f::DotProduct(ss->m_geomNormal, *wi) > 0.0f)
+		auto woLocal = WorldToLocal(ss->m_wo);
+		SampleUtils::CosHemisphere(ss->m_n, rand2d, wi, pdf);
+		if (woLocal.z < 0) wi->z *= -1;
+
+		*wi = LocalToWorld(*wi);
+		if (Vector3f::DotProduct(ss->m_ng, *wi) > 0.0f)
 		{
-			*weight = RGB32(*pdf, *pdf, *pdf);
+			*sampleWeight = m_color * (*pdf);
 		}
 		else
 		{

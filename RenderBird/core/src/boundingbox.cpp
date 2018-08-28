@@ -4,16 +4,16 @@
 namespace Core
 {
 	const BoundingBox BoundingBox::INVALID(
-		Vector3f(std::numeric_limits<Float>::max(), std::numeric_limits<Float>::max(), std::numeric_limits<Float>::max()) * (Float)0.5f,
-		Vector3f(std::numeric_limits<Float>::lowest(), std::numeric_limits<Float>::lowest(), std::numeric_limits<Float>::lowest()) * (Float)0.5f
+		Vector3f(C_FLOAT_MAX, C_FLOAT_MAX, C_FLOAT_MAX) * (Float)0.5f,
+		Vector3f(C_FLOAT_LOWEST, C_FLOAT_LOWEST, C_FLOAT_LOWEST) * (Float)0.5f
 	);
 	const BoundingBox BoundingBox::ZERO(
 		Vector3f(0, 0, 0),
 		Vector3f(0, 0, 0)
 	);
 	const BoundingBox BoundingBox::MAX(
-		Vector3f(std::numeric_limits<Float>::lowest(), std::numeric_limits<Float>::lowest(), std::numeric_limits<Float>::lowest()),
-		Vector3f(std::numeric_limits<Float>::max() * (Float)0.5f, std::numeric_limits<Float>::max() * (Float)0.5f, std::numeric_limits<Float>::max() * (Float)0.5f)
+		Vector3f(C_FLOAT_LOWEST, C_FLOAT_LOWEST, C_FLOAT_LOWEST),
+		Vector3f(C_FLOAT_MAX * (Float)0.5f, C_FLOAT_MAX * (Float)0.5f, C_FLOAT_MAX * (Float)0.5f)
 	);
 
 	BoundingBox::BoundingBox(const Vector3f& minValue, const Vector3f& maxValue)

@@ -40,6 +40,8 @@ namespace Core
 	static const Matrix3f C_Identity_m3f = Matrix3f::Identity();
 	static const Matrix4f C_Identity_m4f = Matrix4f::Identity();
 
+	static const Float C_FLOAT_LOWEST = std::numeric_limits<Float>::lowest();
+	static const Float C_FLOAT_MAX = std::numeric_limits<Float>::max();
 	static const Float C_FLOAT_EPSILON = 1e-06f;//(Float)std::numeric_limits<Float>::epsilon();
 	static const Float C_FLOAT_EPSILON_HIGH = (Float)1e-12f;
 	static const Float C_PI = (Float)3.14159265358979323846f;
@@ -76,6 +78,15 @@ namespace Core
 		if (val > max)
 			val = max;
 		return val;
+	}
+
+	inline void CoordinateSystem(const Vector3f &v1, Vector3f *v2, Vector3f *v3)
+	{
+		if (std::abs(v1.x) > std::abs(v1.y))
+			*v2 = Vector3f(-v1.z, 0, v1.x) / std::sqrt(v1.x * v1.x + v1.z * v1.z);
+		else
+			*v2 = Vector3f(0, v1.z, -v1.y) / std::sqrt(v1.y * v1.y + v1.z * v1.z);
+		*v3 = Vector3f::CrossProduct(v1, *v2);
 	}
 
 	template<typename T, int d>

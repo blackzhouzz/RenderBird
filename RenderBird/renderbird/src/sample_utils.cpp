@@ -31,8 +31,9 @@ namespace RenderBird
 	{
 		Vector2f newRand2d = ToUnitDisk(rand2d);
 		Float costheta = std::sqrt(std::max((Float)1.0f - newRand2d.x * newRand2d.x - newRand2d.y * newRand2d.y, (Float)0.0f));
-		Matrix3f rot = MathUtils::MakeNormalTransform(normal);
-		*wi = rot * Vector3f(newRand2d.x, newRand2d.y, costheta);
+		//Matrix3f rot = MathUtils::MakeNormalTransform(normal);
+		//*wi = rot * Vector3f(newRand2d.x, newRand2d.y, costheta);
+		*wi = Vector3f(newRand2d.x, newRand2d.y, costheta);
 		*pdf = costheta * C_1_INV_PI;
 	}
 
@@ -44,8 +45,8 @@ namespace RenderBird
 		Float x = r * std::cos(phi);
 		Float y = r * std::sin(phi);
 
-		Matrix3f rot = MathUtils::MakeNormalTransform(normal);
-		*wi = rot * Vector3f(x, y, z);
+		//Matrix3f rot = MathUtils::MakeNormalTransform(normal);
+		//*wi = rot * Vector3f(x, y, z);
 		*pdf = 0.5f * C_1_INV_PI;
 	}
 

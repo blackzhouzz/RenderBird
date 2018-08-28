@@ -17,9 +17,9 @@ namespace RenderBird
 		if (comp == nullptr || trans == nullptr)
 			return false;
 
-		const Matrix4f objToWorld = TransformUtils::GetMatrix(trans);
-		const Matrix4f worldToObj = objToWorld.Inverse();
-		Ray ray = Ray::TransformBy(worldRay, worldToObj);
+		const Matrix4f localToWorld = TransformUtils::GetMatrix(trans);
+		const Matrix4f worldToLocal = localToWorld.Inverse();
+		Ray ray = Ray::TransformBy(worldRay, worldToLocal);
 
 		Float radius2 = comp->m_radius * comp->m_radius;
 		Float radius = comp->m_radius;
@@ -58,14 +58,16 @@ namespace RenderBird
 		Vector3f dpdv =
 			(-C_PI) *
 			Vector3f(hitPoint.z * cosPhi, hitPoint.z * sinPhi, -radius * std::sin(theta));
-		Vector3f N = Vector3f::CrossProduct(dpdu, dpdv).Normalized();
 
+		hitInfo->m_dpdu = dpdu;
+		hitInfo->m_dpdv = dpdv;
+		hitInfo->m_ns = Vector3f::CrossProduct(dpdu, dpdv).Normalized();
 		hitInfo->m_u = phi / C_2_PI;
 		hitInfo->m_v = (C_PI - theta) / C_PI;
-		hitInfo->m_position = hitPoint;
-		hitInfo->m_geomNormal = hitInfo->m_normal = hitPoint.Normalized();
-		hitInfo->TransformBy(objToWorld);
-
+		hitInfo->m_pos = hitPoint;
+		hitInfo->m_ng = hitInfo->m_n = hitPoint.Normalized();
+		hitInfo->m_id = id;
+		hitInfo->TransformBy(localToWorld);
 		return true;
 	}
 }

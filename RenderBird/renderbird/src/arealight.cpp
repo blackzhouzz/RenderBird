@@ -15,16 +15,16 @@ namespace RenderBird
 		{
 			return false;
 		}
-		const Matrix4f objToWorld = TransformUtils::GetMatrix(trans);
+		const Matrix4f localToWorld = TransformUtils::GetMatrix(trans);
 
 		Vector2f pd = SampleUtils::ToUnitDisk(rand2d);
 		Vector3f objPos(pd.x * comp->m_radius, pd.y * comp->m_radius, 0);
-		ls->m_normal = MathUtils::TransformDirection(objToWorld, C_AxisZ_v3f).Normalized();
-		ls->m_position = objToWorld * (objPos);
+		ls->m_n = MathUtils::TransformDirection(localToWorld, C_AxisZ_v3f).Normalized();
+		ls->m_pos = localToWorld * (objPos);
 		*pdf = 1.0f / DiskComponentUtils::GetArea(comp);
-		Vector3f vecLight = ls->m_position - ss->m_position;
+		Vector3f vecLight = ls->m_pos - ss->m_pos;
 		ls->m_distance = vecLight.Length();
-		if (ls->m_distance == 0 || (!areaLight->m_isDoubleSide && !PathTracingUtils::SampleHemisphere(-vecLight, ls->m_normal)))
+		if (ls->m_distance == 0 || (!areaLight->m_isDoubleSide && !PathTracingUtils::SampleHemisphere(-vecLight, ls->m_n)))
 		{
 			*pdf = 0.0;
 		}
@@ -32,12 +32,41 @@ namespace RenderBird
 		{
 			ls->m_wi = vecLight / ls->m_distance;
 			// dw = dA * cos(theta) / (r*r)
-			*pdf *= vecLight.LengthSquared() / std::abs(Vector3f::DotProduct(ls->m_normal, -ls->m_wi));
-
+			*pdf *= vecLight.LengthSquared() / std::abs(Vector3f::DotProduct(ls->m_n, -ls->m_wi));
 		}
 
 		ls->m_li = lightProp->m_color;
 		return *pdf > 0.0f;
+	}
+
+	Float AreaLightUtils::PdfDisk(const RayHitInfo& hitInfo, SurfaceSample* ss, const Vector3f& wi)
+	{
+		EntityId id = hitInfo.m_id;
+		DiskComponent* comp = EntityManager::Instance().GetComponent<DiskComponent>(id);
+		Transform* trans = EntityManager::Instance().GetComponent<Transform>(id);
+		LightProperty* lightProp = EntityManager::Instance().GetComponent<LightProperty>(id);
+		AreaLight* areaLight = EntityManager::Instance().GetComponent<AreaLight>(id);
+		if (comp == nullptr || trans == nullptr || lightProp == nullptr || areaLight == nullptr)
+		{
+			return false;
+		}
+		Float pdf = 1.0f / DiskComponentUtils::GetArea(comp);
+
+		Vector3f vecLight = hitInfo.m_pos - ss->m_pos;
+		pdf *= vecLight.LengthSquared() / std::abs(Vector3f::DotProduct(hitInfo.m_n, -wi));
+		return pdf;
+	}
+
+	RGB32 AreaLightUtils::Le(EntityId id, SurfaceSample* ss, const Vector3f& w)
+	{
+		AreaLight* areaLight = EntityManager::Instance().GetComponent<AreaLight>(id);
+		LightProperty* lightProp = EntityManager::Instance().GetComponent<LightProperty>(id);
+		RGB32 le = lightProp->m_color;
+		if (!areaLight->m_isDoubleSide && !PathTracingUtils::SampleHemisphere(w, ss->m_n))
+		{
+			le = RGB32::BLACK;
+		}
+		return le;
 	}
 }
 
