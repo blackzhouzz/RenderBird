@@ -221,6 +221,10 @@ namespace Core
 			m_bands[1] = g;
 			m_bands[2] = b;
 		}
+		Float Lum()const
+		{
+			return m_bands[0] * C_Gray_Scale[0] + m_bands[1] * C_Gray_Scale[1] + m_bands[2] * C_Gray_Scale[2];
+		}
 		static const RGB32 RED;
 		static const RGB32 GREEN;
 		static const RGB32 BLUE;
@@ -272,6 +276,10 @@ namespace Core
 			m_bands[1] = g;
 			m_bands[2] = b;
 			m_bands[3] = a;
+		}
+		Float Lum()const
+		{
+			return m_bands[0] * C_Gray_Scale[0] + m_bands[1] * C_Gray_Scale[1] + m_bands[2] * C_Gray_Scale[2];
 		}
 		static const RGBA32 RED;
 		static const RGBA32 GREEN;

@@ -341,4 +341,9 @@ namespace Core
 	{
 		return (GetCenter() - point).Length();
 	}
+
+	Vector3f BoundingBox::GetVertex(uint32 i)const
+	{
+		return Vector3f((i & 4) ? m_max.x : m_min.x, (i & 2) ? m_max.y : m_min.y, (i & 1) ? m_max.z : m_min.z);
+	}
 }

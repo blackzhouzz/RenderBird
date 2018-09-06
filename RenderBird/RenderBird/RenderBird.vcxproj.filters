@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\geometrycomponent.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\material.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -78,9 +75,6 @@
     <ClInclude Include="include\pathtracing_common.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\arealight.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\disk_component.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -88,6 +82,42 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\render_statistic.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\bvh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\light.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\distant_light_component.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\scene_object.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\distant_light.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\area_light.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\area_light_component.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\disk.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\triangle.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mesh_object.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sphere.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\accel_structure.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -143,9 +173,6 @@
     <ClCompile Include="src\bsdf.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\arealight.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\pathtracing_common.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -156,6 +183,42 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\render_statistic.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bvh.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\light.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\distant_light_component.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene_object.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\area_light_component.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\area_light.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\disk.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\triangle.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mesh_object.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\distant_light.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sphere.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\accel_structure.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -5,6 +5,7 @@ namespace RenderBird
 {
 	class Material;
 	class BSDF;
+	class SceneObject;
 
 	struct RayHitInfo
 	{
@@ -17,7 +18,7 @@ namespace RenderBird
 			, m_v(0)
 			, m_t(C_FLOAT_MAX)
 			, m_flags(0)
-			, m_id(EntityId::INVALID)
+			, m_obj(nullptr)
 		{
 		}
 		void TransformBy(const Matrix4f& mat)
@@ -28,7 +29,7 @@ namespace RenderBird
 		}
 		bool IsHit()const
 		{
-			return m_id != EntityId::INVALID;
+			return m_obj != nullptr;
 		}
 		Vector3f m_pos;
 		Vector3f m_dpdu;
@@ -41,7 +42,7 @@ namespace RenderBird
 		Float m_v;
 		Float m_t;
 		uint32 m_flags;
-		EntityId m_id;
+		const SceneObject* m_obj;
 	};
 
 	struct Radiance
@@ -112,6 +113,12 @@ namespace RenderBird
 		Vector3f m_ng;
 		Vector3f m_n;
 		Vector3f m_wo;
+		void TransformBy(const Matrix4f& mat)
+		{
+			m_pos = mat * m_pos;
+			m_ng = MathUtils::TransformDirection(mat, m_ng).Normalized();
+			m_n = MathUtils::TransformDirection(mat, m_n).Normalized();
+		}
 		BSDF* m_bsdf;
 	};
 
@@ -120,6 +127,11 @@ namespace RenderBird
 		Vector3f m_pos;
 		Vector3f m_n;
 		Vector3f m_wi;
+		void TransformBy(const Matrix4f& mat)
+		{
+			m_pos = mat * m_pos;
+			m_n = MathUtils::TransformDirection(mat, m_n).Normalized();
+		}
 		Float m_distance;
 		RGB32 m_li;
 	};

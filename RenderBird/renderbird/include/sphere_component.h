@@ -9,12 +9,12 @@ namespace RenderBird
 		Float m_radius;
 	};
 
-	struct SphereComponentUtils
-	{
-		static Float GetArea(SphereComponent* disk);
-		static bool Intersect(EntityId id, const Ray& worldRay, RayHitInfo* hitInfo);
+	//struct SphereComponentUtils
+	//{
+	//	static Float GetArea(SphereComponent* disk);
+	//	static bool Intersect(EntityId id, const Ray& worldRay, RayHitInfo* hitInfo);
 
-	};
+	//};
 }
 
 DECLEAR_TYPE_COMPONENT(RenderBird, SphereComponent);

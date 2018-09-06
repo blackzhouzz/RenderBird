@@ -1,9 +1,9 @@
 #include "pathtracing.h"
 #include "renderer.h"
-#include "arealight.h"
+#include "area_light_component.h"
 #include "bsdf.h"
 #include "light_component.h"
-#include "arealight.h"
+#include "area_light_component.h"
 
 namespace RenderBird
 {
@@ -18,6 +18,8 @@ namespace RenderBird
 		Ray ray;
 		m_renderer->GenerateCameraRay(state->m_cameraSample, &ray);
 		const int maxBounce = m_renderer->GetRendererSetting().m_maxBounce;
+		if (m_renderer->m_scene->m_lights.size() == 0)
+			return;
 		//path tracing loop begin
 		RayHitInfo hitInfo;
 		m_renderer->m_scene->Intersect(ray, &hitInfo);
@@ -31,9 +33,10 @@ namespace RenderBird
 
 			SurfaceSample ss(ray, hitInfo);
 
-			if (m_renderer->m_scene->IsLight(hitInfo.m_id))
+			if (hitInfo.m_obj->IsLight())
 			{
-				L->m_directDiffuse += state->m_throughtput * AreaLightUtils::Le(hitInfo.m_id, &ss, -ray.m_direction);
+				const Light* light = static_cast<const Light*>(hitInfo.m_obj);
+				L->m_directDiffuse += state->m_throughtput * light->Le(&ss, -ray.m_direction);
 			}
 
 			//RGBA32 diffuseColor = RGBA32::WHITE;
@@ -47,6 +50,7 @@ namespace RenderBird
 			//break;
 			
 			SampleLight(state, &ss, L);
+
 			BsdfSpectrum bs;
 			Vector2f rand2d = state->m_sampler->Random2D();
 			RGB32 sampleWeight;
@@ -65,7 +69,7 @@ namespace RenderBird
 
 			if (m_renderer->m_scene->Intersect(ray, &hitInfo))
 			{
-				if (m_renderer->m_scene->IsLight(hitInfo.m_id))
+				if (hitInfo.m_obj->IsLight())
 				{
 					hitLight = true;
 				}
@@ -78,8 +82,9 @@ namespace RenderBird
 
 			if (hitLight)
 			{
-				auto li = AreaLightUtils::Le(hitInfo.m_id, &ss, -ray.m_direction);
-				Float lightPdf = AreaLightUtils::PdfDisk(hitInfo, &ss, wi);
+				const Light* light = static_cast<const Light*>(hitInfo.m_obj);
+				auto li = light->Le(&ss, -ray.m_direction);
+				Float lightPdf = light->Pdf(hitInfo, &ss, wi);
 				Float misWeight = SampleUtils::PowerHeuristic(bsdfPdf, lightPdf);
 				L->m_directDiffuse += state->m_throughtput * li * misWeight;
 			}
@@ -89,11 +94,12 @@ namespace RenderBird
 	bool PathTracing::SampleLight(State* state, SurfaceSample* ss, Radiance* L)
 	{
 		Vector2f lightRand2d = state->m_sampler->Random2D();
-		EntityId lightId = m_renderer->m_scene->m_lightId;
+		Float rand1d = state->m_sampler->Random1D();
+		int index = Clamp<int>((int)((m_renderer->m_scene->m_lights.size() - 1) * rand1d), 0, m_renderer->m_scene->m_lights.size() - 1);
+		Light* light = m_renderer->m_scene->m_lights[index];
 		LightSample ls;
 		Float lightPdf = 0;
-		if (AreaLightUtils::SampleDisk(lightId, lightRand2d, ss, &ls, &lightPdf) && lightPdf > 0)
-			//if (DistantLightComponentUtils::Sample(lightId, lightRand2d, ss, &ls, &lightPdf) && lightPdf > 0)
+		if (light->Sample(lightRand2d, ss, &ls, &lightPdf) && lightPdf > 0)
 		{
 			BsdfSpectrum bs;
 			Float bsdfPdf = 0.0;
@@ -106,7 +112,7 @@ namespace RenderBird
 			RayHitInfo lightHitInfo;
 			if (m_renderer->m_scene->Intersect(lightRay, &lightHitInfo))
 			{
-				if (lightHitInfo.m_id != lightId)
+				if (lightHitInfo.m_obj != light)
 				{
 					return false;
 				}
@@ -147,7 +153,7 @@ namespace RenderBird
 
 	void PathTracing::Render(int pixelX, int pixelY, TileRenderer* tile)
 	{
-		if (pixelX == 126 && pixelY == 41)
+		if (pixelX == 104 && pixelY == 207)
 		{
 			pixelX = pixelX;
 		}

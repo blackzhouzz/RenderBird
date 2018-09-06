@@ -27,17 +27,15 @@ namespace RenderBird
 		return Vector2f(r * cos(phi), r * sin(phi));
 	}
 
-	void SampleUtils::CosHemisphere(const Vector3f& normal, const Vector2f& rand2d, Vector3f* wi, Float* pdf)
+	void SampleUtils::CosHemisphere(const Vector2f& rand2d, Vector3f* wi, Float* pdf)
 	{
 		Vector2f newRand2d = ToUnitDisk(rand2d);
 		Float costheta = std::sqrt(std::max((Float)1.0f - newRand2d.x * newRand2d.x - newRand2d.y * newRand2d.y, (Float)0.0f));
-		//Matrix3f rot = MathUtils::MakeNormalTransform(normal);
-		//*wi = rot * Vector3f(newRand2d.x, newRand2d.y, costheta);
 		*wi = Vector3f(newRand2d.x, newRand2d.y, costheta);
 		*pdf = costheta * C_1_INV_PI;
 	}
 
-	void SampleUtils::UniformHemisphere(const Vector3f& normal, const Vector2f& rand2d, Vector3f* wi, Float* pdf)
+	void SampleUtils::UniformHemisphere(const Vector2f& rand2d, Vector3f* wi, Float* pdf)
 	{
 		Float z = rand2d.x;
 		Float r = std::sqrt(std::max((Float)0.0f, (Float)1.0f - z * z));
@@ -45,12 +43,11 @@ namespace RenderBird
 		Float x = r * std::cos(phi);
 		Float y = r * std::sin(phi);
 
-		//Matrix3f rot = MathUtils::MakeNormalTransform(normal);
-		//*wi = rot * Vector3f(x, y, z);
+		*wi = Vector3f(x, y, z);
 		*pdf = 0.5f * C_1_INV_PI;
 	}
 
-	void SampleUtils::UniformSphere(const Vector3f& normal, const Vector2f& rand2d, Vector3f* wi, Float* pdf)
+	void SampleUtils::UniformSphere(const Vector2f& rand2d, Vector3f* wi, Float* pdf)
 	{
 		Float z = 1.0 - 2.0 * rand2d.x;
 		Float r = std::sqrt(std::max(0.0, 1.0 - z * z));
@@ -62,7 +59,7 @@ namespace RenderBird
 		*pdf = 0.25f * C_1_INV_PI;
 	}
 
-	void SampleUtils::UniformCone(const Vector3f& normal, const Vector2f& rand2d, Float angle, Vector3f* wi, Float* pdf)
+	void SampleUtils::UniformCone(const Vector2f& rand2d, Float angle, Vector3f* wi, Float* pdf)
 	{
 		Float z = std::cos(angle*rand2d.x);
 		Float r = std::sqrt(std::max(0.0, 1.0 - z * z));

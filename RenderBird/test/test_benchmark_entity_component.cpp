@@ -59,7 +59,7 @@ void Test_BenchmarkEntityFastest()
 
 	static EntityId entities[MAX_ENTITY_COUNT];
 	static Transform* components[MAX_ENTITY_COUNT];
-	Archetype* archtype = EntityManager::IntancePtr()->CreateArchetype<Transform, RenderBird::LightProperty>();
+	Archetype* archtype = EntityManager::IntancePtr()->CreateArchetype<Transform, RenderBird::LightPropertyComponent>();
 
 	IntervalTime time;
 
@@ -78,9 +78,9 @@ void Test_BenchmarkEntityFastest()
 	//std::cout << "fastest create component benchmark ms: " << time.End() << std::endl;
 
 	time.Begin();
-	//ComponentGroup group(2, TypeOf<Transform>::Value(), TypeOf<RenderBird::LightProperty>::Value());
+	//ComponentGroup group(2, TypeOf<Transform>::Value(), TypeOf<RenderBird::LightPropertyComponent>::Value());
 	ComponentGroup group;
-	ComponentGroup::Create<Transform, RenderBird::LightProperty>(&group);
+	ComponentGroup::Create<Transform, RenderBird::LightPropertyComponent>(&group);
 	//ComponentGroupVisitor<Transform> visitor;
 
 	//while (visitor.HasNext())
@@ -89,7 +89,7 @@ void Test_BenchmarkEntityFastest()
 	//	auto id = visitor.GetEntityId();
 	//	transform->m_pos = C_Zero_v3f;
 
-	//	//auto lp = visitor.Get<RenderBird::LightProperty>();
+	//	//auto lp = visitor.Get<RenderBird::LightPropertyComponent>();
 	//	//lp->m_intensity = 2;
 	//	visitor.MoveNext();
 	//}

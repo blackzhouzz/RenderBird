@@ -13,7 +13,7 @@ namespace RenderBird
 	void DiffuseBSDF::Sample(SurfaceSample* ss, const Vector2f& rand2d, Vector3f* wi, Float* pdf, RGB32* sampleWeight)
 	{
 		auto woLocal = WorldToLocal(ss->m_wo);
-		SampleUtils::CosHemisphere(ss->m_n, rand2d, wi, pdf);
+		SampleUtils::CosHemisphere(rand2d, wi, pdf);
 		if (woLocal.z < 0) wi->z *= -1;
 
 		*wi = LocalToWorld(*wi);

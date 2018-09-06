@@ -6,6 +6,8 @@
 #include <fjs/Counter.h>
 #include <fjs/List.h>
 #include <fjs/Queue.h>
+#include "render_statistic.h"
+#include <iostream>
 
 namespace RenderBird
 {
@@ -48,8 +50,8 @@ namespace RenderBird
 	{
 		m_setting.m_resX = 256;
 		m_setting.m_resY = 256;
-		m_setting.m_tileSizeX = 16;
-		m_setting.m_tileSizeY = 16;
+		m_setting.m_tileSizeX = 32;
+		m_setting.m_tileSizeY = 32;
 		m_setting.m_useJob = true;
 		m_setting.m_maxBounce = 5;
 		m_setting.m_numSamples = 10;
@@ -122,7 +124,8 @@ namespace RenderBird
 			list.Add(fjs::JobPriority::Normal, RenderJob, Renderer::Instance().m_tileRenderers[i]);
 		}
 		list.Wait();
-
+		uint64 numRay = RenderStatistic::m_numRayIntersect;
+		std::cout << "Num ray is " << numRay << std::endl;
 		ImageOutput::WriteBMP("c:/test.bmp", Renderer::Instance().m_data, Renderer::Instance().m_setting.m_resX, Renderer::Instance().m_setting.m_resY);
 	}
 
@@ -132,7 +135,7 @@ namespace RenderBird
 		{
 			fjs::ManagerOptions managerOptions;
 			managerOptions.NumFibers = managerOptions.NumThreads * 20;
-			managerOptions.ThreadAffinity = true;
+			managerOptions.ThreadAffinity = false;
 
 			managerOptions.HighPriorityQueueSize = 256;
 			managerOptions.NormalPriorityQueueSize = 512;
@@ -151,6 +154,8 @@ namespace RenderBird
 			{
 				m_tileRenderers[i]->Render();
 			}
+			uint64 numRay = RenderStatistic::m_numRayIntersect;
+			std::cout << "Num ray is " << numRay << std::endl;
 			ImageOutput::WriteBMP("c:/test.bmp", m_data, m_setting.m_resX, m_setting.m_resY);
 		}
 	}

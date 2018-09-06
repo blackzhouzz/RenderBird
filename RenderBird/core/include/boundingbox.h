@@ -35,6 +35,7 @@ namespace Core
 		void MakeInside(const BoundingBox& box);
 		void MoveDelta(const Vector3f& vec);
 		void MoveAbs(const Vector3f& abs);
+		Vector3f GetVertex(uint32 index)const;
 	public:
 		Vector3f m_min;
 		Vector3f m_max;

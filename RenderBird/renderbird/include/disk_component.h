@@ -12,11 +12,11 @@ namespace RenderBird
 		Float m_phiMax;
 	};
 
-	struct DiskComponentUtils
-	{
-		static Float GetArea(DiskComponent* comp);
-		static bool Intersect(EntityId id, const Ray& worldRay, RayHitInfo* hitInfo);
-	};
+	//struct DiskComponentUtils
+	//{
+	//	static Float GetArea(DiskComponent* comp);
+	//	static bool Intersect(EntityId id, const Ray& worldRay, RayHitInfo* hitInfo);
+	//};
 }
 
 DECLEAR_TYPE_COMPONENT(RenderBird, DiskComponent);

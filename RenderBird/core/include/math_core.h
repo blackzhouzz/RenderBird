@@ -49,6 +49,7 @@ namespace Core
 	static const Float C_HALF_PI = (Float)1.57079632679489661923f;
 	static const Float C_QUARTER_PI = (Float)0.785398163397448f;
 	static const Float C_2_PI = (Float)6.28318530717958647692f;
+	static const Float C_Gray_Scale[3] = { 0.212671f, 0.715160f, 0.072169f };
 
 	inline Float DegToRad(Float val)
 	{

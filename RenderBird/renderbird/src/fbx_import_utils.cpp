@@ -74,7 +74,7 @@ namespace RenderBird
 			uint32 operator()(const KeyType& a) const {
 				uint32 digest = 0;
 				for (size_t i = 0; i < sizeof(a); i++)
-					digest = _mm_crc32_u8(digest, ((uint8_t*)&a)[i]);
+					digest = _mm_crc32_u8(digest, ((uint8*)&a)[i]);
 				return digest;
 			}
 		};
@@ -321,7 +321,7 @@ namespace RenderBird
 	}
 
 
-	//uint32_t importTexture(ImportState& state, FbxFileTexture* pFileTexture, bool sRGB) {
+	//uint32 importTexture(ImportState& state, FbxFileTexture* pFileTexture, bool sRGB) {
 	//	if (!pFileTexture)
 	//		return hvvr::SimpleMaterial::badTextureIndex;
 
@@ -334,7 +334,7 @@ namespace RenderBird
 
 	//	int channelsOut = 4;
 	//	int width, height, channelsIn;
-	//	uint8_t* data = stbi_load(path, &width, &height, &channelsIn, channelsOut);
+	//	uint8* data = stbi_load(path, &width, &height, &channelsIn, channelsOut);
 	//	if (data == nullptr) {
 	//		printf("error: stb_image couldn't load %s\n", path);
 	//		return hvvr::SimpleMaterial::badTextureIndex;
@@ -343,7 +343,7 @@ namespace RenderBird
 	//	size_t size = width * height * channelsOut;
 
 	//	hvvr::TextureData tex;
-	//	tex.data = new uint8_t[size];
+	//	tex.data = new uint8[size];
 	//	memcpy((void*)tex.data, data, size);
 	//	STBI_FREE(data);
 	//	tex.format = sRGB ? hvvr::TextureFormat::r8g8b8a8_unorm_srgb : hvvr::TextureFormat::r8g8b8a8_unorm;
@@ -351,7 +351,7 @@ namespace RenderBird
 	//	tex.height = height;
 	//	tex.stride = width;
 
-	//	uint32_t texIndex = uint32_t(state.model.textures.size());
+	//	uint32 texIndex = uint32(state.model.textures.size());
 	//	state.model.textures.emplace_back(std::move(tex));
 	//	state.textureLookup[path] = texIndex;
 

@@ -149,16 +149,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\3rdparty\CImg\CImg.h" />
-    <ClInclude Include="include\arealight.h" />
+    <ClInclude Include="include\accel_structure.h" />
+    <ClInclude Include="include\area_light_component.h" />
+    <ClInclude Include="include\area_light.h" />
     <ClInclude Include="include\bsdf.h" />
+    <ClInclude Include="include\bvh.h" />
     <ClInclude Include="include\camera_component.h" />
+    <ClInclude Include="include\disk.h" />
     <ClInclude Include="include\disk_component.h" />
+    <ClInclude Include="include\distant_light.h" />
+    <ClInclude Include="include\distant_light_component.h" />
     <ClInclude Include="include\fbx_import_utils.h" />
-    <ClInclude Include="include\geometrycomponent.h" />
     <ClInclude Include="include\geometry_generator.h" />
+    <ClInclude Include="include\light.h" />
     <ClInclude Include="include\light_component.h" />
     <ClInclude Include="include\material.h" />
     <ClInclude Include="include\mesh_component.h" />
+    <ClInclude Include="include\mesh_object.h" />
     <ClInclude Include="include\pathtracing.h" />
     <ClInclude Include="include\pathtracing_common.h" />
     <ClInclude Include="include\renderbird_private.h" />
@@ -169,22 +176,33 @@
     <ClInclude Include="include\sampler.h" />
     <ClInclude Include="include\sample_utils.h" />
     <ClInclude Include="include\scene.h" />
+    <ClInclude Include="include\scene_object.h" />
     <ClInclude Include="include\shape.h" />
+    <ClInclude Include="include\sphere.h" />
     <ClInclude Include="include\sphere_component.h" />
     <ClInclude Include="include\texture.h" />
+    <ClInclude Include="include\triangle.h" />
     <ClInclude Include="include\trianglemesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\geometry_generator.cpp" />
-    <ClCompile Include="src\arealight.cpp" />
+    <ClCompile Include="src\accel_structure.cpp" />
+    <ClCompile Include="src\area_light.cpp" />
+    <ClCompile Include="src\area_light_component.cpp" />
     <ClCompile Include="src\bsdf.cpp" />
+    <ClCompile Include="src\bvh.cpp" />
     <ClCompile Include="src\camera_component.cpp" />
+    <ClCompile Include="src\disk.cpp" />
     <ClCompile Include="src\disk_component.cpp" />
+    <ClCompile Include="src\distant_light.cpp" />
+    <ClCompile Include="src\distant_light_component.cpp" />
     <ClCompile Include="src\fbx_import_utils.cpp" />
     <ClCompile Include="src\image_output.cpp" />
+    <ClCompile Include="src\light.cpp" />
     <ClCompile Include="src\light_component.cpp" />
     <ClCompile Include="src\material.cpp" />
     <ClCompile Include="src\mesh_component.cpp" />
+    <ClCompile Include="src\mesh_object.cpp" />
     <ClCompile Include="src\pathtracing.cpp" />
     <ClCompile Include="src\pathtracing_common.cpp" />
     <ClCompile Include="src\renderbird_register.cpp" />
@@ -193,9 +211,12 @@
     <ClCompile Include="src\sampler.cpp" />
     <ClCompile Include="src\sample_utils.cpp" />
     <ClCompile Include="src\scene.cpp" />
+    <ClCompile Include="src\scene_object.cpp" />
     <ClCompile Include="src\shape.cpp" />
+    <ClCompile Include="src\sphere.cpp" />
     <ClCompile Include="src\sphere_component.cpp" />
     <ClCompile Include="src\texture.cpp" />
+    <ClCompile Include="src\triangle.cpp" />
     <ClCompile Include="src\trianglemesh.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
