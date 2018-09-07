@@ -14,7 +14,7 @@ namespace RenderBird
 		{
 		}
 		virtual void Eval(SurfaceSample* ss, const Vector3f& wi, Float* pdf, RGB32* eval) = 0;
-		virtual void Sample(SurfaceSample* ss, const Vector2f& rand2d, Vector3f* wi, Float* pdf, RGB32* sampleWeight) = 0;
+		virtual void Sample(SurfaceSample* ss, const Vector2f& rand2d, Vector3f* wi, Float* pdf, RGB32* bsdfWeight) = 0;
 		Vector3f WorldToLocal(const Vector3f &v) const 
 		{
 			return Vector3f(Vector3f::DotProduct(v, m_ss), Vector3f::DotProduct(v, m_ts), Vector3f::DotProduct(v, m_ns));
@@ -25,7 +25,7 @@ namespace RenderBird
 				m_ss.y * v.x + m_ts.y * v.y + m_ns.y * v.z,
 				m_ss.z * v.x + m_ts.z * v.y + m_ns.z * v.z);
 		}
-	private:
+	public:
 		Vector3f m_ns;
 		Vector3f m_ts;
 		Vector3f m_ss;
@@ -40,7 +40,7 @@ namespace RenderBird
 		{
 		}
 		virtual void Eval(SurfaceSample* ss, const Vector3f& wi, Float* pdf, RGB32* eval);
-		virtual void Sample(SurfaceSample* ss, const Vector2f& rand2d, Vector3f* wi, Float* pdf, RGB32* sampleWeight);
+		virtual void Sample(SurfaceSample* ss, const Vector2f& rand2d, Vector3f* wi, Float* pdf, RGB32* bsdfWeight);
 		RGB32 m_color;
 	};
 }

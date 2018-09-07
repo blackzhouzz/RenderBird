@@ -120,6 +120,9 @@
     <ClInclude Include="include\accel_structure.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\triangle_component.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\material.cpp">
@@ -219,6 +222,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\accel_structure.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\triangle_component.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -297,7 +297,8 @@ namespace RenderBird
 				{
 					TriangleMesh* trimesh = ImportMesh(state, fbxscene, node->GetMesh());
 					Vector3f center = trimesh->GetMeshData()->m_localBoundingBox.GetCenter();
-					//scene->AddTestDiskLight(center);
+					auto bounding = trimesh->GetMeshData()->m_localBoundingBox;
+					scene->AddTestMeshLight(C_Zero_v3f, trimesh);
 				}
 				else
 				{

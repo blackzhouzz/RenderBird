@@ -183,6 +183,7 @@
     <ClInclude Include="include\texture.h" />
     <ClInclude Include="include\triangle.h" />
     <ClInclude Include="include\trianglemesh.h" />
+    <ClInclude Include="include\triangle_component.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\geometry_generator.cpp" />
@@ -218,6 +219,7 @@
     <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\triangle.cpp" />
     <ClCompile Include="src\trianglemesh.cpp" />
+    <ClCompile Include="src\triangle_component.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

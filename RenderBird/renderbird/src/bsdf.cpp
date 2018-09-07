@@ -10,18 +10,15 @@ namespace RenderBird
 		*eval = m_color * cos_pi;
 	}
 
-	void DiffuseBSDF::Sample(SurfaceSample* ss, const Vector2f& rand2d, Vector3f* wi, Float* pdf, RGB32* sampleWeight)
+	void DiffuseBSDF::Sample(SurfaceSample* ss, const Vector2f& rand2d, Vector3f* wi, Float* pdf, RGB32* bsdfWeight)
 	{
 		auto woLocal = WorldToLocal(ss->m_wo);
 		SampleUtils::CosHemisphere(rand2d, wi, pdf);
 		if (woLocal.z < 0) wi->z *= -1;
 
 		*wi = LocalToWorld(*wi);
-		if (Vector3f::DotProduct(ss->m_ng, *wi) > 0.0f)
-		{
-			*sampleWeight = m_color * (*pdf);
-		}
-		else
+		*bsdfWeight = m_color * (*pdf);
+		if (!PathTracingUtils::IsSameHemisphere(ss->m_ng, *wi))
 		{
 			*pdf = 0.0f;
 		}

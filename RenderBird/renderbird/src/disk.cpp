@@ -7,28 +7,24 @@ namespace RenderBird
 	{
 	}
 
-	Float Disk::Pdf(const Matrix4f& localToWorld, const RayHitInfo& hitInfo, SurfaceSample* ss, const Vector3f& wi)
-	{
-		Float pdf = 1.0f / GetArea();
-
-		Vector3f vecLight = hitInfo.m_pos - ss->m_pos;
-		pdf *= vecLight.LengthSquared() / std::abs(Vector3f::DotProduct(hitInfo.m_n, -wi));
-		return pdf;
-	}
-
 	Float Disk::GetArea()
 	{
 		return m_disk->m_phiMax * 0.5f * (m_disk->m_radius * m_disk->m_radius - m_disk->m_innerRadius * m_disk->m_innerRadius);
 	}
 
-	bool Disk::Sample(const Vector2f& rand2d, LightSample* ls, Float* pdf)
+	void Disk::Sample(const Vector2f& rand2d, LightSample* ls, Float* pdf)
 	{
 		Vector2f pd = SampleUtils::ToUnitDisk(rand2d);
-		Vector3f objPos(pd.x * m_disk->m_radius, pd.y * m_disk->m_radius, 0);
-		ls->m_pos = objPos;
+		ls->m_pos = Vector3f(pd.x * m_disk->m_radius, pd.y * m_disk->m_radius, 0);;
 		ls->m_n = C_AxisZ_v3f;
-		*pdf = 1.0f / GetArea();
-		return true;
+		if (GetArea() == 0.0f)
+		{
+			*pdf = 0.0f;
+		}
+		else
+		{
+			*pdf = 1.0f / GetArea();
+		}
 	}
 
 	bool Disk::Intersect(const Ray& ray, RayHitInfo* hitInfo)const
@@ -77,13 +73,5 @@ namespace RenderBird
 		Vector3f sqrForward = forward * forward;
 		Vector3f e = m_disk->m_radius * Vector3f(std::sqrt(1.0 - sqrForward.x), std::sqrt(1.0 - sqrForward.y), std::sqrt(1.0 - sqrForward.z));
 		return BoundingBox(center - e, center + e);
-	}
-
-	Vector2f Disk::GetDistanceNearFar(const Matrix4f& localToWorld, const Vector3f& normal)
-	{
-		Vector3f center = localToWorld * C_Zero_v3f;
-		Float d = Vector3f::DotProduct(normal, center);
-
-		return Vector2f(d - m_disk->m_radius, d + m_disk->m_radius);
 	}
 }

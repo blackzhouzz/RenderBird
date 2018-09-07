@@ -17,5 +17,10 @@ namespace Core
 		static Matrix4f OrthoOffCenterMatrix(Float left, Float right, Float bottom, Float top, Float nearClip, Float farClip);
 		static Matrix4f PerspectiveFovMatrix(Float fovY, Float aspect, Float nearClip, Float farClip);
 		static Vector3f GetForward(const Quaternion& quat);
+		//"Fast, Minimum Storage Ray-Triangle Intersection
+		static bool RayTriangleIntersect(
+			Vector3f ray_P, Vector3f ray_dir, Float ray_t,
+			const Vector3f v0, const Vector3f v1, const Vector3f v2,
+			Float *isect_u, Float *isect_v, Float *isect_t, bool doubleSide);
 	};
 }

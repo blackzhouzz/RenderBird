@@ -35,6 +35,14 @@ namespace RenderBird
 		};
 		struct MeshData
 		{
+			MeshData()
+				: m_flags(0)
+			{
+			}
+			bool HasFlag(VertexChannelFlag flag)const
+			{
+				return (m_flags & flag) != 0;
+			}
 			std::string m_name;
 			std::vector<VertexData> m_vertexData;
 			std::vector<FaceData> m_faceData;
@@ -62,6 +70,14 @@ namespace RenderBird
 			}
 			return 0;
 		}
+		const FaceData* GetFaceData(uint32 index)const
+		{
+			if (m_triMeshData != nullptr)
+			{
+				return &m_triMeshData->m_faceData[index];
+			}
+			return nullptr;
+		}
 		size_t GetVertexCount()const
 		{
 			if (m_triMeshData != nullptr)
@@ -70,6 +86,8 @@ namespace RenderBird
 			}
 			return 0;
 		}
+
+		bool IntersectTriangle(const Ray& ray, RayHitInfo* hitInfo, uint32 faceIndex)const;
 
 		MeshData* m_triMeshData;
 		std::vector<Material*> m_materials;

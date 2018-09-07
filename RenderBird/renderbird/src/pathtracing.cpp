@@ -18,6 +18,7 @@ namespace RenderBird
 		Ray ray;
 		m_renderer->GenerateCameraRay(state->m_cameraSample, &ray);
 		const int maxBounce = m_renderer->GetRendererSetting().m_maxBounce;
+		const int rrBounce = m_renderer->GetRendererSetting().m_rrBounce;
 		if (m_renderer->m_scene->m_lights.size() == 0)
 			return;
 		//path tracing loop begin
@@ -26,7 +27,7 @@ namespace RenderBird
 
 		for (state->m_currentBounce = 0; ;state->m_currentBounce++)
 		{
-			if (!hitInfo.IsHit() || state->m_currentBounce > maxBounce)
+			if (!hitInfo.IsHit() || state->m_currentBounce >= maxBounce)
 			{
 				break;
 			}
@@ -53,13 +54,13 @@ namespace RenderBird
 
 			BsdfSpectrum bs;
 			Vector2f rand2d = state->m_sampler->Random2D();
-			RGB32 sampleWeight;
+			RGB32 bsdfWeight = RGB32::BLACK;
 			Vector3f wi;
 			Float bsdfPdf = 0.0;
 
-			ss.m_bsdf->Sample(&ss, rand2d, &wi, &bsdfPdf, &sampleWeight);
+			ss.m_bsdf->Sample(&ss, rand2d, &wi, &bsdfPdf, &bsdfWeight);
 
-			if (bsdfPdf == 0.0 || sampleWeight.IsZero())
+			if (bsdfPdf == 0.0 || bsdfWeight.Lum() < C_FLOAT_EPSILON)
 				break;
 
 			ray.m_origin = ss.m_pos;
@@ -78,7 +79,7 @@ namespace RenderBird
 			{
 				break;
 			}
-			state->m_throughtput *= sampleWeight / bsdfPdf;
+			state->m_throughtput *= bsdfWeight / bsdfPdf;
 
 			if (hitLight)
 			{
@@ -87,6 +88,15 @@ namespace RenderBird
 				Float lightPdf = light->Pdf(hitInfo, &ss, wi);
 				Float misWeight = SampleUtils::PowerHeuristic(bsdfPdf, lightPdf);
 				L->m_directDiffuse += state->m_throughtput * li * misWeight;
+			}
+			const Float eta = 1.0f;
+
+			if (state->m_currentBounce >= rrBounce)
+			{
+				Float q = std::min(state->m_throughtput.Max() * eta * eta, (Float) 0.95f);
+				if (state->m_sampler->Random1D() >= q)
+					break;
+				state->m_throughtput /= q;
 			}
 		}
 	}

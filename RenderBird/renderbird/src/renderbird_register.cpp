@@ -12,4 +12,5 @@ void RegisterTypeInfoRenderBird()
 	REGISTER_TYPEINFO(DiskComponent)
 	REGISTER_TYPEINFO(AreaLightComponent)
 	REGISTER_TYPEINFO(SphereComponent)
+	REGISTER_TYPEINFO(TriangleComponent)
 }

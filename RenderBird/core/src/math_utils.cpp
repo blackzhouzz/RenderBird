@@ -90,4 +90,86 @@ namespace Core
 		return Vector3f(mat(2, 0), mat(2, 1), mat(2, 2));
 	}
 
+	bool MathUtils::RayTriangleIntersect(
+		Vector3f ray_P, Vector3f ray_dir, Float ray_t,
+		const Vector3f v0, const Vector3f v1, const Vector3f v2,
+		Float *isect_u, Float *isect_v, Float *isect_t, bool doubleSide)
+	{
+		Vector3f edge1 = v1 - v0;
+		Vector3f edge2 = v2 - v0;
+
+		// Begin calculating determinant; also used to calculate U parameter
+
+		Vector3f pvec = Vector3f::CrossProduct(ray_dir, edge2);
+
+		// If determinant is near zero, ray lies in plane of triangle
+
+		const Float det = Vector3f::DotProduct(edge1, pvec);
+		Float u, v, t;
+		if (doubleSide)
+		{
+			// No backface culling in this experiment, determinant within "epsilon" as
+			// defined in M&T paper is considered 0
+
+			if (det > -C_FLOAT_EPSILON && det < C_FLOAT_EPSILON)
+				return false;
+
+			const Float inv_det = 1.0f / det;
+
+			// Calculate vector from vertex to ray origin
+
+			Vector3f tvec = ray_P - v0;
+
+			// Calculate U parameter and test bounds
+			u = Vector3f::DotProduct(tvec, pvec) * inv_det;
+			if (u < 0.0f || u > 1.0f)
+				return false;
+
+			// Prepare to test V parameter
+
+			Vector3f qvec = Vector3f::CrossProduct(tvec, edge1);
+
+			// Calculate V parameter and test bounds
+
+			v = Vector3f::DotProduct(ray_dir, qvec) * inv_det;
+			//sub epsilon solve z fighting
+			if (v < 0.0f || u + v >= 1.0f - C_FLOAT_EPSILON)
+				return false;
+
+			// Calculate t, final check to see if ray intersects triangle. Test to
+			// see if t > tFar added for consistency with other algorithms in experiment.
+
+			t = Vector3f::DotProduct(edge2, qvec) * inv_det;
+			if (t <= C_FLOAT_EPSILON || t >= ray_t)
+				return false;
+		}
+		else
+		{
+			if (det < C_FLOAT_EPSILON)
+				return false;
+			Vector3f tvec = ray_P - v0;
+
+			u = Vector3f::DotProduct(tvec, pvec);
+			if (u < 0.0f || u > det)
+				return false;
+
+			Vector3f qvec = Vector3f::CrossProduct(tvec, edge1);
+
+			v = Vector3f::DotProduct(ray_dir, qvec);
+			if (v < 0.0f || u + v > det)
+				return false;
+
+			t = Vector3f::DotProduct(edge2, qvec);
+			const Float inv_det = 1.0f / det;
+
+			t *= inv_det;
+			u *= inv_det;
+			v *= inv_det;
+		}
+		*isect_u = u;
+		*isect_v = v;
+		*isect_t = t;
+
+		return true;
+	}
 }

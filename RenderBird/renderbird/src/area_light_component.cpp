@@ -24,7 +24,7 @@ namespace RenderBird
 	//	*pdf = 1.0f / DiskComponentUtils::GetArea(comp);
 	//	Vector3f vecLight = ls->m_pos - ss->m_pos;
 	//	ls->m_distance = vecLight.Length();
-	//	if (ls->m_distance == 0 || (!areaLight->m_isDoubleSide && !PathTracingUtils::SampleHemisphere(-vecLight, ls->m_n)))
+	//	if (ls->m_distance == 0 || (!areaLight->m_isDoubleSide && !PathTracingUtils::IsSameHemisphere(-vecLight, ls->m_n)))
 	//	{
 	//		*pdf = 0.0;
 	//	}
@@ -60,7 +60,7 @@ namespace RenderBird
 	//	AreaLightComponent* areaLight = EntityManager::Instance().GetComponent<AreaLightComponent>(id);
 	//	LightPropertyComponent* lightProp = EntityManager::Instance().GetComponent<LightPropertyComponent>(id);
 	//	RGB32 le = lightProp->m_color;
-	//	if (!areaLight->m_isDoubleSide && !PathTracingUtils::SampleHemisphere(w, ss->m_n))
+	//	if (!areaLight->m_isDoubleSide && !PathTracingUtils::IsSameHemisphere(w, ss->m_n))
 	//	{
 	//		le = RGB32::BLACK;
 	//	}

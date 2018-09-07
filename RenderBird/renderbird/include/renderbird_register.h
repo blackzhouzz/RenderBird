@@ -12,7 +12,7 @@ TYPE_ID_STRUCT(RenderBird, CameraComponent, 104)
 TYPE_ID_STRUCT(RenderBird, DiskComponent, 105)
 TYPE_ID_STRUCT(RenderBird, AreaLightComponent, 106)
 TYPE_ID_STRUCT(RenderBird, SphereComponent, 107)
-
+TYPE_ID_STRUCT(RenderBird, TriangleComponent, 108)
 
 
 extern void RegisterTypeInfoRenderBird();

@@ -17,14 +17,15 @@ namespace RenderBird
 
 	bool AreaLight::Sample(const Vector2f& rand2d, SurfaceSample* ss, LightSample* ls, Float* pdf)
 	{
-		if (!m_shape->Sample(rand2d, ls, pdf))
+		m_shape->Sample(rand2d, ls, pdf);
+		if (*pdf == 0.0f)
 			return false;
 		const Matrix4f localToWorld = TransformUtils::GetMatrix(m_transform);
 		ls->TransformBy(localToWorld);
 
 		Vector3f vecLight = ls->m_pos - ss->m_pos;
 		ls->m_distance = vecLight.Length();
-		if (ls->m_distance == 0 || (!m_areaLight->m_isDoubleSide && !PathTracingUtils::SampleHemisphere(-vecLight, ls->m_n)))
+		if (ls->m_distance == 0 || (!m_areaLight->m_isDoubleSide && !PathTracingUtils::IsSameHemisphere(-vecLight, ls->m_n)))
 		{
 			*pdf = 0.0;
 		}
@@ -42,7 +43,7 @@ namespace RenderBird
 	RGB32 AreaLight::Le(SurfaceSample* ss, const Vector3f& w)const
 	{
 		RGB32 le = m_lightProp->m_color;
-		if (!m_areaLight->m_isDoubleSide && !PathTracingUtils::SampleHemisphere(w, ss->m_n))
+		if (!m_areaLight->m_isDoubleSide && !PathTracingUtils::IsSameHemisphere(w, ss->m_n))
 		{
 			le = RGB32::BLACK;
 		}

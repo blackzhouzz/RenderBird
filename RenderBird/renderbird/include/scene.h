@@ -21,6 +21,7 @@ namespace RenderBird
 		void AddTriangleMesh(TriangleMesh* mesh);
 		void AddTestDiskLight(const Vector3f& pos, Float radius);
 		void AddTestSphereLight(const Vector3f& pos, Float radius);
+		void AddTestMeshLight(const Vector3f& pos, TriangleMesh* trimesh);
 		bool IsLight(EntityId id);
 	public:
 		std::set<EntityId> m_entities;

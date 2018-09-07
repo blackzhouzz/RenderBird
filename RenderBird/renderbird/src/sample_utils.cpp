@@ -27,6 +27,12 @@ namespace RenderBird
 		return Vector2f(r * cos(phi), r * sin(phi));
 	}
 
+	Vector2f SampleUtils::UniformTriangle(const Vector2f& rand2d)
+	{
+		Float sq = std::sqrt(rand2d[0]);
+		return Vector2f(1.0f - sq, rand2d[1] * sq);
+	}
+
 	void SampleUtils::CosHemisphere(const Vector2f& rand2d, Vector3f* wi, Float* pdf)
 	{
 		Vector2f newRand2d = ToUnitDisk(rand2d);

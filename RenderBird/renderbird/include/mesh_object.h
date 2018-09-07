@@ -13,8 +13,6 @@ namespace RenderBird
 		virtual Vector2f GetDistanceNearFar(const Vector3f& normal);
 		virtual void UpdateBoundingBox();
 	private:
-		bool IntersectTriangle(TriangleMesh* trimesh, TriangleMesh::MeshData* meshData, const Ray& ray, RayHitInfo* hitInfo, uint32 faceIndex)const;
-	private:
 		MeshComponent* m_mesh;
 	};
 }

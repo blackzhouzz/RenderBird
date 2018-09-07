@@ -225,6 +225,10 @@ namespace Core
 		{
 			return m_bands[0] * C_Gray_Scale[0] + m_bands[1] * C_Gray_Scale[1] + m_bands[2] * C_Gray_Scale[2];
 		}
+		Float Max()const
+		{
+			return std::max(std::max(m_bands[0], m_bands[1]), m_bands[2]);
+		}
 		static const RGB32 RED;
 		static const RGB32 GREEN;
 		static const RGB32 BLUE;

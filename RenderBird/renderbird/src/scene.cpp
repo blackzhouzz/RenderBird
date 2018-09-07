@@ -14,6 +14,8 @@
 #include "mesh_object.h"
 #include "sphere.h"
 #include "bvh.h"
+#include "triangle_component.h"
+#include "triangle.h"
 
 namespace RenderBird
 {
@@ -98,9 +100,8 @@ namespace RenderBird
 		//CreateShapeTest();
 		CreateMeshTest();
 		//CreateLightTest();
-		AddTestDiskLight(Vector3f(0, 0, 1.98), 0.5);
+		//AddTestDiskLight(Vector3f(0, 0, 1.98), 0.5);
 		//AddTestSphereLight(Vector3f(0, 0, 0.6), 0.2);
-		//AddTestDiskLight(Vector3f(0, 0, 0.6), 0.5);
 		CreateCameraTest();
 		//m_accel = new AccelStructure(m_sceneObjects);
 		m_accel = new BVH(m_sceneObjects);
@@ -153,7 +154,7 @@ namespace RenderBird
 
 	void Scene::CreateMeshTest()
 	{
-		FBXImportUtils::LoadFBX("c:/1234.fbx", this);
+		FBXImportUtils::LoadFBX("c:/123.fbx", this);
 
 		//auto plane1 = GeometryGenerator::GeneratePlane(Vector2f(2.0f, 2.0f));
 		//m_meshResources.push_back(plane1);
@@ -210,6 +211,29 @@ namespace RenderBird
 		m_entities.insert(m_camera);
 	}
 
+	void Scene::AddTestMeshLight(const Vector3f& pos, TriangleMesh* trimesh)
+	{
+		auto archetype = EntityManager::IntancePtr()->CreateArchetype<AreaLightComponent, Transform, TriangleComponent, LightPropertyComponent>();
+
+		for (int i = 0; i < trimesh->GetFaceCount(); ++i)
+		{
+			EntityId lightId = EntityManager::IntancePtr()->CreateEntity(archetype);
+
+			auto light = EntityManager::IntancePtr()->GetComponent<LightPropertyComponent>(lightId);
+			light->m_color = RGB32::WHITE * 10;
+			auto trans = EntityManager::IntancePtr()->GetComponent<Transform>(lightId);
+			trans->m_pos = pos;
+
+			m_entities.insert(lightId);
+
+			AreaLight* areaLight = CreateSceneObject<AreaLight>(lightId);
+			Triangle* shape = new Triangle(trimesh, i);
+			areaLight->SetShape(std::unique_ptr<Shape>(shape));
+			m_lights.push_back(areaLight);
+			m_sceneObjects.push_back(areaLight);
+		}
+	}
+
 	void Scene::AddTestDiskLight(const Vector3f& pos, Float radius)
 	{
 		auto archetype = EntityManager::IntancePtr()->CreateArchetype<AreaLightComponent, Transform, DiskComponent, LightPropertyComponent>();
@@ -227,6 +251,7 @@ namespace RenderBird
 		auto vec = MathUtils::TransformDirection(mat, C_AxisZ_v3f);
 
 		auto light = EntityManager::IntancePtr()->GetComponent<LightPropertyComponent>(lightId);
+		light->m_color = RGB32::WHITE;
 
 		m_entities.insert(lightId);
 		//m_lightsGroup = new ComponentGroup(EntityManager::IntancePtr()->CreateArchetype<AreaLightComponent, Transform, DiskComponent, LightPropertyComponent>());
