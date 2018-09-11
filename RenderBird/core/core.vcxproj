@@ -39,6 +39,7 @@
     <ClInclude Include="include\core_register.h" />
     <ClInclude Include="include\ray.h" />
     <ClInclude Include="include\rect2.h" />
+    <ClInclude Include="include\rng.h" />
     <ClInclude Include="include\simplesignal.h" />
     <ClInclude Include="include\spectrum.h" />
     <ClInclude Include="include\sphere.h" />

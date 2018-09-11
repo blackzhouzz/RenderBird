@@ -16,6 +16,7 @@
 #include "bvh.h"
 #include "triangle_component.h"
 #include "triangle.h"
+#include "render_statistic.h"
 
 namespace RenderBird
 {
@@ -24,6 +25,8 @@ namespace RenderBird
 	}
 	bool Scene::Intersect(const Ray& ray, RayHitInfo* hitInfo)const
 	{
+		RenderStatistic::m_numRaySceneIntersect++;
+
 		return m_accel->Intersect(ray, hitInfo);
 		//bool hasIntersected = false;
 		//for (auto obj : m_sceneObjects)
@@ -154,7 +157,7 @@ namespace RenderBird
 
 	void Scene::CreateMeshTest()
 	{
-		FBXImportUtils::LoadFBX("c:/123.fbx", this);
+		FBXImportUtils::LoadFBX("c:/1234.fbx", this);
 
 		//auto plane1 = GeometryGenerator::GeneratePlane(Vector2f(2.0f, 2.0f));
 		//m_meshResources.push_back(plane1);
@@ -220,7 +223,7 @@ namespace RenderBird
 			EntityId lightId = EntityManager::IntancePtr()->CreateEntity(archetype);
 
 			auto light = EntityManager::IntancePtr()->GetComponent<LightPropertyComponent>(lightId);
-			light->m_color = RGB32::WHITE * 10;
+			light->m_color = RGB32::WHITE * 20;
 			auto trans = EntityManager::IntancePtr()->GetComponent<Transform>(lightId);
 			trans->m_pos = pos;
 
@@ -246,7 +249,7 @@ namespace RenderBird
 		disk->m_phiMax = C_2_PI;
 		auto trans = EntityManager::IntancePtr()->GetComponent<Transform>(lightId);
 		trans->m_pos = pos;
-		//trans->m_rotation = Quaternion::FromEulerAngles(Vector3f(0, DegToRad(180.0), 0));
+		trans->m_rotation = Quaternion::FromEulerAngles(Vector3f(0, DegToRad(180.0), 0));
 		auto mat = TransformUtils::GetMatrix(trans);
 		auto vec = MathUtils::TransformDirection(mat, C_AxisZ_v3f);
 
@@ -287,5 +290,25 @@ namespace RenderBird
 	void Scene::AddTriangleMesh(TriangleMesh* mesh)
 	{
 		m_meshResources.push_back(mesh);
+	}
+
+	void Scene::BeginRender()
+	{
+		m_distribution = new DiscreteDistribution(m_lights.size());
+		for (size_t i = 0; i < m_lights.size(); ++i)
+		{
+			m_distribution->Append(1.0f);
+		}
+		m_distribution->Normalize();
+
+		for (size_t i = 0; i < m_lights.size(); ++i)
+		{
+			m_lights[i]->m_index = i;
+		}
+	}
+
+	void Scene::EndRnder()
+	{
+		delete m_distribution;
 	}
 }

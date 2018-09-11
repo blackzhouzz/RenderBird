@@ -102,6 +102,9 @@
     <ClInclude Include="include\math_core.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\rng.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\archetype.cpp">

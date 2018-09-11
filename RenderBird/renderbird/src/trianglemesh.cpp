@@ -1,5 +1,6 @@
 #include "trianglemesh.h"
 #include <algorithm>
+#include "render_statistic.h"
 
 IMPLEMENT_TYPE(RenderBird, TriangleMesh)
 
@@ -27,7 +28,6 @@ namespace RenderBird
 		const Vector3f& n0 = meshData->m_vertexData[faceData.m_v0].m_n;
 		const Vector3f& n1 = meshData->m_vertexData[faceData.m_v1].m_n;
 		const Vector3f& n2 = meshData->m_vertexData[faceData.m_v2].m_n;
-
 		Float u, v, t;
 		if (MathUtils::RayTriangleIntersect(ray.m_origin, ray.m_direction, ray.m_maxT, v0, v1, v2, &u, &v, &t, true))
 		{
@@ -71,6 +71,7 @@ namespace RenderBird
 				hitInfo->m_dpdu = dpdu;
 				hitInfo->m_dpdv = dpdv;
 				hitInfo->m_ns = Vector3f::CrossProduct(dpdu, dpdv).Normalized();
+				RenderStatistic::m_numRayTriangleIntersect++;
 
 				return true;
 			}

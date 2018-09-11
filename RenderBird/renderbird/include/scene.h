@@ -23,6 +23,8 @@ namespace RenderBird
 		void AddTestSphereLight(const Vector3f& pos, Float radius);
 		void AddTestMeshLight(const Vector3f& pos, TriangleMesh* trimesh);
 		bool IsLight(EntityId id);
+		void BeginRender();
+		void EndRnder();
 	public:
 		std::set<EntityId> m_entities;
 		//ComponentGroup* m_sphereEntitiesGroup;
@@ -33,5 +35,6 @@ namespace RenderBird
 		std::vector<Light*> m_lights;
 		std::vector<SceneObject*> m_sceneObjects;
 		AccelStructure* m_accel;
+		DiscreteDistribution* m_distribution;
 	};
 }

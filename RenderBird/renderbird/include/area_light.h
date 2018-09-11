@@ -15,6 +15,7 @@ namespace RenderBird
 		virtual Float Pdf(const RayHitInfo& hitInfo, SurfaceSample* ss, const Vector3f& wi)const;
 		virtual bool Intersect(const Ray& worldRay, RayHitInfo* hitInfo)const;
 		virtual Vector2f GetDistanceNearFar(const Vector3f& normal);
+		bool IsSameHemisphere(const Vector3f& w1, const Vector3f& w2)const;
 		void SetShape(std::unique_ptr<Shape> shape)
 		{
 			m_shape = std::move(shape);

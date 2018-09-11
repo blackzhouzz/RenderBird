@@ -16,6 +16,8 @@ namespace RenderBird
 		virtual bool IsLight()const { return true; }
 	protected:
 		LightPropertyComponent* m_lightProp;
+	public:
+		size_t m_index;
 	};
 
 }

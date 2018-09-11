@@ -22,6 +22,7 @@ namespace RenderBird
 
 	void TileRenderer::Render()
 	{
+
 		for (int pixelY = m_boundMin.y; pixelY < m_boundMax.y; ++pixelY)
 		{
 			for (int pixelX = m_boundMin.x; pixelX < m_boundMax.x; ++pixelX)
@@ -30,6 +31,7 @@ namespace RenderBird
 				{
 					continue;
 				}
+
 				m_renderer->m_integrator->Render(pixelX, pixelY, this);
 			}
 		}
@@ -53,9 +55,9 @@ namespace RenderBird
 		m_setting.m_tileSizeX = 32;
 		m_setting.m_tileSizeY = 32;
 		m_setting.m_useJob = true;
-		m_setting.m_maxBounce = 5;
+		m_setting.m_maxBounce = 6;
 		m_setting.m_rrBounce = 4;
-		m_setting.m_numSamples = 1;
+		m_setting.m_numSamples = 2000;
 		m_scene->SetupSceneTest();
 	}
 
@@ -77,14 +79,6 @@ namespace RenderBird
 			}
 		}
 		m_data = new PixelData[m_setting.m_resX * m_setting.m_resY];
-
-		//PerspectiveCamera* m_camera = new PerspectiveCamera();
-		//const Float dist = 10;
-		//Vector3f pos = Vector3f(0, 1, 1) * dist;
-		//m_camera->LookAt(pos, C_Zero_v3f, C_AxisZ_v3f);
-		//m_camera->PerspectiveFovLH(39.0f, 1.0f, 1e-2f, 1000.f);
-		//auto oldView = m_camera->GetViewMatrix();
-		//auto oldProj = m_camera->GetProjMatrix();
 
 		EntityId cameraId = m_scene->GetCamera();
 		auto cameraComponent = EntityManager::IntancePtr()->GetComponent<CameraComponent>(cameraId);
@@ -125,13 +119,13 @@ namespace RenderBird
 			list.Add(fjs::JobPriority::Normal, RenderJob, Renderer::Instance().m_tileRenderers[i]);
 		}
 		list.Wait();
-		uint64 numRay = RenderStatistic::m_numRayIntersect;
-		std::cout << "Num ray is " << numRay << std::endl;
-		ImageOutput::WriteBMP("c:/test.bmp", Renderer::Instance().m_data, Renderer::Instance().m_setting.m_resX, Renderer::Instance().m_setting.m_resY);
+		Renderer::Instance().Finish();
 	}
 
 	void Renderer::Render()
 	{
+		m_scene->BeginRender();
+
 		if (m_setting.m_useJob)
 		{
 			fjs::ManagerOptions managerOptions;
@@ -155,14 +149,17 @@ namespace RenderBird
 			{
 				m_tileRenderers[i]->Render();
 			}
-			uint64 numRay = RenderStatistic::m_numRayIntersect;
-			std::cout << "Num ray is " << numRay << std::endl;
-			ImageOutput::WriteBMP("c:/test.bmp", m_data, m_setting.m_resX, m_setting.m_resY);
+			Finish();
 		}
 	}
 
 	void Renderer::Finish()
 	{
+		m_scene->EndRnder();
+
+		RenderStatistic::Print();
+		ImageOutput::WriteBMP("c:/test.bmp", m_data, m_setting.m_resX, m_setting.m_resY);
+
 		for (int i = 0; i < m_tileRenderers.size();++i)
 		{
 			m_tileRenderers[i]->Finish();

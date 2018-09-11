@@ -138,7 +138,6 @@ namespace RenderBird
 
 	struct PathTracingUtils
 	{
-		static RGB32 EvalEmissive(const Vector3f& geomNormal, const Vector3f& dir, const RGB32& lightColor);
 		static bool IsSameHemisphere(const Vector3f& w1, const Vector3f& w2);
 		static Float GammaCorrect(Float value);
 	};

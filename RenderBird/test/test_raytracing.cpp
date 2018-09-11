@@ -10,5 +10,4 @@ void TestRayTracingApp::Init()
 void TestRayTracingApp::Run()
 {
 	m_renderer->Render();
-	m_renderer->Finish();
 }

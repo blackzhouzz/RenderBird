@@ -4,6 +4,7 @@
 #include "bsdf.h"
 #include "light_component.h"
 #include "area_light_component.h"
+#include "render_statistic.h"
 
 namespace RenderBird
 {
@@ -21,34 +22,26 @@ namespace RenderBird
 		const int rrBounce = m_renderer->GetRendererSetting().m_rrBounce;
 		if (m_renderer->m_scene->m_lights.size() == 0)
 			return;
-		//path tracing loop begin
+
 		RayHitInfo hitInfo;
 		m_renderer->m_scene->Intersect(ray, &hitInfo);
 
 		for (state->m_currentBounce = 0; ;state->m_currentBounce++)
 		{
+			if (state->m_currentBounce > RenderStatistic::m_maxDepth)
+				RenderStatistic::m_maxDepth = state->m_currentBounce;
 			if (!hitInfo.IsHit() || state->m_currentBounce >= maxBounce)
 			{
 				break;
 			}
-
+			RenderStatistic::m_numSampleProcessed++;
 			SurfaceSample ss(ray, hitInfo);
 
-			if (hitInfo.m_obj->IsLight())
+			if (hitInfo.m_obj->IsLight() && state->m_currentBounce == 0)
 			{
 				const Light* light = static_cast<const Light*>(hitInfo.m_obj);
 				L->m_directDiffuse += state->m_throughtput * light->Le(&ss, -ray.m_direction);
 			}
-
-			//RGBA32 diffuseColor = RGBA32::WHITE;
-			//if (hitInfo.m_material != nullptr)
-			//{
-			//	diffuseColor = hitInfo.m_material->m_diffuseColor;
-			//}
-			//Float nol = std::max(Vector3f::DotProduct(hitInfo.m_n.Normalized(), Vector3f(1, 0, 1).Normalized()), 0.0);
-			//RGB32 color = RGB32(diffuseColor[0], diffuseColor[1], diffuseColor[2]);
-			//L->m_directDiffuse = color;
-			//break;
 			
 			SampleLight(state, &ss, L);
 
@@ -63,14 +56,17 @@ namespace RenderBird
 			if (bsdfPdf == 0.0 || bsdfWeight.Lum() < C_FLOAT_EPSILON)
 				break;
 
+			state->m_throughtput *= bsdfWeight / bsdfPdf;
+
 			ray.m_origin = ss.m_pos;
 			ray.m_direction = wi;
 
 			bool hitLight = false;
 
-			if (m_renderer->m_scene->Intersect(ray, &hitInfo))
+			RayHitInfo tempHitInfo;
+			if (m_renderer->m_scene->Intersect(ray, &tempHitInfo))
 			{
-				if (hitInfo.m_obj->IsLight())
+				if (tempHitInfo.m_obj->IsLight())
 				{
 					hitLight = true;
 				}
@@ -79,15 +75,18 @@ namespace RenderBird
 			{
 				break;
 			}
-			state->m_throughtput *= bsdfWeight / bsdfPdf;
+
+			hitInfo = tempHitInfo;
 
 			if (hitLight)
 			{
 				const Light* light = static_cast<const Light*>(hitInfo.m_obj);
-				auto li = light->Le(&ss, -ray.m_direction);
+				Float sampleLightPdf = (*m_renderer->m_scene->m_distribution)[light->m_index];
 				Float lightPdf = light->Pdf(hitInfo, &ss, wi);
+				auto li = light->Le(&ss, -ray.m_direction);
+
 				Float misWeight = SampleUtils::PowerHeuristic(bsdfPdf, lightPdf);
-				L->m_directDiffuse += state->m_throughtput * li * misWeight;
+				L->m_directDiffuse += state->m_throughtput * li * misWeight / sampleLightPdf;
 			}
 			const Float eta = 1.0f;
 
@@ -98,6 +97,7 @@ namespace RenderBird
 					break;
 				state->m_throughtput /= q;
 			}
+			//break;
 		}
 	}
 
@@ -105,7 +105,9 @@ namespace RenderBird
 	{
 		Vector2f lightRand2d = state->m_sampler->Random2D();
 		Float rand1d = state->m_sampler->Random1D();
-		int index = Clamp<int>((int)((m_renderer->m_scene->m_lights.size() - 1) * rand1d), 0, m_renderer->m_scene->m_lights.size() - 1);
+		//random select light and get sample light pdf
+		Float sampleLightPdf = 0.0f;
+		size_t index = m_renderer->m_scene->m_distribution->Sample(rand1d, sampleLightPdf);
 		Light* light = m_renderer->m_scene->m_lights[index];
 		LightSample ls;
 		Float lightPdf = 0;
@@ -118,71 +120,61 @@ namespace RenderBird
 			if (bsdfPdf == 0.0)
 				return false;
 
+			bool shadowBlocked = false;
 			Ray lightRay(ss->m_pos, ls.m_wi);
 			RayHitInfo lightHitInfo;
 			if (m_renderer->m_scene->Intersect(lightRay, &lightHitInfo))
 			{
 				if (lightHitInfo.m_obj != light)
 				{
-					return false;
+					shadowBlocked = true;
 				}
 			}
 
 			bs.Add(eval);
 			bs.Mul(ls.m_li / lightPdf);
 
-			if (!bs.IsZero())
+			if (!shadowBlocked)
 			{
 				Float misWeight = SampleUtils::PowerHeuristic(lightPdf, bsdfPdf);
-				L->m_directDiffuse += state->m_throughtput * bs.m_diffuse * misWeight;
-				//AccumRadiance(state, &bs, L);
+				L->m_directDiffuse += state->m_throughtput * bs.m_diffuse * misWeight / sampleLightPdf;
 				return true;
 			}
 		}
 		return false;
 	}
 
-	void PathTracing::AccumRadiance(State* state, BsdfSpectrum* bs, Radiance* L)
-	{
-		L->m_directDiffuse += state->m_throughtput * bs->m_diffuse;
-	}
-
-	bool PathTracing::ProbabilityStop()
-	{
-		return false;
-	}
-
-	void PathTracing::InitState(int pixelX, int pixelY, State* state)
-	{
-		auto setting = m_renderer->GetRendererSetting();
-		state->m_pixelX = pixelX;
-		state->m_pixelY = pixelY;
-		state->m_sampler = new Sampler(setting.m_numSamples);
-		state->m_useMis = setting.m_useMis;
-	}
-
 	void PathTracing::Render(int pixelX, int pixelY, TileRenderer* tile)
 	{
-		if (pixelX == 104 && pixelY == 207)
+		//if (pixelX == 107 && pixelY == 48)
+		//{
+		//	pixelX = pixelX;
+		//}
+		if (pixelX == 109 && pixelY == 113)
 		{
 			pixelX = pixelX;
 		}
 		State state;
-		InitState(pixelX, pixelY, &state);
+		auto setting = m_renderer->GetRendererSetting();
+		state.m_pixelX = pixelX;
+		state.m_pixelY = pixelY;
+		state.m_sampler = new Sampler(setting.m_numSamples);
+		state.m_useMis = setting.m_useMis;
+
 		for (uint32 samplerIndex = 0; samplerIndex < state.m_sampler->m_numSamplers; ++samplerIndex)
 		{
 			Radiance L;
 			state.m_cameraSample = state.m_sampler->GetCameraSample(pixelX, pixelY);
+
 			state.m_curSamplerIndex = samplerIndex;
 			state.m_throughtput = RGB32::WHITE;
 			state.m_currentBounce = 0;
 
 			Integrate(&state, &L);
-			if (!L.IsZero())
-			{
-				L = L;
-			}
+
 			m_renderer->AddSample(state.m_cameraSample.m_pixel, tile->GetBoundMin(), tile->GetBoundMax(), L);
 		}
+
+		delete state.m_sampler;
 	}
 }

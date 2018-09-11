@@ -10,7 +10,6 @@ namespace RenderBird
 		{
 			RayHitInfo tempHitInfo;
 
-			RenderStatistic::m_numRayIntersect++;
 			if (obj->Intersect(ray, &tempHitInfo))
 			{
 				if (!hitInfo->IsHit() || lt(tempHitInfo.m_t, hitInfo->m_t))

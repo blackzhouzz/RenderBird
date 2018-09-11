@@ -8,6 +8,12 @@ enum TypeInfoFlag
 	IsComponent = 1 << 0,
 };
 
+template<typename T>
+struct DefaultOf
+{
+	static const T* Value() { return nullptr; }
+};
+
 template<typename T, bool is_abstract>
 struct TAllocator
 {
@@ -140,12 +146,6 @@ template<typename T>
 struct TypeOf
 {
 	static TypeInfo* Value() { return nullptr; }
-};
-
-template<typename T>
-struct DefaultOf
-{
-	static const T* Value() { return nullptr; }
 };
 
 #ifndef DEFAULT_BEGIN

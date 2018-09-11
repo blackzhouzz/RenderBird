@@ -15,6 +15,11 @@ namespace RenderBird
 		m_areaLight = EntityManager::IntancePtr()->GetComponent<AreaLightComponent>(id);
 	}
 
+	bool AreaLight::IsSameHemisphere(const Vector3f& w1, const Vector3f& w2)const
+	{
+		return (!m_areaLight->m_isDoubleSide && !PathTracingUtils::IsSameHemisphere(w1, w2));
+	}
+
 	bool AreaLight::Sample(const Vector2f& rand2d, SurfaceSample* ss, LightSample* ls, Float* pdf)
 	{
 		m_shape->Sample(rand2d, ls, pdf);
@@ -25,7 +30,7 @@ namespace RenderBird
 
 		Vector3f vecLight = ls->m_pos - ss->m_pos;
 		ls->m_distance = vecLight.Length();
-		if (ls->m_distance == 0 || (!m_areaLight->m_isDoubleSide && !PathTracingUtils::IsSameHemisphere(-vecLight, ls->m_n)))
+		if (ls->m_distance == 0 || IsSameHemisphere(-vecLight, ls->m_n))
 		{
 			*pdf = 0.0;
 		}
@@ -33,7 +38,7 @@ namespace RenderBird
 		{
 			ls->m_wi = vecLight / ls->m_distance;
 			// dw = dA * cos(theta) / (r*r)
-			*pdf *= vecLight.LengthSquared() / std::abs(Vector3f::DotProduct(ls->m_n, -ls->m_wi));
+			*pdf *= ls->m_distance * ls->m_distance / std::abs(Vector3f::DotProduct(ls->m_n, -ls->m_wi));
 		}
 
 		ls->m_li = m_lightProp->m_color;
@@ -43,7 +48,7 @@ namespace RenderBird
 	RGB32 AreaLight::Le(SurfaceSample* ss, const Vector3f& w)const
 	{
 		RGB32 le = m_lightProp->m_color;
-		if (!m_areaLight->m_isDoubleSide && !PathTracingUtils::IsSameHemisphere(w, ss->m_n))
+		if (IsSameHemisphere(w, ss->m_n))
 		{
 			le = RGB32::BLACK;
 		}

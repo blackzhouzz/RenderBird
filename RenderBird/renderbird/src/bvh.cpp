@@ -95,7 +95,6 @@ namespace RenderBird
 				{
 					Float t = C_FLOAT_MAX;
 					RayHitInfo tempHitInfo;
-					RenderStatistic::m_numRayIntersect++;
 					if (e->m_obj->Intersect(ray, &tempHitInfo))
 					{
 						if (!hitInfo->IsHit() || lt(tempHitInfo.m_t, hitInfo->m_t))
@@ -113,7 +112,7 @@ namespace RenderBird
 					if (node->child[i] != nullptr) 
 					{
 						Float tNearChild = 0, tFarChild = tFar;
-						RenderStatistic::m_numRayIntersect++;
+						RenderStatistic::m_numRayBVHIntersect++;
 						if (node->child[i]->nodeExtents.Intersect(precomputedNumerator, precomputedDenominator, tNearChild, tFarChild, planeIndex)) 
 						{
 							Float t = (tNearChild < 0 && tFarChild >= 0) ? tFarChild : tNearChild;
