@@ -22,7 +22,6 @@ namespace RenderBird
 		const int rrBounce = m_renderer->GetRendererSetting().m_rrBounce;
 		if (m_renderer->m_scene->m_lights.size() == 0)
 			return;
-
 		RayHitInfo hitInfo;
 		m_renderer->m_scene->Intersect(ray, &hitInfo);
 
@@ -42,8 +41,9 @@ namespace RenderBird
 				const Light* light = static_cast<const Light*>(hitInfo.m_obj);
 				L->m_directDiffuse += state->m_throughtput * light->Le(&ss, -ray.m_direction);
 			}
-			
-			SampleLight(state, &ss, L);
+			Float sampleLightPdf = 0.0f;
+			Light* sampleLight = GetSampleLight(state, sampleLightPdf);
+			SampleLight(state, sampleLight, sampleLightPdf, &ss, L);
 
 			BsdfSpectrum bs;
 			Vector2f rand2d = state->m_sampler->Random2D();
@@ -66,7 +66,7 @@ namespace RenderBird
 			RayHitInfo tempHitInfo;
 			if (m_renderer->m_scene->Intersect(ray, &tempHitInfo))
 			{
-				if (tempHitInfo.m_obj->IsLight())
+				if (tempHitInfo.m_obj->IsLight() && sampleLight == tempHitInfo.m_obj)
 				{
 					hitLight = true;
 				}
@@ -76,13 +76,10 @@ namespace RenderBird
 				break;
 			}
 
-			hitInfo = tempHitInfo;
-
 			if (hitLight)
 			{
-				const Light* light = static_cast<const Light*>(hitInfo.m_obj);
-				Float sampleLightPdf = (*m_renderer->m_scene->m_distribution)[light->m_index];
-				Float lightPdf = light->Pdf(hitInfo, &ss, wi);
+				const Light* light = static_cast<const Light*>(tempHitInfo.m_obj);
+				Float lightPdf = light->Pdf(tempHitInfo, &ss, wi);
 				auto li = light->Le(&ss, -ray.m_direction);
 
 				Float misWeight = SampleUtils::PowerHeuristic(bsdfPdf, lightPdf);
@@ -97,48 +94,57 @@ namespace RenderBird
 					break;
 				state->m_throughtput /= q;
 			}
+			hitInfo = tempHitInfo;
 			//break;
 		}
 	}
 
-	bool PathTracing::SampleLight(State* state, SurfaceSample* ss, Radiance* L)
+	Light* PathTracing::GetSampleLight(State* state, Float& sampleLightPdf)
 	{
-		Vector2f lightRand2d = state->m_sampler->Random2D();
 		Float rand1d = state->m_sampler->Random1D();
 		//random select light and get sample light pdf
-		Float sampleLightPdf = 0.0f;
 		size_t index = m_renderer->m_scene->m_distribution->Sample(rand1d, sampleLightPdf);
 		Light* light = m_renderer->m_scene->m_lights[index];
+		return light;
+	}
+
+	bool PathTracing::SampleLight(State* state, Light* light, Float sampleLightPdf, SurfaceSample* ss, Radiance* L)
+	{
+		Vector2f lightRand2d = state->m_sampler->Random2D();
+
 		LightSample ls;
 		Float lightPdf = 0;
-		if (light->Sample(lightRand2d, ss, &ls, &lightPdf) && lightPdf > 0)
+		if (light->Sample(lightRand2d, ss, &ls, &lightPdf))
 		{
-			BsdfSpectrum bs;
-			Float bsdfPdf = 0.0;
-			RGB32 eval;
-			ss->m_bsdf->Eval(ss, ls.m_wi, &bsdfPdf, &eval);
-			if (bsdfPdf == 0.0)
-				return false;
-
-			bool shadowBlocked = false;
-			Ray lightRay(ss->m_pos, ls.m_wi);
-			RayHitInfo lightHitInfo;
-			if (m_renderer->m_scene->Intersect(lightRay, &lightHitInfo))
+			if (lightPdf > 0)
 			{
-				if (lightHitInfo.m_obj != light)
+				BsdfSpectrum bs;
+				Float bsdfPdf = 0.0;
+				RGB32 eval;
+				ss->m_bsdf->Eval(ss, ls.m_wi, &bsdfPdf, &eval);
+				if (bsdfPdf == 0.0)
+					return false;
+
+				bool shadowBlocked = false;
+				Ray lightRay(ss->m_pos, ls.m_wi);
+				RayHitInfo lightHitInfo;
+				if (m_renderer->m_scene->Intersect(lightRay, &lightHitInfo))
 				{
-					shadowBlocked = true;
+					if (lightHitInfo.m_obj != light)
+					{
+						shadowBlocked = true;
+					}
 				}
-			}
 
-			bs.Add(eval);
-			bs.Mul(ls.m_li / lightPdf);
+				bs.Add(eval);
+				bs.Mul(ls.m_li / lightPdf);
 
-			if (!shadowBlocked)
-			{
-				Float misWeight = SampleUtils::PowerHeuristic(lightPdf, bsdfPdf);
-				L->m_directDiffuse += state->m_throughtput * bs.m_diffuse * misWeight / sampleLightPdf;
-				return true;
+				if (!shadowBlocked)
+				{
+					Float misWeight = SampleUtils::PowerHeuristic(lightPdf, bsdfPdf);
+					L->m_directDiffuse += state->m_throughtput * bs.m_diffuse * misWeight / sampleLightPdf;
+					return true;
+				}
 			}
 		}
 		return false;

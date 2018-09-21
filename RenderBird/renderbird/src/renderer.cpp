@@ -57,7 +57,7 @@ namespace RenderBird
 		m_setting.m_useJob = true;
 		m_setting.m_maxBounce = 6;
 		m_setting.m_rrBounce = 4;
-		m_setting.m_numSamples = 2000;
+		m_setting.m_numSamples = 100;
 		m_scene->SetupSceneTest();
 	}
 
@@ -130,7 +130,7 @@ namespace RenderBird
 		{
 			fjs::ManagerOptions managerOptions;
 			managerOptions.NumFibers = managerOptions.NumThreads * 20;
-			managerOptions.ThreadAffinity = false;
+			managerOptions.ThreadAffinity = true;
 
 			managerOptions.HighPriorityQueueSize = 256;
 			managerOptions.NormalPriorityQueueSize = 512;

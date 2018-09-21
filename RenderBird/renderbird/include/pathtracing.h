@@ -7,7 +7,7 @@ namespace RenderBird
 {
 	class Renderer;
 	class TileRenderer;
-
+	class Light;
 	class PathTracing
 	{
 	public:
@@ -26,7 +26,8 @@ namespace RenderBird
 		void Render(int pixelX, int pixelY, TileRenderer* tile);
 	private:
 		void Integrate(State* state, Radiance* L);
-		bool SampleLight(State* state, SurfaceSample* ss, Radiance* L);
+		bool SampleLight(State* state, Light* light, Float sampleLightPdf, SurfaceSample* ss, Radiance* L);
+		Light* GetSampleLight(State* state, Float& sampleLightPdf);
 	private:
 		Renderer* m_renderer;
 	};
