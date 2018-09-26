@@ -55,9 +55,9 @@ namespace RenderBird
 		m_setting.m_tileSizeX = 32;
 		m_setting.m_tileSizeY = 32;
 		m_setting.m_useJob = true;
-		m_setting.m_maxBounce = 6;
+		m_setting.m_maxBounce = 8;
 		m_setting.m_rrBounce = 4;
-		m_setting.m_numSamples = 100;
+		m_setting.m_numSamples = 16;
 		m_scene->SetupSceneTest();
 	}
 

@@ -66,7 +66,9 @@ namespace RenderBird
 			RayHitInfo tempHitInfo;
 			if (m_renderer->m_scene->Intersect(ray, &tempHitInfo))
 			{
-				if (tempHitInfo.m_obj->IsLight() && sampleLight == tempHitInfo.m_obj)
+				if (tempHitInfo.m_obj->IsLight()
+					&& sampleLight == tempHitInfo.m_obj
+					)
 				{
 					hitLight = true;
 				}
@@ -79,6 +81,7 @@ namespace RenderBird
 			if (hitLight)
 			{
 				const Light* light = static_cast<const Light*>(tempHitInfo.m_obj);
+				Float sampleLightPdf = (*m_renderer->m_scene->m_distribution)[light->m_index];
 				Float lightPdf = light->Pdf(tempHitInfo, &ss, wi);
 				auto li = light->Le(&ss, -ray.m_direction);
 
