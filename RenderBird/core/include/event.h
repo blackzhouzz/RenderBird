@@ -17,7 +17,7 @@
 #include <unordered_map>
 #include <memory>
 #include <utility>
-#include "core_private.h"
+#include "CorePrivate.h"
 #include "simplesignal.h"
 
 /// Used internally by the EventManager.

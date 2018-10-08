@@ -1,7 +1,7 @@
 #pragma once
-#include "core_private.h"
-#include "pool.h"
-#include "typeinfo.h"
+#include "CorePrivate.h"
+#include "Pool.h"
+#include "TypeInfo.h"
 
 namespace Core
 {

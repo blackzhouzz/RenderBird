@@ -1,6 +1,6 @@
-#include "bvh.h"
+#include "BVH.h"
 #include <queue>
-#include "render_statistic.h"
+#include "RenderStatistic.h"
 
 namespace RenderBird
 {

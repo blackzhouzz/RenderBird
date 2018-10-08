@@ -1,4 +1,4 @@
-#include "entitymanager.h"
+#include "Entitymanager.h"
 #include "event.h"
 #include <cstdarg>
 #include <algorithm>

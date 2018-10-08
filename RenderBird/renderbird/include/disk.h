@@ -1,7 +1,7 @@
 #pragma once
-#include "renderbird_private.h"
-#include "shape.h"
-#include "disk_component.h"
+#include "RenderbirdPrivate.h"
+#include "Shape.h"
+#include "DiskComponent.h"
 
 namespace RenderBird
 {

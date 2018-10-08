@@ -1,6 +1,6 @@
 #pragma once
-#include "core_private.h"
-#include "component.h"
+#include "CorePrivate.h"
+#include "Component.h"
 #include "event.h"
 
 namespace Core

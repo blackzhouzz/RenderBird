@@ -1,5 +1,5 @@
-#include "triangle.h"
-#include "sample_utils.h"
+#include "Triangle.h"
+#include "SampleUtils.h"
 
 namespace RenderBird
 {

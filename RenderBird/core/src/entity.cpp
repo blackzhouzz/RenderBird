@@ -1,5 +1,5 @@
-#include "entity.h"
-#include "entitymanager.h"
+#include "Entity.h"
+#include "Entitymanager.h"
 
 namespace Core
 {

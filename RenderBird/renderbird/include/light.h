@@ -1,8 +1,8 @@
 #pragma once
-#include "renderbird_private.h"
-#include "scene_object.h"
-#include "pathtracing_common.h"
-#include "light_component.h"
+#include "RenderbirdPrivate.h"
+#include "SceneObject.h"
+#include "PathTracingCommon.h"
+#include "LightComponent.h"
 
 namespace RenderBird
 {

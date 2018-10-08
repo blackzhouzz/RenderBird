@@ -1,11 +1,11 @@
 #pragma once
-#include "core_private.h"
-#include "entity.h"
-#include "pool.h"
-#include "component_typelist.h"
-#include "archetype.h"
-#include "component.h"
-#include "component_chunk.h"
+#include "CorePrivate.h"
+#include "Entity.h"
+#include "Pool.h"
+#include "ComponentTypelist.h"
+#include "Archetype.h"
+#include "Component.h"
+#include "ComponentChunk.h"
 #include <list>
 #include <algorithm>
 

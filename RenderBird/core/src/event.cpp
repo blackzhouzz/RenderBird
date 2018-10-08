@@ -7,7 +7,7 @@
  *
  * Author: Alec Thomas <alec@swapoff.org>
  */
-#include "core_private.h"
+#include "CorePrivate.h"
 #include "event.h"
 
 

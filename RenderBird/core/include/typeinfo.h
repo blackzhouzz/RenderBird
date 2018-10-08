@@ -1,5 +1,5 @@
 #pragma once
-#include "core_private.h"
+#include "CorePrivate.h"
 #include <map>
 
 enum TypeInfoFlag

@@ -1,5 +1,5 @@
 #include "ray.h"
-#include "math_utils.h"
+#include "MathUtils.h"
 
 namespace Core
 {

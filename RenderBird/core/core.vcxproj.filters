@@ -15,165 +15,165 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\core_public.h">
+    <ClInclude Include="include\Entity.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\entity.h">
+    <ClInclude Include="include\Entitymanager.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\entitymanager.h">
+    <ClInclude Include="include\Event.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\event.h">
+    <ClInclude Include="include\FastDelegate.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\fastdelegate.hpp">
+    <ClInclude Include="include\MathCore.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\object.h">
+    <ClInclude Include="include\MathUtils.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\pool.h">
+    <ClInclude Include="include\Object.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\simplesignal.h">
+    <ClInclude Include="include\Plane.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\system.h">
+    <ClInclude Include="include\Pool.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\timer.h">
+    <ClInclude Include="include\Ray.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\transform.h">
+    <ClInclude Include="include\Rect2.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\transform_parent.h">
+    <ClInclude Include="include\RNG.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\typeinfo.h">
+    <ClInclude Include="include\SimpleSignal.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\typelist.h">
+    <ClInclude Include="include\Spectrum.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\archetype.h">
+    <ClInclude Include="include\Sphere.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\component.h">
+    <ClInclude Include="include\System.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\component_chunk.h">
+    <ClInclude Include="include\Timer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\component_group.h">
+    <ClInclude Include="include\Transform.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\component_typelist.h">
+    <ClInclude Include="include\TransformParent.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\core_private.h">
+    <ClInclude Include="include\TypeList.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\core_register.h">
+    <ClInclude Include="include\Archetype.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\spectrum.h">
+    <ClInclude Include="include\BoundingBox.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\boundingbox.h">
+    <ClInclude Include="include\Component.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\plane.h">
+    <ClInclude Include="include\ComponentChunk.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\ray.h">
+    <ClInclude Include="include\ComponentGroup.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\sphere.h">
+    <ClInclude Include="include\ComponentTypelist.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\rect2.h">
+    <ClInclude Include="include\CorePrivate.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\math_utils.h">
+    <ClInclude Include="include\CorePublic.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\math_core.h">
+    <ClInclude Include="include\CoreRegister.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\rng.h">
+    <ClInclude Include="include\TypeInfo.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\archetype.cpp">
+    <ClCompile Include="src\MathCore.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\component.cpp">
+    <ClCompile Include="src\MathUtils.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\component_chunk.cpp">
+    <ClCompile Include="src\Object.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\component_group.cpp">
+    <ClCompile Include="src\Plane.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\component_typelist.cpp">
+    <ClCompile Include="src\Pool.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\core_private.cpp">
+    <ClCompile Include="src\Ray.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\entity.cpp">
+    <ClCompile Include="src\Spectrum.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\entitymanager.cpp">
+    <ClCompile Include="src\Sphere.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\event.cpp">
+    <ClCompile Include="src\System.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\object.cpp">
+    <ClCompile Include="src\Transform.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\pool.cpp">
+    <ClCompile Include="src\TransformParent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\system.cpp">
+    <ClCompile Include="src\TypeInfo.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\transform.cpp">
+    <ClCompile Include="src\Archetype.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\transform_parent.cpp">
+    <ClCompile Include="src\BoundingBox.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\typeinfo.cpp">
+    <ClCompile Include="src\Component.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\core_register.cpp">
+    <ClCompile Include="src\ComponentChunk.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\spectrum.cpp">
+    <ClCompile Include="src\ComponentGroup.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\plane.cpp">
+    <ClCompile Include="src\ComponentTypelist.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\ray.cpp">
+    <ClCompile Include="src\CorePrivate.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\boundingbox.cpp">
+    <ClCompile Include="src\CoreRegister.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\sphere.cpp">
+    <ClCompile Include="src\Entity.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\math_utils.cpp">
+    <ClCompile Include="src\Entitymanager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\math_core.cpp">
+    <ClCompile Include="src\Event.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

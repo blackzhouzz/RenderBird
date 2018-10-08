@@ -1,6 +1,6 @@
 #pragma once
-#include "renderbird_private.h"
-#include "pathtracing_common.h"
+#include "RenderbirdPrivate.h"
+#include "PathTracingCommon.h"
 #include <random>
 
 namespace RenderBird

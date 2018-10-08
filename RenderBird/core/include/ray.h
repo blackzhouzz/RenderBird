@@ -1,5 +1,5 @@
 #pragma once
-#include "math_core.h"
+#include "MathCore.h"
 
 namespace Core
 {

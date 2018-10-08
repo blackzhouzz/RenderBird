@@ -15,217 +15,217 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\material.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\pathtracing.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\renderer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\scene.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\trianglemesh.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\renderbird_register.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\renderbird_private.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\geometry_generator.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\image_output.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\light_component.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\mesh_component.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\camera_component.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\3rdparty\CImg\CImg.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\fbx_import_utils.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\texture.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\sampler.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\shape.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\sample_utils.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\bsdf.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\pathtracing_common.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\disk_component.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\sphere_component.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\render_statistic.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\bvh.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\light.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\distant_light_component.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\scene_object.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\distant_light.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\area_light.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\area_light_component.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\disk.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\triangle.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\mesh_object.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\sphere.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\accel_structure.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\triangle_component.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
+    <ClCompile Include="src\SceneObject.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shape.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphere.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SphereComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Texture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triangle.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TriangleComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TriangleMesh.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AccelStructure.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AreaLight.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AreaLightComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AuxiliaryBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BSDF.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BVH.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CameraComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Disk.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DiskComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DistantLight.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DistantLightComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FBXImportUtils.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImageOutput.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Light.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LightComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Material.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MeshComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MeshObject.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PathTracing.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PathTracingCommon.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderbirdRegister.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderStatistic.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sampler.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SampleUtils.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\material.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pathtracing.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\renderer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\scene.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\trianglemesh.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\renderbird_register.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="include\geometry_generator.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\image_output.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\light_component.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mesh_component.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\camera_component.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\fbx_import_utils.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\texture.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sampler.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shape.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sample_utils.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\bsdf.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pathtracing_common.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\disk_component.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sphere_component.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\render_statistic.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\bvh.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\light.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\distant_light_component.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\scene_object.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\area_light_component.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\area_light.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\disk.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\triangle.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mesh_object.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\distant_light.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sphere.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\accel_structure.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\triangle_component.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
+    <ClInclude Include="include\DistantLightComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FBXImportUtils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ImageOutput.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Light.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LightComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Material.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MeshComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MeshObject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PathTracing.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PathTracingCommon.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PixelMap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RenderbirdPrivate.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RenderbirdRegister.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Renderer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RenderStatistic.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Sampler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SampleUtils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Scene.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SceneObject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shape.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Sphere.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SphereComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Texture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Triangle.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TriangleComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TriangleMesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AccelStructure.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AreaLight.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AreaLightComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AuxiliaryBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BSDF.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BVH.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CameraComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Disk.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DiskComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DistantLight.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

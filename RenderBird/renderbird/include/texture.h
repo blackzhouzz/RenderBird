@@ -1,5 +1,5 @@
 #pragma once
-#include "renderbird_private.h"
+#include "RenderbirdPrivate.h"
 
 namespace RenderBird
 {

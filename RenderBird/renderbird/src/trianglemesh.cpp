@@ -1,6 +1,6 @@
-#include "trianglemesh.h"
+#include "TriangleMesh.h"
 #include <algorithm>
-#include "render_statistic.h"
+#include "RenderStatistic.h"
 
 IMPLEMENT_TYPE(RenderBird, TriangleMesh)
 

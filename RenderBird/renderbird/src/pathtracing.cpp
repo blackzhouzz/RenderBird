@@ -1,10 +1,10 @@
 #include "pathtracing.h"
 #include "renderer.h"
-#include "area_light_component.h"
-#include "bsdf.h"
-#include "light_component.h"
-#include "area_light_component.h"
-#include "render_statistic.h"
+#include "AreaLightComponent.h"
+#include "BSDF.h"
+#include "LightComponent.h"
+#include "AreaLightComponent.h"
+#include "RenderStatistic.h"
 
 namespace RenderBird
 {
@@ -155,10 +155,6 @@ namespace RenderBird
 
 	void PathTracing::Render(int pixelX, int pixelY, TileRenderer* tile)
 	{
-		//if (pixelX == 107 && pixelY == 48)
-		//{
-		//	pixelX = pixelX;
-		//}
 		if (pixelX == 109 && pixelY == 113)
 		{
 			pixelX = pixelX;

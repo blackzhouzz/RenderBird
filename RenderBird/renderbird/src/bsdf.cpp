@@ -1,5 +1,5 @@
-#include "bsdf.h"
-#include "sample_utils.h"
+#include "BSDF.h"
+#include "SampleUtils.h"
 
 namespace RenderBird
 {

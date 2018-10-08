@@ -3,9 +3,9 @@
 #include <list>
 #include <unordered_set>
 #include <set>
-#include "component_group.h"
+#include "ComponentGroup.h"
 #include "timer.h"
-#include "light_component.h"
+#include "LightComponent.h"
 using namespace std;
 
 

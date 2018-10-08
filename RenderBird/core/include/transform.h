@@ -1,9 +1,9 @@
 #pragma once
-#include "core_private.h"
-#include "core_register.h"
-#include "component.h"
-#include "typeinfo.h"
-#include "math_utils.h"
+#include "CorePrivate.h"
+#include "CoreRegister.h"
+#include "Component.h"
+#include "TypeInfo.h"
+#include "MathUtils.h"
 
 namespace Core
 {

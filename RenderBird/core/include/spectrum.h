@@ -1,6 +1,6 @@
 #pragma once
-#include "core_private.h"
-#include "math_core.h"
+#include "CorePrivate.h"
+#include "MathCore.h"
 
 namespace Core
 {

@@ -1,6 +1,6 @@
 #pragma once
-#include "shape.h"
-#include "trianglemesh.h"
+#include "Shape.h"
+#include "TriangleMesh.h"
 
 namespace RenderBird
 {

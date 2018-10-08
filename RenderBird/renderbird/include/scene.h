@@ -1,9 +1,9 @@
 #pragma once
-#include "renderbird_private.h"
+#include "RenderbirdPrivate.h"
 #include "object.h"
-#include "trianglemesh.h"
-#include "light.h"
-#include "accel_structure.h"
+#include "TriangleMesh.h"
+#include "Light.h"
+#include "AccelStructure.h"
 
 namespace RenderBird
 {

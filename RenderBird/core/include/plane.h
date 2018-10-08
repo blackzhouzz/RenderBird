@@ -1,7 +1,7 @@
 #pragma once
-#include "math_core.h"
-#include "boundingbox.h"
-#include "sphere.h"
+#include "MathCore.h"
+#include "BoundingBox.h"
+#include "Sphere.h"
 
 namespace Core
 {

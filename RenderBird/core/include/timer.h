@@ -1,5 +1,5 @@
 #pragma once
-#include "core_private.h"
+#include "CorePrivate.h"
 #include <chrono>
 using std::chrono::high_resolution_clock;
 using std::chrono::milliseconds;

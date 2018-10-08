@@ -1,7 +1,7 @@
 #pragma once
-#include "renderbird_private.h"
+#include "RenderbirdPrivate.h"
 #include "sampler.h"
-#include "pathtracing_common.h"
+#include "PathTracingCommon.h"
 
 namespace RenderBird
 {

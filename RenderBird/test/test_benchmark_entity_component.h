@@ -1,7 +1,7 @@
 #pragma once
 #include "time.h"
 #include <iostream>
-#include "entitymanager.h"
+#include "Entitymanager.h"
 
 
 	extern void Test_BenchmarkEntitySlow();

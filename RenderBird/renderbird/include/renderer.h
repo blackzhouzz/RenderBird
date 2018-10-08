@@ -1,9 +1,9 @@
 #pragma once
 #include <vector>
 #include <memory>
-#include "image_output.h"
+#include "ImageOutput.h"
 #include "pathtracing.h"
-#include "scene.h"
+#include "Scene.h"
 
 namespace RenderBird
 {

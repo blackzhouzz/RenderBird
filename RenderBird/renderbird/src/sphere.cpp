@@ -1,5 +1,5 @@
-#include "sphere.h"
-#include "sample_utils.h"
+#include "Sphere.h"
+#include "SampleUtils.h"
 
 namespace RenderBird
 {

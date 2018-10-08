@@ -1,12 +1,12 @@
 #include "renderer.h"
-#include "camera_component.h"
-#include "trianglemesh.h"
-#include "material.h"
+#include "CameraComponent.h"
+#include "TriangleMesh.h"
+#include "Material.h"
 #include <fjs/Manager.h>
 #include <fjs/Counter.h>
 #include <fjs/List.h>
 #include <fjs/Queue.h>
-#include "render_statistic.h"
+#include "RenderStatistic.h"
 #include <iostream>
 
 namespace RenderBird

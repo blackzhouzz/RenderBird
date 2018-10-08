@@ -1,4 +1,4 @@
-#include "boundingbox.h"
+#include "BoundingBox.h"
 #include <limits>
 
 namespace Core

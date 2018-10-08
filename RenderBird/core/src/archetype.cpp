@@ -1,5 +1,5 @@
-#include "archetype.h"
-#include "component_chunk.h"
+#include "Archetype.h"
+#include "ComponentChunk.h"
 
 namespace Core
 {

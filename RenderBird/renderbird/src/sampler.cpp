@@ -1,6 +1,6 @@
 #include "sampler.h"
 #include "random/random.hpp"
-#include "render_statistic.h"
+#include "RenderStatistic.h"
 
 namespace RenderBird
 {

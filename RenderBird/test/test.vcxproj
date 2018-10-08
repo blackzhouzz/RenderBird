@@ -141,13 +141,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)core\include;$(SolutionDir)renderbird\include;$(SolutionDir)\3rdparty;D:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include;$(SolutionDir)\3rdparty\mathfu\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)core\include;$(SolutionDir)renderbird\include;$(SolutionDir)\3rdparty;C:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include;$(SolutionDir)\3rdparty\mathfu\include</AdditionalIncludeDirectories>
       <IntrinsicFunctions>false</IntrinsicFunctions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)libs\$(Configuration)\;D:\Program Files\Autodesk\FBX\FBX SDK\2019.0\lib\vs2015\x64\debug;$(SolutionDir)\3rdparty\fiber-job-system\build\fjs_Debug_x64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)libs\$(Configuration)\;C:\Program Files\Autodesk\FBX\FBX SDK\2019.0\lib\vs2015\x64\debug;$(SolutionDir)\3rdparty\fiber-job-system\build\fjs_Debug_x64</AdditionalLibraryDirectories>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);core.lib;renderbird.lib;libfbxsdk-md.lib;fjs.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -161,7 +161,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)core\include;$(SolutionDir)renderbird\include;$(SolutionDir)\3rdparty;D:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include;$(SolutionDir)\3rdparty\mathfu\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)core\include;$(SolutionDir)renderbird\include;$(SolutionDir)\3rdparty;C:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include;$(SolutionDir)\3rdparty\mathfu\include</AdditionalIncludeDirectories>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
@@ -170,7 +170,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)libs\$(Configuration)\;D:\Program Files\Autodesk\FBX\FBX SDK\2019.0\lib\vs2015\x64\release;$(SolutionDir)\3rdparty\fiber-job-system\build\fjs_Release_x64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)libs\$(Configuration)\;C:\Program Files\Autodesk\FBX\FBX SDK\2019.0\lib\vs2015\x64\release;$(SolutionDir)\3rdparty\fiber-job-system\build\fjs_Release_x64</AdditionalLibraryDirectories>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);core.lib;renderbird.lib;libfbxsdk-md.lib;fjs.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
