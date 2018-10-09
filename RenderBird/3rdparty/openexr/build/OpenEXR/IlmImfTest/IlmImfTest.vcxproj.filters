@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\compareB44.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\compareDwa.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\compareFloat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testAttributes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testBackwardCompatibility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testBadTypeAttributes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testChannels.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testCompositeDeepScanLine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testCompression.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testConversion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testCopyDeepScanLine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testCopyDeepTiled.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testCopyMultiPartFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testCopyPixels.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testCustomAttributes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testDeepScanLineBasic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testDeepScanLineHuge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testDeepScanLineMultipleRead.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testDeepTiledBasic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testDwaCompressorSimd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testExistingStreams.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testFutureProofing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testHuf.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testInputPart.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testIsComplete.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testLineOrder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testLut.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testMagic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testMalformedImages.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testMultiPartApi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testMultiPartFileMixingBasic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testMultiPartSharedAttributes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testMultiPartThreading.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testMultiScanlinePartThreading.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testMultiTiledPartThreading.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testMultiView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testNativeFormat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testOptimized.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testOptimizedInterleavePatterns.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testPartHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testPreviewImage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testRgba.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testRgbaThreading.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testRle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testSampleImages.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testScanLineApi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testSharedFrameBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testStandardAttributes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testTiledCompression.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testTiledCopyPixels.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testTiledLineOrder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testTiledRgba.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testTiledYa.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testWav.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testXdr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\testYca.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImfTest\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{C059DEA0-C718-3F9E-A08E-68EB1EECEE99}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

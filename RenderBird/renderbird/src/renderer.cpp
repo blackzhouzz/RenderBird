@@ -22,7 +22,6 @@ namespace RenderBird
 
 	void TileRenderer::Render()
 	{
-
 		for (int pixelY = m_boundMin.y; pixelY < m_boundMax.y; ++pixelY)
 		{
 			for (int pixelX = m_boundMin.x; pixelX < m_boundMax.x; ++pixelX)
@@ -57,13 +56,27 @@ namespace RenderBird
 		m_setting.m_useJob = true;
 		m_setting.m_maxBounce = 8;
 		m_setting.m_rrBounce = 4;
-		m_setting.m_numSamples = 16;
+		m_setting.m_numSamples = 256;
+		m_setting.m_denoising = true;
 		m_scene->SetupSceneTest();
 	}
 
 	bool Renderer::IsInBound(int x, int y)const
 	{
 		return x >= 0 && x < m_setting.m_resX && y >= 0 && y < m_setting.m_resY;
+	}
+
+	void Renderer::InitBuffers()
+	{
+		Vector2u res; 
+		res.x = m_setting.m_resX;
+		res.y = m_setting.m_resY;
+
+		m_buffers._colorBuffer.reset(new OutputBufferVec3f(res, OutputBufferSettings(OutputBufferTypeEnum::OutputColor, "color", true, true)));
+		m_buffers._depthBuffer.reset(new OutputBufferF(res, OutputBufferSettings(OutputBufferTypeEnum::OutputDepth, "depth", true, true)));
+		m_buffers._normalBuffer.reset(new OutputBufferVec3f(res, OutputBufferSettings(OutputBufferTypeEnum::OutputNormal, "normal", true, true)));
+		m_buffers._albedoBuffer.reset(new OutputBufferVec3f(res, OutputBufferSettings(OutputBufferTypeEnum::OutputAlbedo, "albedo", true, true)));
+		//m_buffers._visibilityBuffer.reset(new OutputBufferF(res, OutputBufferSettings(OutputBufferTypeEnum::OutputVisibility, "visibility", true, true)));
 	}
 
 	void Renderer::Prepare()
@@ -78,6 +91,8 @@ namespace RenderBird
 				m_tileRenderers.push_back(tileRenderer);
 			}
 		}
+
+		InitBuffers();
 		m_data = new PixelData[m_setting.m_resX * m_setting.m_resY];
 
 		EntityId cameraId = m_scene->GetCamera();
@@ -92,13 +107,12 @@ namespace RenderBird
 		Matrix4f cameraToRaster = projMatrix * screenToRaster;
 		Matrix4f rasterToScreen = screenToRaster.Inverse();
 		m_renderContext.m_camera.m_rasterToCamera = projMatrix.Inverse() * rasterToScreen;
-		Vector3f vec = Vector3f(0, 0, 0);
-		vec = m_renderContext.m_camera.m_rasterToCamera * (vec);
+
 	}
 
-	void Renderer::GenerateCameraRay(const CameraSample& cameraSample, Ray* ray)
+	void Renderer::GenerateCameraRay(Float pixelX, Float pixelY, Ray* ray)
 	{
-		Vector3f rayDir = m_renderContext.m_camera.m_rasterToCamera * (Vector3f(cameraSample.m_pixel[0], cameraSample.m_pixel[1], 0.0f));
+		Vector3f rayDir = m_renderContext.m_camera.m_rasterToCamera * (Vector3f(pixelX, pixelY, 0.0f));
 		rayDir = MathUtils::TransformDirection(m_renderContext.m_camera.m_cameraToWorld, rayDir).Normalized();
 		Vector3f rayPos = C_Zero_v3f;
 		rayPos = m_renderContext.m_camera.m_cameraToWorld * (rayPos);
@@ -153,12 +167,101 @@ namespace RenderBird
 		}
 	}
 
+	std::unique_ptr<PixmapF> slicePixmap3f(Vector3f* src, int channel, Vector2u res)
+	{
+		int w = res.x, h = res.y;
+
+		auto result = std::unique_ptr<PixmapF>(new PixmapF(w, h));
+		for (int j = 0; j < w*h; ++j)
+			(*result)[j] = src[j][channel];
+
+		return std::move(result);
+	}
+
+	std::unique_ptr<PixmapF> slicePixmapf(Float* src, Vector2u res)
+	{
+		int w = res.x, h = res.y;
+
+		auto result = std::unique_ptr<PixmapF>(new PixmapF(w, h));
+		for (int j = 0; j < w*h; ++j)
+			(*result)[j] = src[j];
+
+		return std::move(result);
+	}
+
+	void Renderer::ExtractFeatures3f(OutputBufferVec3f* buf, std::vector<RenderBufferF>& features)
+	{
+		std::unique_ptr<Vector3f[]> buffer = buf->GetBuffer();
+		std::unique_ptr<Vector3f[]> variance = buf->GetVariance();
+		for (int i = 0; i < 3; ++i)
+		{
+			features.emplace_back();
+			features.back().buffer = slicePixmap3f(buffer.get(), i, buf->_res);
+			features.back().bufferA = slicePixmap3f(buf->_bufferA.get(), i, buf->_res);
+			features.back().bufferB = slicePixmap3f(buf->_bufferB.get(), i, buf->_res);
+			features.back().bufferVariance = slicePixmap3f(buf->_variance.get(), i, buf->_res);
+		}
+	}
+
+	void Renderer::ExtractFeatures1f(OutputBufferF* buf, std::vector<RenderBufferF>& features)
+	{
+		std::unique_ptr<Float[]> buffer = buf->GetBuffer();
+		std::unique_ptr<Float[]> variance = buf->GetVariance();
+		features.emplace_back();
+		features.back().buffer = slicePixmapf(buffer.get(), buf->_res);
+		features.back().bufferA = slicePixmapf(buf->_bufferA.get(), buf->_res);
+		features.back().bufferB = slicePixmapf(buf->_bufferB.get(), buf->_res);
+		features.back().bufferVariance = slicePixmapf(buf->_variance.get(), buf->_res);
+	}
+
+	void Renderer::Denoising()
+	{
+		auto res = m_buffers._colorBuffer->_res;
+		std::vector<RenderBufferF> features;
+		if (m_buffers._normalBuffer != nullptr)
+		{
+			ExtractFeatures3f(m_buffers._normalBuffer.get(), features);
+
+			std::unique_ptr<Pixmap3f> tmp(new Pixmap3f(res.x, res.y, m_buffers._normalBuffer->GetBuffer().get()));
+			ImageOutput::WriteBMP("c:/normal_a.bmp", *tmp);
+		}
+		//if (m_buffers._colorBuffer != nullptr)
+		//{
+		//	ExtractFeatures3f(m_buffers._colorBuffer.get(), features);
+		//	std::unique_ptr<Pixmap3f> tmp(new Pixmap3f(res.x, res.y, m_buffers._colorBuffer->GetBuffer().get()));
+		//	ImageOutput::WriteBMP("c:/test.bmp", *tmp);
+		//}
+		if (m_buffers._albedoBuffer != nullptr)
+		{
+			ExtractFeatures3f(m_buffers._albedoBuffer.get(), features);
+			std::unique_ptr<Pixmap3f> tmp(new Pixmap3f(res.x, res.y, m_buffers._albedoBuffer->GetBuffer().get()));
+			ImageOutput::WriteBMP("c:/albedo_a.bmp", *tmp);
+		}
+		if (m_buffers._depthBuffer != nullptr)
+		{
+			ExtractFeatures1f(m_buffers._depthBuffer.get(), features);
+		}
+		RenderBuffer3f image;
+		image.buffer = std::unique_ptr<Pixmap3f>(new Pixmap3f(res.x, res.y, m_buffers._colorBuffer->GetBuffer().get()));
+		image.bufferA = std::unique_ptr<Pixmap3f>(new Pixmap3f(res.x, res.y, m_buffers._colorBuffer->_bufferA.get()));
+		image.bufferB = std::unique_ptr<Pixmap3f>(new Pixmap3f(res.x, res.y, m_buffers._colorBuffer->_bufferB.get()));
+		image.bufferVariance = std::unique_ptr<Pixmap3f>(new Pixmap3f(res.x, res.y, m_buffers._colorBuffer->GetVariance().get()));
+
+		Pixmap3f result = nforDenoiser(std::move(image), std::move(features));
+		ImageOutput::WriteBMP("c:/test_a.bmp", result);
+	}
+
 	void Renderer::Finish()
 	{
 		m_scene->EndRnder();
 
+		if (m_setting.m_denoising)
+		{
+			Denoising();
+		}
+
 		RenderStatistic::Print();
-		ImageOutput::WriteBMP("c:/test.bmp", m_data, m_setting.m_resX, m_setting.m_resY);
+		//ImageOutput::WriteBMP("c:/test.bmp", m_data, m_setting.m_resX, m_setting.m_resY);
 
 		for (int i = 0; i < m_tileRenderers.size();++i)
 		{

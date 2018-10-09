@@ -26,6 +26,7 @@
     <ClCompile Include="src\BSDF.cpp" />
     <ClCompile Include="src\BVH.cpp" />
     <ClCompile Include="src\CameraComponent.cpp" />
+    <ClCompile Include="src\Denoising.cpp" />
     <ClCompile Include="src\Disk.cpp" />
     <ClCompile Include="src\DiskComponent.cpp" />
     <ClCompile Include="src\DistantLight.cpp" />
@@ -47,7 +48,7 @@
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\SceneObject.cpp" />
     <ClCompile Include="src\Shape.cpp" />
-    <ClCompile Include="src\Sphere.cpp" />
+    <ClCompile Include="src\SphereObject.cpp" />
     <ClCompile Include="src\SphereComponent.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\Triangle.cpp" />
@@ -62,6 +63,7 @@
     <ClInclude Include="include\BSDF.h" />
     <ClInclude Include="include\BVH.h" />
     <ClInclude Include="include\CameraComponent.h" />
+    <ClInclude Include="include\Denoising.h" />
     <ClInclude Include="include\Disk.h" />
     <ClInclude Include="include\DiskComponent.h" />
     <ClInclude Include="include\DistantLight.h" />
@@ -73,9 +75,11 @@
     <ClInclude Include="include\Material.h" />
     <ClInclude Include="include\MeshComponent.h" />
     <ClInclude Include="include\MeshObject.h" />
+    <ClInclude Include="include\NlMeans.h" />
+    <ClInclude Include="include\OutputBuffer.h" />
     <ClInclude Include="include\PathTracing.h" />
     <ClInclude Include="include\PathTracingCommon.h" />
-    <ClInclude Include="include\PixelMap.h" />
+    <ClInclude Include="include\Pixelmap.h" />
     <ClInclude Include="include\RenderbirdPrivate.h" />
     <ClInclude Include="include\RenderbirdRegister.h" />
     <ClInclude Include="include\Renderer.h" />
@@ -85,7 +89,7 @@
     <ClInclude Include="include\Scene.h" />
     <ClInclude Include="include\SceneObject.h" />
     <ClInclude Include="include\Shape.h" />
-    <ClInclude Include="include\Sphere.h" />
+    <ClInclude Include="include\SphereObject.h" />
     <ClInclude Include="include\SphereComponent.h" />
     <ClInclude Include="include\Texture.h" />
     <ClInclude Include="include\Triangle.h" />
@@ -173,7 +177,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\3rdparty;D:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include;$(SolutionDir)\3rdparty\mathfu\include;$(SolutionDir)\3rdparty\fiber-job-system\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\3rdparty;C:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include;$(SolutionDir)\3rdparty\mathfu\include;$(SolutionDir)\3rdparty\fiber-job-system\include;D:\src\eigen-eigen-b3f3d4950030\eigen-eigen-b3f3d4950030;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Half;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Imath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Iex;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\config</AdditionalIncludeDirectories>
       <IntrinsicFunctions>false</IntrinsicFunctions>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -183,7 +187,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\3rdparty;C:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include;$(SolutionDir)\3rdparty\mathfu\include;$(SolutionDir)\3rdparty\fiber-job-system\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\3rdparty;C:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include;$(SolutionDir)\3rdparty\mathfu\include;$(SolutionDir)\3rdparty\fiber-job-system\include;D:\src\eigen-eigen-b3f3d4950030\eigen-eigen-b3f3d4950030;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Half;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Imath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Iex;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\config</AdditionalIncludeDirectories>
       <IntrinsicFunctions>false</IntrinsicFunctions>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -195,7 +199,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\3rdparty;D:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include;$(SolutionDir)\3rdparty\mathfu\include;$(SolutionDir)\3rdparty\fiber-job-system\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\3rdparty;C:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include;$(SolutionDir)\3rdparty\mathfu\include;$(SolutionDir)\3rdparty\fiber-job-system\include;D:\src\eigen-eigen-b3f3d4950030\eigen-eigen-b3f3d4950030;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Half;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Imath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Iex;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\config</AdditionalIncludeDirectories>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
@@ -212,7 +216,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\3rdparty;C:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include;$(SolutionDir)\3rdparty\mathfu\include;$(SolutionDir)\3rdparty\fiber-job-system\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)\core\include;$(SolutionDir)\3rdparty;C:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(SolutionDir)\3rdparty\fiber-job-system-master\include;$(SolutionDir)\3rdparty\mathfu\include;$(SolutionDir)\3rdparty\fiber-job-system\include;D:\src\eigen-eigen-b3f3d4950030\eigen-eigen-b3f3d4950030;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Half;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Imath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Iex;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\config</AdditionalIncludeDirectories>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>

@@ -105,6 +105,12 @@
     <ClInclude Include="include\TypeInfo.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\ThreadUtils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ThreadPool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\MathCore.cpp">
@@ -176,5 +182,14 @@
     <ClCompile Include="src\Event.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\ThreadUtils.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ThreadPool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\ThirdPartyInfo.props" />
   </ItemGroup>
 </Project>

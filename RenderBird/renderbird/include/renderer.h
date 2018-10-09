@@ -2,8 +2,10 @@
 #include <vector>
 #include <memory>
 #include "ImageOutput.h"
-#include "pathtracing.h"
+#include "PathTracing.h"
 #include "Scene.h"
+#include "AuxiliaryBuffer.h"
+#include "Denoising.h"
 
 namespace RenderBird
 {
@@ -18,6 +20,7 @@ namespace RenderBird
 		int m_rrBounce;
 		int m_numSamples;
 		bool m_useMis;
+		bool m_denoising;
 	};
 	class Renderer;
 
@@ -61,11 +64,15 @@ namespace RenderBird
 		void Prepare();
 		void Render();
 		void Finish();
+		void Denoising();
+		void ExtractFeatures3f(OutputBufferVec3f* buf, std::vector<RenderBufferF>& features);
+		void ExtractFeatures1f(OutputBufferF* buf, std::vector<RenderBufferF>& features);
 		bool IsInBound(int x, int y)const;
 		const RendererSetting& GetRendererSetting()const;
 		void AddSample(const Vector2f& uv, const Vector2i& boundMin, const Vector2i& boundMax, const Radiance& L);
 		PixelData& GetPixelDataAt(int pixelX, int pixelY);
-		void GenerateCameraRay(const CameraSample& cameraSample, Ray* ray);
+		void GenerateCameraRay(Float pixelX, Float pixelY, Ray* ray);
+		void InitBuffers();
 	public:
 		RendererSetting m_setting;
 		std::vector<TileRenderer*> m_tileRenderers;
@@ -74,5 +81,7 @@ namespace RenderBird
 		RenderContext m_renderContext;
 	public:
 		Scene* m_scene;
+
+		AuxiliaryBuffer m_buffers;
 	};
 }

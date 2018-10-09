@@ -50,8 +50,8 @@ namespace RenderBird
 					sceneExtents.d[0][0] + sceneExtents.d[0][1],
 					sceneExtents.d[1][0] + sceneExtents.d[1][1],
 					sceneExtents.d[2][0] + sceneExtents.d[2][1]);
-				bbox.m_min = (minPlusMax - vecDiff) * 0.5;
-				bbox.m_max = (minPlusMax + vecDiff) * 0.5;
+				bbox.m_min = (minPlusMax - vecDiff) * (Float)0.5;
+				bbox.m_max = (minPlusMax + vecDiff) * (Float)0.5;
 				root = new OctreeNode;
 			}
 
@@ -118,7 +118,7 @@ namespace RenderBird
 					// Need to compute in which child of the current node this extents should
 					// be inserted into
 					Vector3f extentsCentroid = extents->Center();
-					Vector3f nodeCentroid = (bbox.m_min + bbox.m_max) * 0.5;
+					Vector3f nodeCentroid = (bbox.m_min + bbox.m_max) * (Float)0.5;
 					BoundingBox childBBox;
 					uint8 childIndex = 0;
 					// x-axis

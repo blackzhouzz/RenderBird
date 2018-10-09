@@ -44,6 +44,8 @@
     <ClInclude Include="include\Spectrum.h" />
     <ClInclude Include="include\Sphere.h" />
     <ClInclude Include="include\System.h" />
+    <ClInclude Include="include\ThreadPool.h" />
+    <ClInclude Include="include\ThreadUtils.h" />
     <ClInclude Include="include\Timer.h" />
     <ClInclude Include="include\Transform.h" />
     <ClInclude Include="include\TransformParent.h" />
@@ -71,9 +73,14 @@
     <ClCompile Include="src\Spectrum.cpp" />
     <ClCompile Include="src\Sphere.cpp" />
     <ClCompile Include="src\System.cpp" />
+    <ClCompile Include="src\ThreadPool.cpp" />
+    <ClCompile Include="src\ThreadUtils.cpp" />
     <ClCompile Include="src\Transform.cpp" />
     <ClCompile Include="src\TransformParent.cpp" />
     <ClCompile Include="src\TypeInfo.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\ThirdPartyInfo.props" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

@@ -1,0 +1,367 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|Win32">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{833B3FCE-6FA8-304F-82FB-DBC78C193644}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>IlmImf_static</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">IlmImf_static.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">IlmImf-2_3_s_d</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">IlmImf_static.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">IlmImf-2_3_s</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">IlmImf_static.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">IlmImf-2_3_s</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">IlmImf_static.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">IlmImf-2_3_s</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\zlib;D:\gits\RenderBird\RenderBird\3rdparty\zlib\build;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\..\IlmBase\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImfUtil;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Half;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Iex;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IexMath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IlmThread;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Imath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp14</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;ILM_IMF_TEST_IMAGEDIR="D:/gits/RenderBird/RenderBird/3rdparty/openexr/OpenEXR/IlmImfTest/";CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;ILM_IMF_TEST_IMAGEDIR=\"D:/gits/RenderBird/RenderBird/3rdparty/openexr/OpenEXR/IlmImfTest/\";CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\zlib;D:\gits\RenderBird\RenderBird\3rdparty\zlib\build;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\..\IlmBase\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImfUtil;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Half;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Iex;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IexMath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IlmThread;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Imath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\zlib;D:\gits\RenderBird\RenderBird\3rdparty\zlib\build;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\..\IlmBase\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImfUtil;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Half;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Iex;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IexMath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IlmThread;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Imath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\zlib;D:\gits\RenderBird\RenderBird\3rdparty\zlib\build;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\..\IlmBase\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImfUtil;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Half;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Iex;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IexMath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IlmThread;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Imath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Release/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp14</LanguageStandard>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;ILM_IMF_TEST_IMAGEDIR="D:/gits/RenderBird/RenderBird/3rdparty/openexr/OpenEXR/IlmImfTest/";CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;ILM_IMF_TEST_IMAGEDIR=\"D:/gits/RenderBird/RenderBird/3rdparty/openexr/OpenEXR/IlmImfTest/\";CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\zlib;D:\gits\RenderBird\RenderBird\3rdparty\zlib\build;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\..\IlmBase\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImfUtil;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Half;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Iex;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IexMath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IlmThread;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Imath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\zlib;D:\gits\RenderBird\RenderBird\3rdparty\zlib\build;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\..\IlmBase\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImfUtil;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Half;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Iex;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IexMath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IlmThread;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Imath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\zlib;D:\gits\RenderBird\RenderBird\3rdparty\zlib\build;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\..\IlmBase\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImfUtil;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Half;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Iex;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IexMath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IlmThread;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Imath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp14</LanguageStandard>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;ILM_IMF_TEST_IMAGEDIR="D:/gits/RenderBird/RenderBird/3rdparty/openexr/OpenEXR/IlmImfTest/";CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;ILM_IMF_TEST_IMAGEDIR=\"D:/gits/RenderBird/RenderBird/3rdparty/openexr/OpenEXR/IlmImfTest/\";CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\zlib;D:\gits\RenderBird\RenderBird\3rdparty\zlib\build;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\..\IlmBase\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImfUtil;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Half;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Iex;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IexMath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IlmThread;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Imath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\zlib;D:\gits\RenderBird\RenderBird\3rdparty\zlib\build;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\..\IlmBase\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImfUtil;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Half;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Iex;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IexMath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IlmThread;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Imath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\zlib;D:\gits\RenderBird\RenderBird\3rdparty\zlib\build;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\..\IlmBase\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImfUtil;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Half;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Iex;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IexMath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IlmThread;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Imath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp14</LanguageStandard>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;ILM_IMF_TEST_IMAGEDIR="D:/gits/RenderBird/RenderBird/3rdparty/openexr/OpenEXR/IlmImfTest/";CMAKE_INTDIR="RelWithDebInfo";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;ILM_IMF_TEST_IMAGEDIR=\"D:/gits/RenderBird/RenderBird/3rdparty/openexr/OpenEXR/IlmImfTest/\";CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\zlib;D:\gits\RenderBird\RenderBird\3rdparty\zlib\build;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\..\IlmBase\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImfUtil;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Half;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Iex;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IexMath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IlmThread;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Imath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\zlib;D:\gits\RenderBird\RenderBird\3rdparty\zlib\build;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\..\..\IlmBase\config;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImf;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\IlmImfUtil;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Half;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Iex;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IexMath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\IlmThread;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\..\..\IlmBase\Imath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule D:/gits/RenderBird/RenderBird/3rdparty/openexr/OpenEXR/IlmImf/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -HD:/gits/RenderBird/RenderBird/3rdparty/openexr -BD:/gits/RenderBird/RenderBird/3rdparty/openexr/build --check-stamp-file D:/gits/RenderBird/RenderBird/3rdparty/openexr/build/OpenEXR/IlmImf/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:/gits/RenderBird/RenderBird/3rdparty/openexr/OpenEXR/IlmImf/CMakeLists.txt;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\CMakeLists.txt;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule D:/gits/RenderBird/RenderBird/3rdparty/openexr/OpenEXR/IlmImf/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -HD:/gits/RenderBird/RenderBird/3rdparty/openexr -BD:/gits/RenderBird/RenderBird/3rdparty/openexr/build --check-stamp-file D:/gits/RenderBird/RenderBird/3rdparty/openexr/build/OpenEXR/IlmImf/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:/gits/RenderBird/RenderBird/3rdparty/openexr/OpenEXR/IlmImf/CMakeLists.txt;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\CMakeLists.txt;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule D:/gits/RenderBird/RenderBird/3rdparty/openexr/OpenEXR/IlmImf/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -HD:/gits/RenderBird/RenderBird/3rdparty/openexr -BD:/gits/RenderBird/RenderBird/3rdparty/openexr/build --check-stamp-file D:/gits/RenderBird/RenderBird/3rdparty/openexr/build/OpenEXR/IlmImf/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">D:/gits/RenderBird/RenderBird/3rdparty/openexr/OpenEXR/IlmImf/CMakeLists.txt;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\CMakeLists.txt;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule D:/gits/RenderBird/RenderBird/3rdparty/openexr/OpenEXR/IlmImf/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -HD:/gits/RenderBird/RenderBird/3rdparty/openexr -BD:/gits/RenderBird/RenderBird/3rdparty/openexr/build --check-stamp-file D:/gits/RenderBird/RenderBird/3rdparty/openexr/build/OpenEXR/IlmImf/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:/gits/RenderBird/RenderBird/3rdparty/openexr/OpenEXR/IlmImf/CMakeLists.txt;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\CMakeLists.txt;D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\OpenEXR\IlmImf\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfAttribute.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfBoxAttribute.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfCRgbaFile.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfChannelList.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfChannelListAttribute.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfFloatAttribute.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfFrameBuffer.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfHeader.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfIO.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfInputFile.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfIntAttribute.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfLineOrderAttribute.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfMatrixAttribute.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfOpaqueAttribute.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfOutputFile.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfRgbaFile.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfStringAttribute.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfVecAttribute.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfHuf.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfThreading.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfWav.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfLut.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfCompressor.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfRleCompressor.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfZipCompressor.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfPizCompressor.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfB44Compressor.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfDwaCompressor.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfMisc.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfCompressionAttribute.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfDoubleAttribute.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfConvert.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfPreviewImage.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfPreviewImageAttribute.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfVersion.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfChromaticities.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfChromaticitiesAttribute.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfKeyCode.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfKeyCodeAttribute.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfTimeCode.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfTimeCodeAttribute.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfRational.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfRationalAttribute.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfFramesPerSecond.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfStandardAttributes.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfStdIO.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfEnvmap.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfEnvmapAttribute.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfScanLineInputFile.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfTiledInputFile.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfTiledMisc.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfTiledOutputFile.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfTiledRgbaFile.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfTileDescriptionAttribute.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfTileOffsets.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfRgbaYca.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfPxr24Compressor.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfTestFile.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfStringVectorAttribute.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfMultiView.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfAcesFile.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfMultiPartOutputFile.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfGenericOutputFile.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfOutputPartData.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfMultiPartInputFile.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfGenericInputFile.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfPartType.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfInputPartData.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfOutputPart.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfTiledOutputPart.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfInputPart.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfTiledInputPart.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfDeepScanLineInputPart.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfDeepScanLineOutputPart.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfDeepScanLineInputFile.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfDeepScanLineOutputFile.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfDeepTiledInputPart.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfDeepTiledOutputPart.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfDeepTiledInputFile.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfDeepTiledOutputFile.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfDeepFrameBuffer.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfDeepCompositing.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfCompositeDeepScanLine.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfDeepImageStateAttribute.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfFastHuf.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfFloatVectorAttribute.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfRle.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfSystemSpecific.cpp" />
+    <ClCompile Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\OpenEXR\IlmImf\ImfZip.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\ZERO_CHECK.vcxproj">
+      <Project>{687A6A85-B2F3-3758-B8AB-6421FAFBDAA8}</Project>
+      <Name>ZERO_CHECK</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

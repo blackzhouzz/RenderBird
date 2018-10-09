@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\CMakeFiles\dbf8431d01a9fc9164645a1b82de4d13\Experimental.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\CMakeFiles\Experimental" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{7FC6142D-C1EE-3F19-9D3E-35886A4B9A83}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

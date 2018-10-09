@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|Win32">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F88B64BB-B38E-3A22-A9D1-14629706D166}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>ALL_BUILD</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Iex;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\IexMath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Imath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Half;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\IlmThread;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\IexTest;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\ImathTest;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\HalfTest;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Iex;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\IexMath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Imath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Half;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\IlmThread;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\IexTest;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\ImathTest;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\HalfTest;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Iex;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\IexMath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Imath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Half;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\IlmThread;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\IexTest;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\ImathTest;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\HalfTest;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Iex;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\IexMath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Imath;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\Half;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\IlmThread;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\IexTest;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\ImathTest;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\HalfTest;D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule D:/gits/RenderBird/RenderBird/3rdparty/openexr/IlmBase/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -HD:/gits/RenderBird/RenderBird/3rdparty/openexr -BD:/gits/RenderBird/RenderBird/3rdparty/openexr/build --check-stamp-file D:/gits/RenderBird/RenderBird/3rdparty/openexr/build/IlmBase/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:/gits/RenderBird/RenderBird/3rdparty/openexr/IlmBase/CMakeLists.txt;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\CMakeLists.txt;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule D:/gits/RenderBird/RenderBird/3rdparty/openexr/IlmBase/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -HD:/gits/RenderBird/RenderBird/3rdparty/openexr -BD:/gits/RenderBird/RenderBird/3rdparty/openexr/build --check-stamp-file D:/gits/RenderBird/RenderBird/3rdparty/openexr/build/IlmBase/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:/gits/RenderBird/RenderBird/3rdparty/openexr/IlmBase/CMakeLists.txt;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\CMakeLists.txt;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule D:/gits/RenderBird/RenderBird/3rdparty/openexr/IlmBase/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -HD:/gits/RenderBird/RenderBird/3rdparty/openexr -BD:/gits/RenderBird/RenderBird/3rdparty/openexr/build --check-stamp-file D:/gits/RenderBird/RenderBird/3rdparty/openexr/build/IlmBase/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">D:/gits/RenderBird/RenderBird/3rdparty/openexr/IlmBase/CMakeLists.txt;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\CMakeLists.txt;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule D:/gits/RenderBird/RenderBird/3rdparty/openexr/IlmBase/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -HD:/gits/RenderBird/RenderBird/3rdparty/openexr -BD:/gits/RenderBird/RenderBird/3rdparty/openexr/build --check-stamp-file D:/gits/RenderBird/RenderBird/3rdparty/openexr/build/IlmBase/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:/gits/RenderBird/RenderBird/3rdparty/openexr/IlmBase/CMakeLists.txt;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\CMakeLists.txt;D:\gits\RenderBird\RenderBird\3rdparty\openexr\IlmBase\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\ZERO_CHECK.vcxproj">
+      <Project>{687A6A85-B2F3-3758-B8AB-6421FAFBDAA8}</Project>
+      <Name>ZERO_CHECK</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\Half\Half.vcxproj">
+      <Project>{29F3623C-0CFF-3B80-ADDB-4D808CC7CF8F}</Project>
+      <Name>Half</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\HalfTest\HalfTest.vcxproj">
+      <Project>{494CB30E-A506-3EDC-A392-13B1E7AE4783}</Project>
+      <Name>HalfTest</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\Half\Half_static.vcxproj">
+      <Project>{E9D7BBDE-AF92-3DEC-BDB3-1BE75E8A0C0F}</Project>
+      <Name>Half_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\Iex\Iex.vcxproj">
+      <Project>{F7BE2A2D-9A70-36DF-8949-A617C7942C39}</Project>
+      <Name>Iex</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\IexMath\IexMath.vcxproj">
+      <Project>{64A2D721-3DB6-3009-BD86-7B22863604C3}</Project>
+      <Name>IexMath</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\IexMath\IexMath_static.vcxproj">
+      <Project>{1B5F5019-1A04-3001-880B-49E2ED36B128}</Project>
+      <Name>IexMath_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\IexTest\IexTest.vcxproj">
+      <Project>{3AD2C867-60A1-3D5E-BB13-2315DC57028D}</Project>
+      <Name>IexTest</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\Iex\Iex_static.vcxproj">
+      <Project>{93382D4F-79FF-366F-959B-7D4F1FC26C69}</Project>
+      <Name>Iex_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\IlmThread\IlmThread.vcxproj">
+      <Project>{6AF82C97-9F70-3E16-A48F-E7C2ECF35F13}</Project>
+      <Name>IlmThread</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\IlmThread\IlmThread_static.vcxproj">
+      <Project>{8BF20FEE-E771-306D-A9D6-8C0BA42302FB}</Project>
+      <Name>IlmThread_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\Imath\Imath.vcxproj">
+      <Project>{861B01A1-ADDA-3AA9-9318-24BE162E158F}</Project>
+      <Name>Imath</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\ImathTest\ImathTest.vcxproj">
+      <Project>{FFABFD66-E2C8-34D5-B8E1-68912283DBB3}</Project>
+      <Name>ImathTest</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\Imath\Imath_static.vcxproj">
+      <Project>{23B4AA26-5923-314F-A362-EB5F739B847F}</Project>
+      <Name>Imath_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\Half\eLut.vcxproj">
+      <Project>{5EBE7C37-2E08-33B0-BBC8-DB988D483D6A}</Project>
+      <Name>eLut</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\gits\RenderBird\RenderBird\3rdparty\openexr\build\IlmBase\Half\toFloat.vcxproj">
+      <Project>{4A98EF74-D9F2-30F2-B9D0-6F2547EADDE3}</Project>
+      <Name>toFloat</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

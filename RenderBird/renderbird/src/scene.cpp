@@ -11,7 +11,7 @@
 #include "AreaLight.h"
 #include "Disk.h"
 #include "MeshObject.h"
-#include "Sphere.h"
+#include "SphereObject.h"
 #include "BVH.h"
 #include "TriangleComponent.h"
 #include "Triangle.h"
@@ -222,7 +222,7 @@ namespace RenderBird
 			EntityId lightId = EntityManager::IntancePtr()->CreateEntity(archetype);
 
 			auto light = EntityManager::IntancePtr()->GetComponent<LightPropertyComponent>(lightId);
-			light->m_color = RGB32::WHITE * 50;
+			light->m_color = RGB32::WHITE * 40;
 			auto trans = EntityManager::IntancePtr()->GetComponent<Transform>(lightId);
 			trans->m_pos = pos;
 
@@ -280,7 +280,7 @@ namespace RenderBird
 		m_entities.insert(lightId);
 
 		AreaLight* areaLight = CreateSceneObject<AreaLight>(lightId);
-		Sphere* shape = new Sphere(sphere);
+		SphereObject* shape = new SphereObject(sphere);
 		areaLight->SetShape(std::unique_ptr<Shape>(shape));
 		m_lights.push_back(areaLight);
 		m_sceneObjects.push_back(areaLight);

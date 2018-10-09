@@ -1,4 +1,4 @@
-#include "pathtracing.h"
+#include "PathTracing.h"
 #include "renderer.h"
 #include "AreaLightComponent.h"
 #include "BSDF.h"
@@ -16,12 +16,16 @@ namespace RenderBird
 
 	void PathTracing::Integrate(State* state, Radiance* L)
 	{
+		auto pixel = Vector2u(state->m_pixelX, state->m_pixelY);
 		Ray ray;
-		m_renderer->GenerateCameraRay(state->m_cameraSample, &ray);
+		m_renderer->GenerateCameraRay(state->m_cameraSample.m_pixel.x, state->m_cameraSample.m_pixel.y, &ray);
 		const int maxBounce = m_renderer->GetRendererSetting().m_maxBounce;
 		const int rrBounce = m_renderer->GetRendererSetting().m_rrBounce;
 		if (m_renderer->m_scene->m_lights.size() == 0)
 			return;
+
+		bool recordedOutputValues = false;
+
 		RayHitInfo hitInfo;
 		m_renderer->m_scene->Intersect(ray, &hitInfo);
 
@@ -33,6 +37,28 @@ namespace RenderBird
 			{
 				break;
 			}
+
+			if (!recordedOutputValues)
+			{
+				if (m_renderer->m_buffers._depthBuffer != nullptr)
+					m_renderer->m_buffers._depthBuffer->addSample(pixel, hitInfo.m_t);
+				if (m_renderer->m_buffers._normalBuffer != nullptr)
+					m_renderer->m_buffers._normalBuffer->addSample(pixel, hitInfo.m_ng);
+				if (m_renderer->m_buffers._albedoBuffer != nullptr)
+				{
+					Vector3f albedo = C_Zero_v3f;
+					if (hitInfo.m_material != nullptr)
+					{
+						SurfaceSample ss(ray, hitInfo);
+						RGB32 color = ss.m_bsdf->Albedo();
+						for (int i = 0; i < 3; ++i)
+							albedo[i] = color[i];
+						m_renderer->m_buffers._albedoBuffer->addSample(pixel, albedo);
+					}
+				}
+				recordedOutputValues = true;
+			}
+
 			RenderStatistic::m_numSampleProcessed++;
 			SurfaceSample ss(ray, hitInfo);
 
@@ -84,7 +110,6 @@ namespace RenderBird
 				Float sampleLightPdf = (*m_renderer->m_scene->m_distribution)[light->m_index];
 				Float lightPdf = light->Pdf(tempHitInfo, &ss, wi);
 				auto li = light->Le(&ss, -ray.m_direction);
-
 				Float misWeight = SampleUtils::PowerHeuristic(bsdfPdf, lightPdf);
 				L->m_directDiffuse += state->m_throughtput * li * misWeight / sampleLightPdf;
 			}
@@ -100,6 +125,20 @@ namespace RenderBird
 			hitInfo = tempHitInfo;
 			//break;
 		}
+		if (!recordedOutputValues)
+		{
+			if (state->m_currentBounce == 0)
+			{
+				if (m_renderer->m_buffers._depthBuffer != nullptr)
+					m_renderer->m_buffers._depthBuffer->addSample(pixel, 0.0f);
+			}
+
+			if (m_renderer->m_buffers._normalBuffer != nullptr)
+				m_renderer->m_buffers._normalBuffer->addSample(pixel, -ray.m_direction);
+			//if (m_renderer->m_buffers._albedoBuffer && info.primitive && info.primitive->isInfinite())
+			//	m_renderer->m_buffers._albedoBuffer->addSample(pixel, info.primitive->evalDirect(data, info));
+		}
+
 	}
 
 	Light* PathTracing::GetSampleLight(State* state, Float& sampleLightPdf)
@@ -153,6 +192,34 @@ namespace RenderBird
 		return false;
 	}
 
+	void PathTracing::GatherFeatureBuffers(int pixelX, int pixelY)
+	{
+		Ray ray;
+		Vector2u pixel = Vector2u(pixelX, pixelY);
+		m_renderer->GenerateCameraRay(pixelX, pixelY, &ray);
+
+		RayHitInfo hitInfo;
+		if (m_renderer->m_scene->Intersect(ray, &hitInfo))
+		{
+			if (m_renderer->m_buffers._depthBuffer != nullptr)
+				m_renderer->m_buffers._depthBuffer->addSample(pixel, hitInfo.m_t);
+			if (m_renderer->m_buffers._normalBuffer != nullptr)
+				m_renderer->m_buffers._normalBuffer->addSample(pixel, hitInfo.m_ng);
+			if (m_renderer->m_buffers._albedoBuffer != nullptr)
+			{
+				Vector3f albedo = C_Zero_v3f;
+				if (hitInfo.m_material != nullptr)
+				{
+					SurfaceSample ss(ray, hitInfo);
+					RGB32 color = ss.m_bsdf->Albedo();
+					for (int i = 0; i < 3; ++i)
+						albedo[i] = color[i];
+					m_renderer->m_buffers._albedoBuffer->addSample(pixel, albedo);
+				}
+			}
+		}
+	}
+
 	void PathTracing::Render(int pixelX, int pixelY, TileRenderer* tile)
 	{
 		if (pixelX == 109 && pixelY == 113)
@@ -166,6 +233,8 @@ namespace RenderBird
 		state.m_sampler = new Sampler(setting.m_numSamples);
 		state.m_useMis = setting.m_useMis;
 
+		//GatherFeatureBuffers(pixelX, pixelY);
+
 		for (uint32 samplerIndex = 0; samplerIndex < state.m_sampler->m_numSamplers; ++samplerIndex)
 		{
 			Radiance L;
@@ -178,6 +247,10 @@ namespace RenderBird
 			Integrate(&state, &L);
 
 			m_renderer->AddSample(state.m_cameraSample.m_pixel, tile->GetBoundMin(), tile->GetBoundMax(), L);
+
+			Vector3f color = Vector3f(L.m_directDiffuse[0], L.m_directDiffuse[1], L.m_directDiffuse[2]);
+			if (m_renderer->m_buffers._colorBuffer != nullptr)
+				m_renderer->m_buffers._colorBuffer->addSample(Vector2u(pixelX, pixelY), color);
 		}
 
 		delete state.m_sampler;

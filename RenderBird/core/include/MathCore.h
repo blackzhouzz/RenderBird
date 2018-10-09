@@ -18,6 +18,9 @@ namespace Core
 	using Matrix3f = mathfu::Matrix<Float, 3>;
 	using Matrix4f = mathfu::Matrix<Float, 4>;
 	using Vector2i = mathfu::Vector<int, 2>;
+	using Vector2u = mathfu::Vector<uint32, 2>;
+	using Vector3c = mathfu::Vector<char, 3>;
+	using Vector3i = mathfu::Vector<int, 3>;
 
 	static const Vector2f C_Zero_v2f(0.0f, 0.0f);
 	static const Vector2f C_One_v2f(1.0f, 1.0f);
@@ -81,6 +84,99 @@ namespace Core
 		return val;
 	}
 
+	template<typename T>
+	T Min(const T &a, const T &b)
+	{
+		return a < b ? a : b;
+	}
+
+	template<typename T, typename... Ts>
+	T Min(const T &a, const T &b, const Ts &... ts)
+	{
+		return Min(Min(a, b), ts...);
+	}
+
+	template<typename T, int d>
+	inline mathfu::Vector<T, d> Min(const mathfu::Vector<T, d>& v1, const mathfu::Vector<T, d>& v2)
+	{
+		mathfu::Vector<T, d> ret;
+		for (int i = 0; i < d; ++i)
+		{
+			ret[i] = std::min(v1[i], v2[i]);
+		}
+		return ret;
+	}
+
+	template<typename T>
+	T Max(const T &a, const T &b)
+	{
+		return a > b ? a : b;
+	}
+
+	template<typename T, typename... Ts>
+	T Max(const T &a, const T &b, const Ts &... ts)
+	{
+		return Max(Max(a, b), ts...);
+	}
+
+	template<typename T, int d>
+	inline mathfu::Vector<T, d> Max(const mathfu::Vector<T, d>& v1, const mathfu::Vector<T, d>& v2)
+	{
+		mathfu::Vector<T, d> ret;
+		for (int i = 0; i < d; ++i)
+		{
+			ret[i] = std::max(v1[i], v2[i]);
+		}
+		return ret;
+	}
+
+	template<typename T>
+	T lerp(T a, T b, T ratio)
+	{
+		return a * (T(1) - ratio) + b * ratio;
+	}
+
+	template<typename T, unsigned d>
+	mathfu::Vector<T, d> lerp(const mathfu::Vector<T, d> &a, const mathfu::Vector<T, d> &b, T ratio)
+	{
+		return a * (T(1) - ratio) + b * ratio;
+	}
+
+
+	template<typename T>
+	bool IsNaN(const T& t)
+	{
+		return std::isnan(t);
+	}
+
+	template<typename T, unsigned d>
+	bool IsNaN(const mathfu::Vector<T, d> &a)
+	{
+		for (int i = 0; i < d; ++i)
+		{
+			if (std::isnan(a[i]))
+				return true;
+		}
+		return false;
+	}
+
+	template<typename T>
+	bool IsInf(const T& t)
+	{
+		return std::isinf(t);
+	}
+
+	template<typename T, unsigned d>
+	bool IsInf(const mathfu::Vector<T, d> &a)
+	{
+		for (int i = 0; i < d; ++i)
+		{
+			if (std::isinf(a[i]))
+				return true;
+		}
+		return false;
+	}
+
 	inline void CoordinateSystem(const Vector3f &v1, Vector3f *v2, Vector3f *v3)
 	{
 		if (std::abs(v1.x) > std::abs(v1.y))
@@ -113,23 +209,23 @@ namespace Core
 	}
 
 	template<typename T, int d>
-	inline mathfu::Vector<T, d> Max(const mathfu::Vector<T, d>& v1, const mathfu::Vector<T, d>& v2)
+	inline T MinComponent(const mathfu::Vector<T, d>& v)
 	{
-		mathfu::Vector<T, d> ret;
-		for (int i = 0; i < d; ++i)
+		T ret = v[0];
+		for (int i = 1; i < d; ++i)
 		{
-			ret[i] = std::max(v1[i], v2[i]);
+			ret = std::min(v[i], ret);
 		}
 		return ret;
 	}
 
 	template<typename T, int d>
-	inline mathfu::Vector<T, d> Min(const mathfu::Vector<T, d>& v1, const mathfu::Vector<T, d>& v2)
+	inline T MaxComponent(const mathfu::Vector<T, d>& v)
 	{
-		mathfu::Vector<T, d> ret;
-		for (int i = 0; i < d; ++i)
+		T ret = v[0];
+		for (int i = 1; i < d; ++i)
 		{
-			ret[i] = std::min(v1[i], v2[i]);
+			ret = std::max(v[i]);
 		}
 		return ret;
 	}
@@ -138,11 +234,11 @@ namespace Core
 	{
 		Float discr = b * b - 4 * a * c;
 		if (discr < 0) return false;
-		else if (discr == 0) x0 = x1 = -0.5 * b / a;
+		else if (discr == 0) x0 = x1 = (Float)(-0.5) * b / a;
 		else {
 			Float q = (b > 0) ?
-				-0.5 * (b + sqrt(discr)) :
-				-0.5 * (b - sqrt(discr));
+				(Float)(-0.5) * (b + std::sqrt(discr)) :
+				(Float)(-0.5) * (b - std::sqrt(discr));
 			x0 = q / a;
 			x1 = c / q;
 		}
@@ -222,4 +318,5 @@ namespace Core
 		}
 		return a > b;
 	}
+
 }
