@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <memory>
-#include "ImageOutput.h"
+#include "ImageIO.h"
 #include "PathTracing.h"
 #include "Scene.h"
 #include "AuxiliaryBuffer.h"
@@ -19,11 +19,14 @@ namespace RenderBird
 		int m_maxBounce;
 		int m_rrBounce;
 		int m_numSamples;
+		Float m_clampValue;
+		bool m_enableClamp;
 		bool m_useMis;
 		bool m_denoising;
 	};
 	class Renderer;
 
+	typedef void(*pfunType)(float, float);
 	class TileRenderer
 	{
 	public:
@@ -69,14 +72,11 @@ namespace RenderBird
 		void ExtractFeatures1f(OutputBufferF* buf, std::vector<RenderBufferF>& features);
 		bool IsInBound(int x, int y)const;
 		const RendererSetting& GetRendererSetting()const;
-		void AddSample(const Vector2f& uv, const Vector2i& boundMin, const Vector2i& boundMax, const Radiance& L);
-		PixelData& GetPixelDataAt(int pixelX, int pixelY);
 		void GenerateCameraRay(Float pixelX, Float pixelY, Ray* ray);
 		void InitBuffers();
 	public:
 		RendererSetting m_setting;
 		std::vector<TileRenderer*> m_tileRenderers;
-		PixelData* m_data;
 		PathTracing* m_integrator;
 		RenderContext m_renderContext;
 	public:

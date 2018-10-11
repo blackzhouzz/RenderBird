@@ -13,8 +13,8 @@ namespace RenderBird
 			, m_ts(dpdv)
 		{
 		}
-		virtual void Eval(SurfaceSample* ss, const Vector3f& wi, Float* pdf, RGB32* eval) = 0;
-		virtual void Sample(SurfaceSample* ss, const Vector2f& rand2d, Vector3f* wi, Float* pdf, RGB32* bsdfWeight) = 0;
+		virtual void Eval(SurfaceSample* ss, const Vector3f& wi, Float* pdf, LightSpectrum* eval) = 0;
+		virtual void Sample(SurfaceSample* ss, const Vector2f& rand2d, Vector3f* wi, Float* pdf, LightSpectrum* bsdfWeight) = 0;
 		virtual RGB32 Albedo() { return RGB32::BLACK; }
 		Vector3f WorldToLocal(const Vector3f &v) const 
 		{
@@ -40,8 +40,8 @@ namespace RenderBird
 			m_color(RGB32::WHITE * 0.5)
 		{
 		}
-		virtual void Eval(SurfaceSample* ss, const Vector3f& wi, Float* pdf, RGB32* eval);
-		virtual void Sample(SurfaceSample* ss, const Vector2f& rand2d, Vector3f* wi, Float* pdf, RGB32* bsdfWeight);
+		virtual void Eval(SurfaceSample* ss, const Vector3f& wi, Float* pdf, LightSpectrum* eval);
+		virtual void Sample(SurfaceSample* ss, const Vector2f& rand2d, Vector3f* wi, Float* pdf, LightSpectrum* eval);
 		virtual RGB32 Albedo() { return m_color; }
 		RGB32 m_color;
 	};

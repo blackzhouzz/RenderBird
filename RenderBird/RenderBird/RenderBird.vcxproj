@@ -32,7 +32,7 @@
     <ClCompile Include="src\DistantLight.cpp" />
     <ClCompile Include="src\DistantLightComponent.cpp" />
     <ClCompile Include="src\FBXImportUtils.cpp" />
-    <ClCompile Include="src\ImageOutput.cpp" />
+    <ClCompile Include="src\ImageIO.cpp" />
     <ClCompile Include="src\Light.cpp" />
     <ClCompile Include="src\LightComponent.cpp" />
     <ClCompile Include="src\Material.cpp" />
@@ -69,7 +69,7 @@
     <ClInclude Include="include\DistantLight.h" />
     <ClInclude Include="include\DistantLightComponent.h" />
     <ClInclude Include="include\FBXImportUtils.h" />
-    <ClInclude Include="include\ImageOutput.h" />
+    <ClInclude Include="include\ImageIO.h" />
     <ClInclude Include="include\Light.h" />
     <ClInclude Include="include\LightComponent.h" />
     <ClInclude Include="include\Material.h" />

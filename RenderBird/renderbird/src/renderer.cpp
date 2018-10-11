@@ -11,6 +11,7 @@
 
 namespace RenderBird
 {
+	pfunType test = NULL;
 	TileRenderer::TileRenderer(Renderer* renderer, int x, int y, int sizeX, int sizeY)
 		: m_renderer(renderer), m_x(x), m_y(y), m_sizeX(sizeX), m_sizeY(sizeY)
 	{
@@ -56,8 +57,10 @@ namespace RenderBird
 		m_setting.m_useJob = true;
 		m_setting.m_maxBounce = 8;
 		m_setting.m_rrBounce = 4;
-		m_setting.m_numSamples = 256;
+		m_setting.m_numSamples = 4;
 		m_setting.m_denoising = true;
+		m_setting.m_enableClamp = false;
+		m_setting.m_clampValue = 1.0;
 		m_scene->SetupSceneTest();
 	}
 
@@ -72,11 +75,10 @@ namespace RenderBird
 		res.x = m_setting.m_resX;
 		res.y = m_setting.m_resY;
 
-		m_buffers._colorBuffer.reset(new OutputBufferVec3f(res, OutputBufferSettings(OutputBufferTypeEnum::OutputColor, "color", true, true)));
-		m_buffers._depthBuffer.reset(new OutputBufferF(res, OutputBufferSettings(OutputBufferTypeEnum::OutputDepth, "depth", true, true)));
-		m_buffers._normalBuffer.reset(new OutputBufferVec3f(res, OutputBufferSettings(OutputBufferTypeEnum::OutputNormal, "normal", true, true)));
-		m_buffers._albedoBuffer.reset(new OutputBufferVec3f(res, OutputBufferSettings(OutputBufferTypeEnum::OutputAlbedo, "albedo", true, true)));
-		//m_buffers._visibilityBuffer.reset(new OutputBufferF(res, OutputBufferSettings(OutputBufferTypeEnum::OutputVisibility, "visibility", true, true)));
+		m_buffers._colorBuffer.reset(new OutputBufferVec3f(res, OutputBufferTypeEnum::OutputColor, true, true));
+		m_buffers._depthBuffer.reset(new OutputBufferF(res, OutputBufferTypeEnum::OutputDepth, true, true));
+		m_buffers._normalBuffer.reset(new OutputBufferVec3f(res, OutputBufferTypeEnum::OutputNormal, true, true));
+		m_buffers._albedoBuffer.reset(new OutputBufferVec3f(res, OutputBufferTypeEnum::OutputAlbedo, true, true));
 	}
 
 	void Renderer::Prepare()
@@ -93,7 +95,6 @@ namespace RenderBird
 		}
 
 		InitBuffers();
-		m_data = new PixelData[m_setting.m_resX * m_setting.m_resY];
 
 		EntityId cameraId = m_scene->GetCamera();
 		auto cameraComponent = EntityManager::IntancePtr()->GetComponent<CameraComponent>(cameraId);
@@ -223,19 +224,19 @@ namespace RenderBird
 			ExtractFeatures3f(m_buffers._normalBuffer.get(), features);
 
 			std::unique_ptr<Pixmap3f> tmp(new Pixmap3f(res.x, res.y, m_buffers._normalBuffer->GetBuffer().get()));
-			ImageOutput::WriteBMP("c:/normal_a.bmp", *tmp);
+			ImageIO::WriteBMP("c:/normal_a.bmp", *tmp);
 		}
-		//if (m_buffers._colorBuffer != nullptr)
-		//{
-		//	ExtractFeatures3f(m_buffers._colorBuffer.get(), features);
-		//	std::unique_ptr<Pixmap3f> tmp(new Pixmap3f(res.x, res.y, m_buffers._colorBuffer->GetBuffer().get()));
-		//	ImageOutput::WriteBMP("c:/test.bmp", *tmp);
-		//}
+		if (m_buffers._colorBuffer != nullptr)
+		{
+			//ExtractFeatures3f(m_buffers._colorBuffer.get(), features);
+			std::unique_ptr<Pixmap3f> tmp(new Pixmap3f(res.x, res.y, m_buffers._colorBuffer->GetBuffer().get()));
+			ImageIO::WriteBMP("c:/test.bmp", *tmp);
+		}
 		if (m_buffers._albedoBuffer != nullptr)
 		{
 			ExtractFeatures3f(m_buffers._albedoBuffer.get(), features);
 			std::unique_ptr<Pixmap3f> tmp(new Pixmap3f(res.x, res.y, m_buffers._albedoBuffer->GetBuffer().get()));
-			ImageOutput::WriteBMP("c:/albedo_a.bmp", *tmp);
+			ImageIO::WriteBMP("c:/albedo_a.bmp", *tmp);
 		}
 		if (m_buffers._depthBuffer != nullptr)
 		{
@@ -248,7 +249,7 @@ namespace RenderBird
 		image.bufferVariance = std::unique_ptr<Pixmap3f>(new Pixmap3f(res.x, res.y, m_buffers._colorBuffer->GetVariance().get()));
 
 		Pixmap3f result = nforDenoiser(std::move(image), std::move(features));
-		ImageOutput::WriteBMP("c:/test_a.bmp", result);
+		ImageIO::WriteBMP("c:/test_a.bmp", result);
 	}
 
 	void Renderer::Finish()
@@ -261,7 +262,6 @@ namespace RenderBird
 		}
 
 		RenderStatistic::Print();
-		//ImageOutput::WriteBMP("c:/test.bmp", m_data, m_setting.m_resX, m_setting.m_resY);
 
 		for (int i = 0; i < m_tileRenderers.size();++i)
 		{
@@ -269,32 +269,6 @@ namespace RenderBird
 			delete m_tileRenderers[i];
 		}
 		m_tileRenderers.clear();
-		delete[] m_data;
 	}
 
-	void Renderer::AddSample(const Vector2f& uv, const Vector2i& boundMin, const Vector2i& boundMax, const Radiance& L)
-	{
-		const Float filterRadius = 0.5;
-		Vector2f pFilmDiscrete = uv - Vector2f(0.5f, 0.5f);
-		Vector2i p0 = Ceil<int, 2>(pFilmDiscrete - filterRadius);
-		Vector2i p1 = Floor<int, 2>(pFilmDiscrete + filterRadius) + Vector2i(1, 1);
-		p0 = Max(p0, boundMin);
-		p1 = Min(p1, boundMax);
-
-		for (int y = p0.y; y < p1.y; ++y) 
-		{
-			for (int x = p0.x; x < p1.x; ++x) 
-			{
-				PixelData& pixelData = GetPixelDataAt(x, y);
-				pixelData.m_colorSum += L.m_directDiffuse;
-				pixelData.m_weight += 1.0;
-			}
-		}
-	}
-
-	PixelData& Renderer::GetPixelDataAt(int pixelX, int pixelY)
-	{
-		int index = pixelY * m_setting.m_resX + pixelX;
-		return m_data[index];
-	}
 }

@@ -45,20 +45,9 @@ namespace RenderBird
 		const SceneObject* m_obj;
 	};
 
-	struct Radiance
+	struct LightSpectrum
 	{
-		Radiance()
-			: m_directDiffuse(RGB32::BLACK)
-		{
-		}
-		bool IsZero()const { return m_directDiffuse.IsZero(); }
-		RGB32 m_directDiffuse;
-		//RGB32 m_indirect;
-	};
-
-	struct BsdfSpectrum
-	{
-		BsdfSpectrum()
+		LightSpectrum()
 			: m_diffuse(RGB32::BLACK)
 		{
 		}
@@ -75,34 +64,52 @@ namespace RenderBird
 		{
 			m_diffuse += value;
 		}
-		bool IsZero()const
+		RGB32 Resolve()const
 		{
-			return m_diffuse.IsZero();
+			return m_diffuse;
 		}
+	};
+
+	struct Radiance
+	{
+		Radiance()
+			: m_directDiffuse(RGB32::BLACK)
+			, m_indirectDiffuse(RGB32::BLACK)
+			, m_directEmission(RGB32::BLACK)
+		{
+		}
+		void Accum(LightSpectrum* bs, bool firstBounce)
+		{
+			if (firstBounce)
+			{
+				m_directDiffuse += bs->m_diffuse;
+			}
+			else
+			{
+				m_indirectDiffuse += bs->m_diffuse;
+			}
+		}
+		RGB32 Resolve()const
+		{
+			return m_indirectDiffuse + m_directDiffuse + m_directEmission;
+		}
+		RGB32 ResolveIndirect()const
+		{
+			return m_indirectDiffuse;
+		}
+		RGB32 ResolveDirect()const
+		{
+			return m_directDiffuse + m_directEmission;
+		}
+
+		RGB32 m_directDiffuse;
+		RGB32 m_indirectDiffuse;
+		RGB32 m_directEmission;
 	};
 
 	struct CameraSample
 	{
 		Vector2f m_pixel;
-	};
-
-	struct PixelData
-	{
-		PixelData()
-			: m_colorSum(RGB32::BLACK)
-			, m_weight(0.0f)
-		{
-		}
-		RGB32 m_colorSum;
-		Float m_weight;
-		RGB32 GetColor()const
-		{
-			if (m_weight == 0.0f)
-			{
-				return m_colorSum;
-			}
-			return m_colorSum / m_weight;
-		}
 	};
 
 	struct SurfaceSample

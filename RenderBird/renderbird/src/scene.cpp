@@ -222,7 +222,7 @@ namespace RenderBird
 			EntityId lightId = EntityManager::IntancePtr()->CreateEntity(archetype);
 
 			auto light = EntityManager::IntancePtr()->GetComponent<LightPropertyComponent>(lightId);
-			light->m_color = RGB32::WHITE * 40;
+			light->m_color = RGB32::WHITE * 10;
 			auto trans = EntityManager::IntancePtr()->GetComponent<Transform>(lightId);
 			trans->m_pos = pos;
 
@@ -253,7 +253,7 @@ namespace RenderBird
 		auto vec = MathUtils::TransformDirection(mat, C_AxisZ_v3f);
 
 		auto light = EntityManager::IntancePtr()->GetComponent<LightPropertyComponent>(lightId);
-		light->m_color = RGB32::WHITE;
+		light->m_color = RGB32::WHITE * 5;
 
 		m_entities.insert(lightId);
 		//m_lightsGroup = new ComponentGroup(EntityManager::IntancePtr()->CreateArchetype<AreaLightComponent, Transform, DiskComponent, LightPropertyComponent>());

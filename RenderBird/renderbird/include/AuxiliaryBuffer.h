@@ -10,6 +10,5 @@ namespace RenderBird
 		std::unique_ptr<OutputBufferF>     _depthBuffer;
 		std::unique_ptr<OutputBufferVec3f> _normalBuffer;
 		std::unique_ptr<OutputBufferVec3f> _albedoBuffer;
-		std::unique_ptr<OutputBufferF> _visibilityBuffer;
 	};
 }

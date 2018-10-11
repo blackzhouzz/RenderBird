@@ -47,9 +47,10 @@ namespace RenderBird
 				if (m_renderer->m_buffers._albedoBuffer != nullptr)
 				{
 					Vector3f albedo = C_Zero_v3f;
-					if (hitInfo.m_material != nullptr)
+					SurfaceSample ss(ray, hitInfo);
+
+					if (ss.m_bsdf != nullptr)
 					{
-						SurfaceSample ss(ray, hitInfo);
 						RGB32 color = ss.m_bsdf->Albedo();
 						for (int i = 0; i < 3; ++i)
 							albedo[i] = color[i];
@@ -65,24 +66,23 @@ namespace RenderBird
 			if (hitInfo.m_obj->IsLight() && state->m_currentBounce == 0)
 			{
 				const Light* light = static_cast<const Light*>(hitInfo.m_obj);
-				L->m_directDiffuse += state->m_throughtput * light->Le(&ss, -ray.m_direction);
+				L->m_directEmission += state->m_throughtput * light->Le(&ss, -ray.m_direction);
 			}
+
 			Float sampleLightPdf = 0.0f;
 			Light* sampleLight = GetSampleLight(state, sampleLightPdf);
 			SampleLight(state, sampleLight, sampleLightPdf, &ss, L);
 
-			BsdfSpectrum bs;
+			LightSpectrum lightSpectrum;
 			Vector2f rand2d = state->m_sampler->Random2D();
-			RGB32 bsdfWeight = RGB32::BLACK;
 			Vector3f wi;
 			Float bsdfPdf = 0.0;
 
-			ss.m_bsdf->Sample(&ss, rand2d, &wi, &bsdfPdf, &bsdfWeight);
+			ss.m_bsdf->Sample(&ss, rand2d, &wi, &bsdfPdf, &lightSpectrum);
 
-			if (bsdfPdf == 0.0 || bsdfWeight.Lum() < C_FLOAT_EPSILON)
+			if (bsdfPdf == 0.0)
 				break;
-
-			state->m_throughtput *= bsdfWeight / bsdfPdf;
+			auto newThroughtput = state->m_throughtput * lightSpectrum.Resolve() / bsdfPdf;
 
 			ray.m_origin = ss.m_pos;
 			ray.m_direction = wi;
@@ -111,8 +111,12 @@ namespace RenderBird
 				Float lightPdf = light->Pdf(tempHitInfo, &ss, wi);
 				auto li = light->Le(&ss, -ray.m_direction);
 				Float misWeight = SampleUtils::PowerHeuristic(bsdfPdf, lightPdf);
-				L->m_directDiffuse += state->m_throughtput * li * misWeight / sampleLightPdf;
+
+				lightSpectrum.Mul(state->m_throughtput * misWeight * li / (bsdfPdf * sampleLightPdf));
+				L->Accum(&lightSpectrum, state->m_currentBounce == 0);
 			}
+			state->m_throughtput = newThroughtput;
+
 			const Float eta = 1.0f;
 
 			if (state->m_currentBounce >= rrBounce)
@@ -138,7 +142,6 @@ namespace RenderBird
 			//if (m_renderer->m_buffers._albedoBuffer && info.primitive && info.primitive->isInfinite())
 			//	m_renderer->m_buffers._albedoBuffer->addSample(pixel, info.primitive->evalDirect(data, info));
 		}
-
 	}
 
 	Light* PathTracing::GetSampleLight(State* state, Float& sampleLightPdf)
@@ -160,10 +163,9 @@ namespace RenderBird
 		{
 			if (lightPdf > 0)
 			{
-				BsdfSpectrum bs;
+				LightSpectrum lightSpectrum;
 				Float bsdfPdf = 0.0;
-				RGB32 eval;
-				ss->m_bsdf->Eval(ss, ls.m_wi, &bsdfPdf, &eval);
+				ss->m_bsdf->Eval(ss, ls.m_wi, &bsdfPdf, &lightSpectrum);
 				if (bsdfPdf == 0.0)
 					return false;
 
@@ -178,13 +180,12 @@ namespace RenderBird
 					}
 				}
 
-				bs.Add(eval);
-				bs.Mul(ls.m_li / lightPdf);
 
 				if (!shadowBlocked)
 				{
 					Float misWeight = SampleUtils::PowerHeuristic(lightPdf, bsdfPdf);
-					L->m_directDiffuse += state->m_throughtput * bs.m_diffuse * misWeight / sampleLightPdf;
+					lightSpectrum.Mul(state->m_throughtput * misWeight * ls.m_li / (lightPdf * sampleLightPdf));
+					L->Accum(&lightSpectrum, state->m_currentBounce == 0);
 					return true;
 				}
 			}
@@ -192,48 +193,18 @@ namespace RenderBird
 		return false;
 	}
 
-	void PathTracing::GatherFeatureBuffers(int pixelX, int pixelY)
-	{
-		Ray ray;
-		Vector2u pixel = Vector2u(pixelX, pixelY);
-		m_renderer->GenerateCameraRay(pixelX, pixelY, &ray);
-
-		RayHitInfo hitInfo;
-		if (m_renderer->m_scene->Intersect(ray, &hitInfo))
-		{
-			if (m_renderer->m_buffers._depthBuffer != nullptr)
-				m_renderer->m_buffers._depthBuffer->addSample(pixel, hitInfo.m_t);
-			if (m_renderer->m_buffers._normalBuffer != nullptr)
-				m_renderer->m_buffers._normalBuffer->addSample(pixel, hitInfo.m_ng);
-			if (m_renderer->m_buffers._albedoBuffer != nullptr)
-			{
-				Vector3f albedo = C_Zero_v3f;
-				if (hitInfo.m_material != nullptr)
-				{
-					SurfaceSample ss(ray, hitInfo);
-					RGB32 color = ss.m_bsdf->Albedo();
-					for (int i = 0; i < 3; ++i)
-						albedo[i] = color[i];
-					m_renderer->m_buffers._albedoBuffer->addSample(pixel, albedo);
-				}
-			}
-		}
-	}
-
 	void PathTracing::Render(int pixelX, int pixelY, TileRenderer* tile)
 	{
-		if (pixelX == 109 && pixelY == 113)
-		{
-			pixelX = pixelX;
-		}
+		//if (pixelX == 109 && pixelY == 113)
+		//{
+		//	pixelX = pixelX;
+		//}
 		State state;
 		auto setting = m_renderer->GetRendererSetting();
 		state.m_pixelX = pixelX;
 		state.m_pixelY = pixelY;
 		state.m_sampler = new Sampler(setting.m_numSamples);
 		state.m_useMis = setting.m_useMis;
-
-		//GatherFeatureBuffers(pixelX, pixelY);
 
 		for (uint32 samplerIndex = 0; samplerIndex < state.m_sampler->m_numSamplers; ++samplerIndex)
 		{
@@ -246,11 +217,29 @@ namespace RenderBird
 
 			Integrate(&state, &L);
 
-			m_renderer->AddSample(state.m_cameraSample.m_pixel, tile->GetBoundMin(), tile->GetBoundMax(), L);
+			auto color = L.Resolve();
+			Float sum = std::abs(color[0]) + std::abs(color[1]) + std::abs(color[2]);
+			if (IsNaN(sum) || IsInf(sum))
+				continue;
+			if (m_renderer->m_setting.m_enableClamp)
+			{
+				auto indirect = L.ResolveIndirect();
+				Float sumIndirect = std::abs(indirect[0]) + std::abs(indirect[1]) + std::abs(indirect[2]);
+				if (sumIndirect > m_renderer->m_setting.m_clampValue)
+				{
+					auto scale = m_renderer->m_setting.m_clampValue / sumIndirect;
+					L.m_indirectDiffuse *= scale;
+				}
 
-			Vector3f color = Vector3f(L.m_directDiffuse[0], L.m_directDiffuse[1], L.m_directDiffuse[2]);
-			if (m_renderer->m_buffers._colorBuffer != nullptr)
-				m_renderer->m_buffers._colorBuffer->addSample(Vector2u(pixelX, pixelY), color);
+				color = L.Resolve();
+				if (m_renderer->m_buffers._colorBuffer != nullptr)
+					m_renderer->m_buffers._colorBuffer->addSample(Vector2u(pixelX, pixelY), Vector3f(color[0], color[1], color[2]));
+			}
+			else
+			{
+				if (m_renderer->m_buffers._colorBuffer != nullptr)
+					m_renderer->m_buffers._colorBuffer->addSample(Vector2u(pixelX, pixelY), Vector3f(color[0], color[1], color[2]));
+			}
 		}
 
 		delete state.m_sampler;

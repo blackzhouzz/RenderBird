@@ -69,9 +69,6 @@
     <ClCompile Include="src\FBXImportUtils.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\ImageOutput.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\Light.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -120,15 +117,15 @@
     <ClCompile Include="src\SphereObject.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\ImageIO.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\DistantLightComponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\FBXImportUtils.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ImageOutput.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\Light.h">
@@ -237,6 +234,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\SphereObject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ImageIO.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

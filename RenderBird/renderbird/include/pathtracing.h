@@ -28,7 +28,6 @@ namespace RenderBird
 		void Integrate(State* state, Radiance* L);
 		bool SampleLight(State* state, Light* light, Float sampleLightPdf, SurfaceSample* ss, Radiance* L);
 		Light* GetSampleLight(State* state, Float& sampleLightPdf);
-		void GatherFeatureBuffers(int pixelX, int pixelY);
 	private:
 		Renderer* m_renderer;
 	};
