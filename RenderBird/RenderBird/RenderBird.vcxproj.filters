@@ -239,5 +239,11 @@
     <ClInclude Include="include\ImageIO.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\halton_sampler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\halton_enum.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

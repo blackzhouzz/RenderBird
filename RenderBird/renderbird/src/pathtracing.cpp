@@ -74,7 +74,7 @@ namespace RenderBird
 			SampleLight(state, sampleLight, sampleLightPdf, &ss, L);
 
 			LightSpectrum lightSpectrum;
-			Vector2f rand2d = state->m_sampler->Random2D();
+			Vector2f rand2d = state->m_sampler->Get2D(SamplerDimension::BSDFSampleU, SamplerDimension::BSDFSampleV);
 			Vector3f wi;
 			Float bsdfPdf = 0.0;
 
@@ -122,7 +122,7 @@ namespace RenderBird
 			if (state->m_currentBounce >= rrBounce)
 			{
 				Float q = std::min(state->m_throughtput.Max() * eta * eta, (Float) 0.95f);
-				if (state->m_sampler->Random1D() >= q)
+				if (state->m_sampler->Get1D(SamplerDimension::RussianRoulette) >= q)
 					break;
 				state->m_throughtput /= q;
 			}
@@ -146,7 +146,7 @@ namespace RenderBird
 
 	Light* PathTracing::GetSampleLight(State* state, Float& sampleLightPdf)
 	{
-		Float rand1d = state->m_sampler->Random1D();
+		Float rand1d = state->m_sampler->Get1D(SamplerDimension::LightIndex);
 		//random select light and get sample light pdf
 		size_t index = m_renderer->m_scene->m_distribution->Sample(rand1d, sampleLightPdf);
 		Light* light = m_renderer->m_scene->m_lights[index];
@@ -155,7 +155,7 @@ namespace RenderBird
 
 	bool PathTracing::SampleLight(State* state, Light* light, Float sampleLightPdf, SurfaceSample* ss, Radiance* L)
 	{
-		Vector2f lightRand2d = state->m_sampler->Random2D();
+		Vector2f lightRand2d = state->m_sampler->Get2D(SamplerDimension::LightSampleU, SamplerDimension::LightSampleV);
 
 		LightSample ls;
 		Float lightPdf = 0;
@@ -203,19 +203,22 @@ namespace RenderBird
 		auto setting = m_renderer->GetRendererSetting();
 		state.m_pixelX = pixelX;
 		state.m_pixelY = pixelY;
-		state.m_sampler = new Sampler(setting.m_numSamples);
+		state.m_sampler = tile->m_sampler.get();
 		state.m_useMis = setting.m_useMis;
+		state.m_sampler->StartSample(pixelX, pixelY);
 
-		for (uint32 samplerIndex = 0; samplerIndex < state.m_sampler->m_numSamplers; ++samplerIndex)
+		for (uint32 samplerIndex = 0; samplerIndex < state.m_sampler->GetNumSamplers(); ++samplerIndex)
 		{
 			Radiance L;
-			state.m_cameraSample = state.m_sampler->GetCameraSample(pixelX, pixelY);
 
+			state.m_cameraSample = state.m_sampler->GetCameraSample(pixelX, pixelY);
 			state.m_curSamplerIndex = samplerIndex;
 			state.m_throughtput = RGB32::WHITE;
 			state.m_currentBounce = 0;
 
 			Integrate(&state, &L);
+
+			state.m_sampler->NextSample();
 
 			auto color = L.Resolve();
 			Float sum = std::abs(color[0]) + std::abs(color[1]) + std::abs(color[2]);
@@ -241,7 +244,5 @@ namespace RenderBird
 					m_renderer->m_buffers._colorBuffer->addSample(Vector2u(pixelX, pixelY), Vector3f(color[0], color[1], color[2]));
 			}
 		}
-
-		delete state.m_sampler;
 	}
 }

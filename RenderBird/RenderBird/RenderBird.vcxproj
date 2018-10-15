@@ -69,6 +69,8 @@
     <ClInclude Include="include\DistantLight.h" />
     <ClInclude Include="include\DistantLightComponent.h" />
     <ClInclude Include="include\FBXImportUtils.h" />
+    <ClInclude Include="include\halton_enum.h" />
+    <ClInclude Include="include\halton_sampler.h" />
     <ClInclude Include="include\ImageIO.h" />
     <ClInclude Include="include\Light.h" />
     <ClInclude Include="include\LightComponent.h" />

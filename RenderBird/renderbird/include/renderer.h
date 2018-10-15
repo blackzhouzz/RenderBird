@@ -6,6 +6,7 @@
 #include "Scene.h"
 #include "AuxiliaryBuffer.h"
 #include "Denoising.h"
+#include "Sampler.h"
 
 namespace RenderBird
 {
@@ -25,8 +26,6 @@ namespace RenderBird
 		bool m_denoising;
 	};
 	class Renderer;
-
-	typedef void(*pfunType)(float, float);
 	class TileRenderer
 	{
 	public:
@@ -35,7 +34,7 @@ namespace RenderBird
 		void Finish();
 		const Vector2i& GetBoundMin()const { return m_boundMin; }
 		const Vector2i& GetBoundMax()const { return m_boundMax; }
-	private:
+	public:
 		Renderer* m_renderer;
 		int m_sizeX;
 		int m_sizeY;
@@ -43,6 +42,7 @@ namespace RenderBird
 		int m_y;
 		Vector2i m_boundMin;
 		Vector2i m_boundMax;
+		std::unique_ptr<Sampler> m_sampler;
 	};
 
 	struct CameraData
@@ -81,7 +81,7 @@ namespace RenderBird
 		RenderContext m_renderContext;
 	public:
 		Scene* m_scene;
-
+		std::unique_ptr<Sampler> m_sampler;
 		AuxiliaryBuffer m_buffers;
 	};
 }

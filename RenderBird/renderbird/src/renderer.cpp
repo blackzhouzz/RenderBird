@@ -11,14 +11,17 @@
 
 namespace RenderBird
 {
-	pfunType test = NULL;
 	TileRenderer::TileRenderer(Renderer* renderer, int x, int y, int sizeX, int sizeY)
 		: m_renderer(renderer), m_x(x), m_y(y), m_sizeX(sizeX), m_sizeY(sizeY)
 	{
-		m_boundMin.x = m_x * m_sizeX;
-		m_boundMin.y = m_y * m_sizeY;
-		m_boundMax.x = std::min((m_x + 1) * m_sizeX, m_renderer->GetRendererSetting().m_resX);
-		m_boundMax.y = std::min((m_y + 1) * m_sizeY, m_renderer->GetRendererSetting().m_resY);
+		auto resX = m_renderer->GetRendererSetting().m_resX;
+		auto resY = m_renderer->GetRendererSetting().m_resY;
+		m_boundMin.x = m_x * sizeX;
+		m_boundMin.y = m_y * sizeY;
+		m_boundMax.x = std::min((m_x + 1) * sizeX, resX);
+		m_boundMax.y = std::min((m_y + 1) * sizeY, resY);
+		m_sampler.reset(m_renderer->m_sampler->Clone());
+		m_sampler->Init(resX, resY);
 	}
 
 	void TileRenderer::Render()
@@ -52,15 +55,16 @@ namespace RenderBird
 	{
 		m_setting.m_resX = 256;
 		m_setting.m_resY = 256;
-		m_setting.m_tileSizeX = 32;
-		m_setting.m_tileSizeY = 32;
+		m_setting.m_tileSizeX = 16;
+		m_setting.m_tileSizeY = 16;
 		m_setting.m_useJob = true;
 		m_setting.m_maxBounce = 8;
 		m_setting.m_rrBounce = 4;
-		m_setting.m_numSamples = 4;
+		m_setting.m_numSamples = 8;
 		m_setting.m_denoising = true;
-		m_setting.m_enableClamp = false;
+		m_setting.m_enableClamp = true;
 		m_setting.m_clampValue = 1.0;
+		m_sampler.reset(new HaltonSampler(m_setting.m_numSamples));
 		m_scene->SetupSceneTest();
 	}
 
