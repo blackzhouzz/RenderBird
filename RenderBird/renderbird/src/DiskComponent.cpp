@@ -46,7 +46,6 @@ namespace RenderBird
 
 	//	hitInfo->m_dpdu = dpdu;
 	//	hitInfo->m_dpdv = dpdv;
-	//	hitInfo->m_ns = Vector3f::CrossProduct(dpdv, dpdu).Normalized();
 	//	hitInfo->m_u = u;
 	//	hitInfo->m_v = v;
 	//	hitInfo->m_t = t;

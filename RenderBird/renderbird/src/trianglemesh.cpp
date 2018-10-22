@@ -41,33 +41,6 @@ namespace RenderBird
 				hitInfo->m_n = (n0 * (1.0f - u - v) + n1 * u + n2 * v).Normalized();
 				hitInfo->m_pos = (v0 * (1.0f - u - v) + v1 * u + v2 * v);
 
-				Vector3f dpdu, dpdv;
-
-				Vector3f q1 = v1 - v0;
-				Vector3f q2 = v2 - v0;
-				Float s1 = uv1.x - uv0.x, t1 = uv1.y - uv0.y;
-				Float s2 = uv2.x - uv0.x, t2 = uv2.y - uv0.y;
-				Float invDet = s1 * t2 - s2 * t1;
-				if (std::abs(invDet) < 1e-6f)
-					return false;
-				dpdu = (q1 * t2 - t1 * q2).Normalized();
-				dpdv = (q2 * s1 - s2 * q1).Normalized();
-
-				//if (degenerateUV || Vector3f::CrossProduct(dpdv, dpdu).LengthSquared() == 0)
-				//{
-				//	// Handle zero determinant for triangle partial derivative matrix
-				//	Vector3f ng = Vector3f::CrossProduct(v2 - v0, v1 - v0);
-				//	if (ng.LengthSquared() == 0)
-				//		// The triangle is actually degenerate; the intersection is
-				//		// bogus.
-				//		return false;
-
-				//	CoordinateSystem(ng.Normalized(), &dpdu, &dpdv);
-				//}
-
-				hitInfo->m_dpdu = dpdu.Normalized();
-				hitInfo->m_dpdv = dpdv.Normalized();
-				hitInfo->m_ns = Vector3f::CrossProduct(hitInfo->m_dpdv, hitInfo->m_dpdu).Normalized();
 				hitInfo->m_primId = faceIndex;
 				RenderStatistic::m_numRayTriangleIntersect++;
 

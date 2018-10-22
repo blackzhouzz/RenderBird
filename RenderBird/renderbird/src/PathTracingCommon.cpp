@@ -9,24 +9,18 @@ namespace RenderBird
 	SurfaceSample::SurfaceSample(const Ray& ray, RayHitInfo& hitInfo)
 	{
 		m_pos = hitInfo.m_pos;
-		m_n = hitInfo.m_n;
-		m_ng = hitInfo.m_ng;
+		m_n = hitInfo.m_n.Normalized();
+		m_ng = hitInfo.m_ng.Normalized();
 		if (m_n == C_Zero_v3f)
 		{
 			m_n = m_ng;
 		}
 
-		hitInfo.m_dpdu = hitInfo.m_dpdu.Normalized();
-		hitInfo.m_dpdv = hitInfo.m_dpdv.Normalized();
-
-		hitInfo.m_ns = hitInfo.m_ns.Normalized();
-		hitInfo.m_n = hitInfo.m_n.Normalized();
-
-		LambertDiffuse* bsdf = new LambertDiffuse();
-		//OrenNayarDiffuse* bsdf = new OrenNayarDiffuse(0.5f);
+		//LambertDiffuse* bsdf = new LambertDiffuse();
+		OrenNayarDiffuse* bsdf = new OrenNayarDiffuse(0.5f);
 		Vector3f T;
 		Vector3f B;
-		Vector3f N = hitInfo.m_n.Normalized();
+		Vector3f N = m_n;
 		if (hitInfo.m_obj->CalcTangentSpace(&hitInfo, T, B))
 		{
 			T = T.Normalized();
@@ -38,8 +32,6 @@ namespace RenderBird
 		{
 			bsdf->m_frame = TangentFrame(N.Normalized());
 		}
-		if (std::abs(hitInfo.m_ns.Length() - hitInfo.m_n.Length()) > 0.001)
-			T = T;
 		bool hitBackside = Vector3f::DotProduct(N, ray.m_direction) > 0.0f;
 		bool flipNormal = hitBackside && bsdf->m_doubleSide;
 		if (flipNormal)

@@ -48,14 +48,8 @@ namespace RenderBird
 		Float sqrDist2 = std::sqrt(dist2);
 		Float oneMinusV = ((sqrDist2 - m_disk->m_innerRadius) / (m_disk->m_radius - m_disk->m_innerRadius));
 		Float v = 1 - oneMinusV;
-		Vector3f dpdu(-m_disk->m_phiMax * hitPoint.y, m_disk->m_phiMax * hitPoint.x, 0);
-		Vector3f dpdv = Vector3f(hitPoint.x, hitPoint.y, 0.) * (m_disk->m_radius - m_disk->m_innerRadius) / sqrDist2;
-		//Vector3f dndu(0, 0, 0), dndv(0, 0, 0);
-		hitPoint.z = 0;
 
-		hitInfo->m_dpdu = dpdu;
-		hitInfo->m_dpdv = dpdv;
-		hitInfo->m_ns = Vector3f::CrossProduct(dpdv, dpdu).Normalized();
+		hitPoint.z = 0;
 		hitInfo->m_u = u;
 		hitInfo->m_v = v;
 		hitInfo->m_t = t;

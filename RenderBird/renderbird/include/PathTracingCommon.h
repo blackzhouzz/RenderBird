@@ -71,9 +71,6 @@ namespace RenderBird
 			return m_obj != nullptr;
 		}
 		Vector3f m_pos;
-		Vector3f m_dpdu;
-		Vector3f m_dpdv;
-		Vector3f m_ns;
 		Vector3f m_n;
 		Vector3f m_ng;
 		Material* m_material;

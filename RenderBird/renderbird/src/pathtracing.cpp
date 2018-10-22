@@ -22,8 +22,8 @@ namespace RenderBird
 	void PathTracing::Integrate(State* state, Radiance* L)
 	{
 		auto pixel = Vector2u(state->m_pixelX, state->m_pixelY);
-		if (pixel.x == 125 && pixel.y == 139)
-			pixel = pixel;
+		//if (pixel.x == 125 && pixel.y == 139)
+		//	pixel = pixel;
 		Ray ray;
 		m_renderer->GenerateCameraRay(state->m_cameraSample.m_pixel.x, state->m_cameraSample.m_pixel.y, &ray);
 		const int maxBounce = m_renderer->GetRendererSetting().m_maxBounce;
@@ -84,11 +84,13 @@ namespace RenderBird
 			Vector3f wi;
 			Float bsdfPdf = 0.0;
 
-			ss.m_bsdf->Sample(&ss, state->m_sampler, &wi, &bsdfPdf, &lightSpectrum);
-			wi = ss.m_bsdf->LocalToWorld(wi);
-
-			if (!BacksideCheck(ss.m_ng, wi) || bsdfPdf == 0.0)
+			if (!ss.m_bsdf->Sample(&ss, state->m_sampler, &wi, &bsdfPdf, &lightSpectrum))
 				break;
+
+			wi = ss.m_bsdf->LocalToWorld(wi);
+			if (!BacksideCheck(ss.m_ng, wi))
+				break;
+
 			state->m_throughput *= lightSpectrum.Resolve() / bsdfPdf;
 
 			ray.m_origin = ss.m_pos;
@@ -110,7 +112,7 @@ namespace RenderBird
 			{
 				break;
 			}
-			hitLight = false;
+			//hitLight = false;
 			if (hitLight)
 			{
 				const Light* light = static_cast<const Light*>(tempHitInfo.m_obj);
@@ -132,7 +134,7 @@ namespace RenderBird
 				state->m_throughput /= q;
 			}
 			hitInfo = tempHitInfo;
-			break;
+			//break;
 		}
 		if (!recordedOutputValues)
 		{
@@ -173,10 +175,8 @@ namespace RenderBird
 			{
 				LightSpectrum lightSpectrum;
 				Float bsdfPdf = 0.0;
-				ss->m_bsdf->Eval(ss, ls.m_wi, &bsdfPdf, &lightSpectrum);
-
-				if (!BacksideCheck(ss->m_ng, ls.m_wi) || bsdfPdf == 0.0)
-					false;
+				if (!ss->m_bsdf->Eval(ss, ls.m_wi, &bsdfPdf, &lightSpectrum) || !BacksideCheck(ss->m_ng, ls.m_wi))
+					return false;
 
 				bool shadowBlocked = false;
 				Ray lightRay(ss->m_pos, ls.m_wi);

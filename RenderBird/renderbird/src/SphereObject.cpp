@@ -69,19 +69,7 @@ namespace RenderBird
 		if (phi < 0) phi += 2 * C_PI;
 
 		Float theta = std::acos(Clamp(hitPoint.z / radius, (Float)-1.0, (Float)1.0));
-		Float zRadius = std::sqrt(hitPoint.x * hitPoint.x + hitPoint.y * hitPoint.y);
-		Float invZRadius = 1 / zRadius;
-		Float cosPhi = hitPoint.x * invZRadius;
-		Float sinPhi = hitPoint.y * invZRadius;
 
-		Vector3f dpdu(-2 * C_PI * hitPoint.y, 2 * C_PI * hitPoint.x, 0);
-		Vector3f dpdv =
-			(-C_PI) *
-			Vector3f(hitPoint.z * cosPhi, hitPoint.z * sinPhi, -radius * std::sin(theta));
-
-		hitInfo->m_dpdu = dpdu;
-		hitInfo->m_dpdv = dpdv;
-		hitInfo->m_ns = Vector3f::CrossProduct(dpdv, dpdu).Normalized();
 		hitInfo->m_u = phi / C_2_PI;
 		hitInfo->m_v = (C_PI - theta) / C_PI;
 		hitInfo->m_pos = hitPoint;

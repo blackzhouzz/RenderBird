@@ -8,11 +8,6 @@ namespace RenderBird
 	{
 	}
 
-	void BSDF::SetCordinate(const Vector3f& dpdu, const Vector3f& dpdv, const Vector3f& ns)
-	{
-		m_frame = TangentFrame(ns, dpdu, dpdv);
-	}
-
 	Vector3f BSDF::LocalToWorld(const Vector3f &v) const
 	{
 		return m_frame.toGlobal(v);

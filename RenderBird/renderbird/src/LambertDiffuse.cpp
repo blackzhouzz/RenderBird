@@ -7,29 +7,28 @@ namespace RenderBird
 	{
 	}
 
-	void LambertDiffuse::Eval(SurfaceSample* ss, const Vector3f& wi, Float* pdf, LightSpectrum* lightSpectrum)
+	bool LambertDiffuse::Eval(SurfaceSample* ss, const Vector3f& wi, Float* pdf, LightSpectrum* lightSpectrum)
 	{
 		auto localWi = WorldToLocal(wi);
+		if (ss->m_localWo.z <= 0 || localWi.z <= 0)
+		{
+			*pdf = 0;
+			return false;
+		}
 		Float cosPi = SampleUtils::CosHemispherePdf(localWi.z);
 		*pdf = cosPi;
-		//if (ss->m_localWo.z < 0)
-		//{
-		//	*pdf = 0;
-		//	return;
-		//}
+
 		lightSpectrum->m_diffuse = m_color * cosPi;
+		return true;
 	}
 
-	void LambertDiffuse::Sample(SurfaceSample* ss, Sampler* sampler, Vector3f* wi, Float* pdf, LightSpectrum* lightSpectrum)
+	bool LambertDiffuse::Sample(SurfaceSample* ss, Sampler* sampler, Vector3f* wi, Float* pdf, LightSpectrum* lightSpectrum)
 	{
 		SampleUtils::CosHemisphere(sampler->Next2D(), wi, pdf);
-		//if (ss->m_localWo.z < 0)
-		//	wi->z *= -1;
-		//if (ss->m_localWo.z < 0)
-		//{
-		//	*pdf = 0;
-		//	return;
-		//}
+		if (ss->m_localWo.z <= 0)
+			return false;
+
 		lightSpectrum->m_diffuse = m_color * (*pdf);
+		return true;
 	}
 }
