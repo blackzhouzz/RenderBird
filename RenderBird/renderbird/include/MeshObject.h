@@ -12,6 +12,7 @@ namespace RenderBird
 		virtual bool Intersect(const Ray& worldRay, RayHitInfo* hitInfo)const;
 		virtual Vector2f GetDistanceNearFar(const Vector3f& normal);
 		virtual void UpdateBoundingBox();
+		virtual bool CalcTangentSpace(RayHitInfo* hitInfo, Vector3f& T, Vector3f& B)const;
 	private:
 		MeshComponent* m_mesh;
 	};

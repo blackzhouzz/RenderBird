@@ -36,9 +36,19 @@ namespace RenderBird
 	void SampleUtils::CosHemisphere(const Vector2f& rand2d, Vector3f* wi, Float* pdf)
 	{
 		Vector2f newRand2d = ToUnitDisk(rand2d);
-		Float costheta = std::sqrt(std::max((Float)1.0f - newRand2d.x * newRand2d.x - newRand2d.y * newRand2d.y, (Float)0.0f));
-		*wi = Vector3f(newRand2d.x, newRand2d.y, costheta);
-		*pdf = costheta * C_1_INV_PI;
+		Float cosTheta = std::sqrt(std::max((Float)1.0f - newRand2d.x * newRand2d.x - newRand2d.y * newRand2d.y, (Float)0.0f));
+		*wi = Vector3f(newRand2d.x, newRand2d.y, cosTheta);
+		*pdf = CosHemispherePdf(cosTheta);
+	}
+
+	Float SampleUtils::CosHemispherePdf(Float cosTheta)
+	{
+		return std::abs(cosTheta) * C_1_INV_PI;
+	}
+
+	Float SampleUtils::UniformHemispherePdf()
+	{
+		return C_1_INV_PI * 0.5f;
 	}
 
 	void SampleUtils::UniformHemisphere(const Vector2f& rand2d, Vector3f* wi, Float* pdf)
@@ -50,7 +60,7 @@ namespace RenderBird
 		Float y = r * std::sin(phi);
 
 		*wi = Vector3f(x, y, z);
-		*pdf = 0.5f * C_1_INV_PI;
+		*pdf = UniformHemispherePdf();
 	}
 
 	void SampleUtils::UniformSphere(const Vector2f& rand2d, Vector3f* wi, Float* pdf)

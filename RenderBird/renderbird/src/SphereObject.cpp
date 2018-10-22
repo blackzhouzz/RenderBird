@@ -29,10 +29,10 @@ namespace RenderBird
 		return 0.5f * C_1_INV_PI / (1.0f - cosThetaMax);
 	}
 
-	void SphereObject::Sample(const Vector2f& rand2d, LightSample* ls, Float* pdf)
+	void SphereObject::Sample(Sampler* sampler, LightSample* ls, Float* pdf)
 	{
 		Vector3f wi;
-		SampleUtils::UniformSphere(rand2d, &wi, pdf);
+		SampleUtils::UniformSphere(sampler->Next2D(), &wi, pdf);
 		Vector3f pos = m_sphere->m_radius * 
 		ls->m_n = Vector3f(pos.x, pos.y, pos.z).Normalized();
 		pos *= m_sphere->m_radius / Vector3f::Distance(pos, C_Zero_v3f);
@@ -81,11 +81,31 @@ namespace RenderBird
 
 		hitInfo->m_dpdu = dpdu;
 		hitInfo->m_dpdv = dpdv;
-		hitInfo->m_ns = Vector3f::CrossProduct(dpdu, dpdv).Normalized();
+		hitInfo->m_ns = Vector3f::CrossProduct(dpdv, dpdu).Normalized();
 		hitInfo->m_u = phi / C_2_PI;
 		hitInfo->m_v = (C_PI - theta) / C_PI;
 		hitInfo->m_pos = hitPoint;
 		hitInfo->m_ng = hitInfo->m_n = hitPoint.Normalized();
+		return true;
+	}
+
+	bool SphereObject::CalcTangentSpace(RayHitInfo* hitInfo, Vector3f& T, Vector3f& B)const
+	{
+		Vector3f hitPoint = hitInfo->m_pos;
+		const Float radius = m_sphere->m_radius;
+
+		hitPoint *= radius / Vector3f::Distance(hitPoint, C_Zero_v3f);
+		if (hitPoint.x == 0 && hitPoint.y == 0)
+			hitPoint.x = C_FLOAT_EPSILON * radius;
+
+		Float theta = std::acos(Clamp(hitPoint.z / radius, (Float)-1.0, (Float)1.0));
+		Float zRadius = std::sqrt(hitPoint.x * hitPoint.x + hitPoint.y * hitPoint.y);
+		Float invZRadius = 1 / zRadius;
+		Float cosPhi = hitPoint.x * invZRadius;
+		Float sinPhi = hitPoint.y * invZRadius;
+
+		T = Vector3f(-2 * C_PI * hitPoint.y, 2 * C_PI * hitPoint.x, 0);
+		B = (-C_PI) * Vector3f(hitPoint.z * cosPhi, hitPoint.z * sinPhi, -radius * std::sin(theta));
 		return true;
 	}
 

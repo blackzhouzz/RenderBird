@@ -14,9 +14,16 @@ namespace RenderBird
 
 	}
 
+	bool PathTracing::BacksideCheck(const Vector3f& ng, const Vector3f& w)
+	{
+		return PathTracingUtils::IsSameHemisphere(ng, w);
+	}
+
 	void PathTracing::Integrate(State* state, Radiance* L)
 	{
 		auto pixel = Vector2u(state->m_pixelX, state->m_pixelY);
+		if (pixel.x == 125 && pixel.y == 139)
+			pixel = pixel;
 		Ray ray;
 		m_renderer->GenerateCameraRay(state->m_cameraSample.m_pixel.x, state->m_cameraSample.m_pixel.y, &ray);
 		const int maxBounce = m_renderer->GetRendererSetting().m_maxBounce;
@@ -66,7 +73,7 @@ namespace RenderBird
 			if (hitInfo.m_obj->IsLight() && state->m_currentBounce == 0)
 			{
 				const Light* light = static_cast<const Light*>(hitInfo.m_obj);
-				L->m_directEmission += state->m_throughtput * light->Le(&ss, -ray.m_direction);
+				L->m_directEmission += state->m_throughput * light->Le(&ss, -ray.m_direction);
 			}
 
 			Float sampleLightPdf = 0.0f;
@@ -74,15 +81,15 @@ namespace RenderBird
 			SampleLight(state, sampleLight, sampleLightPdf, &ss, L);
 
 			LightSpectrum lightSpectrum;
-			Vector2f rand2d = state->m_sampler->Get2D(SamplerDimension::BSDFSampleU, SamplerDimension::BSDFSampleV);
 			Vector3f wi;
 			Float bsdfPdf = 0.0;
 
-			ss.m_bsdf->Sample(&ss, rand2d, &wi, &bsdfPdf, &lightSpectrum);
+			ss.m_bsdf->Sample(&ss, state->m_sampler, &wi, &bsdfPdf, &lightSpectrum);
+			wi = ss.m_bsdf->LocalToWorld(wi);
 
-			if (bsdfPdf == 0.0)
+			if (!BacksideCheck(ss.m_ng, wi) || bsdfPdf == 0.0)
 				break;
-			auto newThroughtput = state->m_throughtput * lightSpectrum.Resolve() / bsdfPdf;
+			state->m_throughput *= lightSpectrum.Resolve() / bsdfPdf;
 
 			ray.m_origin = ss.m_pos;
 			ray.m_direction = wi;
@@ -103,31 +110,29 @@ namespace RenderBird
 			{
 				break;
 			}
-
+			hitLight = false;
 			if (hitLight)
 			{
 				const Light* light = static_cast<const Light*>(tempHitInfo.m_obj);
-				Float sampleLightPdf = (*m_renderer->m_scene->m_distribution)[light->m_index];
 				Float lightPdf = light->Pdf(tempHitInfo, &ss, wi);
 				auto li = light->Le(&ss, -ray.m_direction);
 				Float misWeight = SampleUtils::PowerHeuristic(bsdfPdf, lightPdf);
 
-				lightSpectrum.Mul(state->m_throughtput * misWeight * li / (bsdfPdf * sampleLightPdf));
+				lightSpectrum.Mul(state->m_throughput * misWeight * li / (sampleLightPdf));
 				L->Accum(&lightSpectrum, state->m_currentBounce == 0);
 			}
-			state->m_throughtput = newThroughtput;
 
 			const Float eta = 1.0f;
 
 			if (state->m_currentBounce >= rrBounce)
 			{
-				Float q = std::min(state->m_throughtput.Max() * eta * eta, (Float) 0.95f);
-				if (state->m_sampler->Get1D(SamplerDimension::RussianRoulette) >= q)
+				Float q = std::min(state->m_throughput.Max() * eta * eta, (Float) 0.95f);
+				if (state->m_sampler->Next1D() >= q)
 					break;
-				state->m_throughtput /= q;
+				state->m_throughput /= q;
 			}
 			hitInfo = tempHitInfo;
-			//break;
+			break;
 		}
 		if (!recordedOutputValues)
 		{
@@ -144,9 +149,14 @@ namespace RenderBird
 		}
 	}
 
+	//bool PathTracing::SampleBSDF(State* state, Light* light, Float sampleLightPdf, SurfaceSample* ss, Radiance* L)
+	//{
+
+	//}
+
 	Light* PathTracing::GetSampleLight(State* state, Float& sampleLightPdf)
 	{
-		Float rand1d = state->m_sampler->Get1D(SamplerDimension::LightIndex);
+		Float rand1d = state->m_sampler->Next1D();
 		//random select light and get sample light pdf
 		size_t index = m_renderer->m_scene->m_distribution->Sample(rand1d, sampleLightPdf);
 		Light* light = m_renderer->m_scene->m_lights[index];
@@ -155,19 +165,18 @@ namespace RenderBird
 
 	bool PathTracing::SampleLight(State* state, Light* light, Float sampleLightPdf, SurfaceSample* ss, Radiance* L)
 	{
-		Vector2f lightRand2d = state->m_sampler->Get2D(SamplerDimension::LightSampleU, SamplerDimension::LightSampleV);
-
 		LightSample ls;
 		Float lightPdf = 0;
-		if (light->Sample(lightRand2d, ss, &ls, &lightPdf))
+		if (light->Sample(state->m_sampler, ss, &ls, &lightPdf))
 		{
 			if (lightPdf > 0)
 			{
 				LightSpectrum lightSpectrum;
 				Float bsdfPdf = 0.0;
 				ss->m_bsdf->Eval(ss, ls.m_wi, &bsdfPdf, &lightSpectrum);
-				if (bsdfPdf == 0.0)
-					return false;
+
+				if (!BacksideCheck(ss->m_ng, ls.m_wi) || bsdfPdf == 0.0)
+					false;
 
 				bool shadowBlocked = false;
 				Ray lightRay(ss->m_pos, ls.m_wi);
@@ -180,11 +189,10 @@ namespace RenderBird
 					}
 				}
 
-
 				if (!shadowBlocked)
 				{
 					Float misWeight = SampleUtils::PowerHeuristic(lightPdf, bsdfPdf);
-					lightSpectrum.Mul(state->m_throughtput * misWeight * ls.m_li / (lightPdf * sampleLightPdf));
+					lightSpectrum.Mul(state->m_throughput * misWeight * ls.m_li / (lightPdf * sampleLightPdf));
 					L->Accum(&lightSpectrum, state->m_currentBounce == 0);
 					return true;
 				}
@@ -195,10 +203,6 @@ namespace RenderBird
 
 	void PathTracing::Render(int pixelX, int pixelY, TileRenderer* tile)
 	{
-		//if (pixelX == 109 && pixelY == 113)
-		//{
-		//	pixelX = pixelX;
-		//}
 		State state;
 		auto setting = m_renderer->GetRendererSetting();
 		state.m_pixelX = pixelX;
@@ -213,7 +217,7 @@ namespace RenderBird
 
 			state.m_cameraSample = state.m_sampler->GetCameraSample(pixelX, pixelY);
 			state.m_curSamplerIndex = samplerIndex;
-			state.m_throughtput = RGB32::WHITE;
+			state.m_throughput = RGB32::WHITE;
 			state.m_currentBounce = 0;
 
 			Integrate(&state, &L);

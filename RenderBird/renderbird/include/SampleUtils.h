@@ -9,6 +9,8 @@ namespace RenderBird
 		static Vector2f ToUnitDisk(const Vector2f &rand2d);
 		static Vector2f UniformTriangle(const Vector2f& rand2d);
 		static void CosHemisphere(const Vector2f& rand2d, Vector3f* wi, Float* pdf);
+		static Float CosHemispherePdf(Float cosTheta);
+		static Float UniformHemispherePdf();
 		static void UniformHemisphere(const Vector2f& rand2d, Vector3f* wi, Float* pdf);
 		static void UniformSphere(const Vector2f& rand2d, Vector3f* wi, Float* pdf);
 		static void UniformCone(const Vector2f& rand2d, Float angle, Vector3f* wi, Float* pdf);

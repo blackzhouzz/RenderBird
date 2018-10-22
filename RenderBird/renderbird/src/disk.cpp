@@ -12,9 +12,9 @@ namespace RenderBird
 		return m_disk->m_phiMax * 0.5f * (m_disk->m_radius * m_disk->m_radius - m_disk->m_innerRadius * m_disk->m_innerRadius);
 	}
 
-	void Disk::Sample(const Vector2f& rand2d, LightSample* ls, Float* pdf)
+	void Disk::Sample(Sampler* sampler, LightSample* ls, Float* pdf)
 	{
-		Vector2f pd = SampleUtils::ToUnitDisk(rand2d);
+		Vector2f pd = SampleUtils::ToUnitDisk(sampler->Next2D());
 		ls->m_pos = Vector3f(pd.x * m_disk->m_radius, pd.y * m_disk->m_radius, 0);;
 		ls->m_n = C_AxisZ_v3f;
 		if (GetArea() == 0.0f)
@@ -55,12 +55,24 @@ namespace RenderBird
 
 		hitInfo->m_dpdu = dpdu;
 		hitInfo->m_dpdv = dpdv;
-		hitInfo->m_ns = Vector3f::CrossProduct(dpdu, dpdv).Normalized();
+		hitInfo->m_ns = Vector3f::CrossProduct(dpdv, dpdu).Normalized();
 		hitInfo->m_u = u;
 		hitInfo->m_v = v;
 		hitInfo->m_t = t;
 		hitInfo->m_pos = hitPoint;
 		hitInfo->m_ng = hitInfo->m_n = C_AxisZ_v3f;
+		return true;
+	}
+
+	bool Disk::CalcTangentSpace(RayHitInfo* hitInfo, Vector3f& T, Vector3f& B)const
+	{
+		Vector3f hitPoint = hitInfo->m_pos;
+		Float dist2 = hitPoint.x * hitPoint.x + hitPoint.y * hitPoint.y;
+		if (dist2 > m_disk->m_radius * m_disk->m_radius || dist2 < m_disk->m_innerRadius * m_disk->m_innerRadius)
+			return false;
+		Float sqrDist2 = std::sqrt(dist2);
+		T = Vector3f(-m_disk->m_phiMax * hitPoint.y, m_disk->m_phiMax * hitPoint.x, 0);
+		B = Vector3f(hitPoint.x, hitPoint.y, 0.) * (m_disk->m_radius - m_disk->m_innerRadius) / sqrDist2;
 		return true;
 	}
 

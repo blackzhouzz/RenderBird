@@ -96,6 +96,18 @@ namespace Core
 		return Min(Min(a, b), ts...);
 	}
 
+	template<typename T>
+	T Square(const T& a)
+	{
+		return a * a;
+	}
+
+	template<typename T>
+	T Cube(const T& a)
+	{
+		return a * a * a;
+	}
+
 	template<typename T, int d>
 	inline mathfu::Vector<T, d> Min(const mathfu::Vector<T, d>& v1, const mathfu::Vector<T, d>& v2)
 	{
@@ -131,17 +143,10 @@ namespace Core
 	}
 
 	template<typename T>
-	T lerp(T a, T b, T ratio)
+	T Lerp(T a, T b, T ratio)
 	{
 		return a * (T(1) - ratio) + b * ratio;
 	}
-
-	template<typename T, unsigned d>
-	mathfu::Vector<T, d> lerp(const mathfu::Vector<T, d> &a, const mathfu::Vector<T, d> &b, T ratio)
-	{
-		return a * (T(1) - ratio) + b * ratio;
-	}
-
 
 	template<typename T>
 	bool IsNaN(const T& t)

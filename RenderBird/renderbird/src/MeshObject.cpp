@@ -34,6 +34,11 @@ namespace RenderBird
 		return hasIntersected;
 	}
 
+	bool MeshObject::CalcTangentSpace(RayHitInfo* hitInfo, Vector3f& T, Vector3f& B)const
+	{
+		return m_mesh->m_trimesh->CalcTangentSpace(hitInfo, T, B);
+	}
+
 	Vector2f MeshObject::GetDistanceNearFar(const Vector3f& normal)
 	{
 		Vector2f ret(C_FLOAT_MAX, -C_FLOAT_MAX);

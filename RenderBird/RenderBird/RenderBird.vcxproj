@@ -33,14 +33,16 @@
     <ClCompile Include="src\DistantLightComponent.cpp" />
     <ClCompile Include="src\FBXImportUtils.cpp" />
     <ClCompile Include="src\ImageIO.cpp" />
+    <ClCompile Include="src\LambertDiffuse.cpp" />
     <ClCompile Include="src\Light.cpp" />
     <ClCompile Include="src\LightComponent.cpp" />
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\MeshComponent.cpp" />
     <ClCompile Include="src\MeshObject.cpp" />
+    <ClCompile Include="src\OrenNayarDiffuse.cpp" />
     <ClCompile Include="src\PathTracing.cpp" />
     <ClCompile Include="src\PathTracingCommon.cpp" />
-    <ClCompile Include="src\RenderbirdRegister.cpp" />
+    <ClCompile Include="src\RenderBirdRegister.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\RenderStatistic.cpp" />
     <ClCompile Include="src\Sampler.cpp" />
@@ -72,6 +74,7 @@
     <ClInclude Include="include\halton_enum.h" />
     <ClInclude Include="include\halton_sampler.h" />
     <ClInclude Include="include\ImageIO.h" />
+    <ClInclude Include="include\LambertDiffuse.h" />
     <ClInclude Include="include\Light.h" />
     <ClInclude Include="include\LightComponent.h" />
     <ClInclude Include="include\Material.h" />
@@ -82,8 +85,8 @@
     <ClInclude Include="include\PathTracing.h" />
     <ClInclude Include="include\PathTracingCommon.h" />
     <ClInclude Include="include\Pixelmap.h" />
-    <ClInclude Include="include\RenderbirdPrivate.h" />
-    <ClInclude Include="include\RenderbirdRegister.h" />
+    <ClInclude Include="include\RenderBirdPrivate.h" />
+    <ClInclude Include="include\RenderBirdRegister.h" />
     <ClInclude Include="include\Renderer.h" />
     <ClInclude Include="include\RenderStatistic.h" />
     <ClInclude Include="include\Sampler.h" />
@@ -97,6 +100,9 @@
     <ClInclude Include="include\Triangle.h" />
     <ClInclude Include="include\TriangleComponent.h" />
     <ClInclude Include="include\TriangleMesh.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\OrenNayarDiffuse.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

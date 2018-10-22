@@ -8,7 +8,7 @@ namespace RenderBird
 		m_distantLight = EntityManager::IntancePtr()->GetComponent<DistantLightComponent>(id);
 	}
 
-	bool DistantLight::Sample(const Vector2f& rand2d, SurfaceSample* ss, LightSample* ls, Float* pdf)
+	bool DistantLight::Sample(Sampler* sampler, SurfaceSample* ss, LightSample* ls, Float* pdf)
 	{
 		Vector3f lightDir = MathUtils::GetForward(m_transform->m_rotation);
 		ls->m_n = lightDir;

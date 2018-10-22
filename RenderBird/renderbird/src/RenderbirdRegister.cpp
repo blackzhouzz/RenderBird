@@ -1,4 +1,4 @@
-#include "RenderbirdRegister.h"
+#include "RenderBirdRegister.h"
 
 void RegisterTypeInfoRenderBird()
 {

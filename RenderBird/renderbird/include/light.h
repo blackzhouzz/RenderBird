@@ -3,6 +3,7 @@
 #include "SceneObject.h"
 #include "PathTracingCommon.h"
 #include "LightComponent.h"
+#include "Sampler.h"
 
 namespace RenderBird
 {
@@ -10,7 +11,7 @@ namespace RenderBird
 	{
 	public:
 		virtual void OnCreate(EntityId id);
-		virtual bool Sample(const Vector2f& rand2d, SurfaceSample* ss, LightSample* ls, Float* pdf) = 0;
+		virtual bool Sample(Sampler* sampler, SurfaceSample* ss, LightSample* ls, Float* pdf) = 0;
 		virtual RGB32 Le(SurfaceSample* ss, const Vector3f& w)const;
 		virtual Float Pdf(const RayHitInfo& hitInfo, SurfaceSample* ss, const Vector3f& wi)const = 0;
 		virtual bool IsLight()const { return true; }

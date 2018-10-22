@@ -197,7 +197,7 @@ namespace RenderBird
 	//				dpdv = (-duv12[0] * dp02 + duv02[0] * dp12) * invdet;
 	//			}
 
-	//			if (degenerateUV || Vector3f::CrossProduct(dpdu, dpdv).LengthSquared() == 0) {
+	//			if (degenerateUV || Vector3f::CrossProduct(dpdv, dpdu).LengthSquared() == 0) {
 	//				// Handle zero determinant for triangle partial derivative matrix
 	//				Vector3f ng = Vector3f::CrossProduct(v2 - v0, v1 - v0);
 	//				if (ng.LengthSquared() == 0)
@@ -210,7 +210,7 @@ namespace RenderBird
 
 	//			hitInfo->m_dpdu = dpdu;
 	//			hitInfo->m_dpdv = dpdv;
-	//			hitInfo->m_ns = Vector3f::CrossProduct(dpdu, dpdv).Normalized();
+	//			hitInfo->m_ns = Vector3f::CrossProduct(dpdv, dpdu).Normalized();
 
 	//			return true;
 	//		}

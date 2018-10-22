@@ -10,7 +10,7 @@ namespace RenderBird
 	public:
 		AreaLight();
 		virtual void OnCreate(EntityId id);
-		virtual bool Sample(const Vector2f& rand2d, SurfaceSample* ss, LightSample* ls, Float* pdf);
+		virtual bool Sample(Sampler* sampler, SurfaceSample* ss, LightSample* ls, Float* pdf);
 		virtual RGB32 Le(SurfaceSample* ss, const Vector3f& w)const;
 		virtual Float Pdf(const RayHitInfo& hitInfo, SurfaceSample* ss, const Vector3f& wi)const;
 		virtual bool Intersect(const Ray& worldRay, RayHitInfo* hitInfo)const;
@@ -26,6 +26,12 @@ namespace RenderBird
 			return m_shape.get();
 		}
 		virtual void UpdateBoundingBox();
+		virtual bool CalcTangentSpace(RayHitInfo* hitInfo, Vector3f& T, Vector3f& B)const
+		{
+			if (m_shape != nullptr)
+				return m_shape->CalcTangentSpace(hitInfo, T, B);
+			return false;
+		}
 	public:
 		std::unique_ptr<Shape> m_shape;
 		AreaLightComponent* m_areaLight;

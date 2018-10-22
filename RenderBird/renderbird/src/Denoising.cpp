@@ -199,8 +199,8 @@ namespace RenderBird
 		Pixmap3f resultA(w, h);
 		Pixmap3f resultB(w, h);
 		for (int i = 0; i < w*h; ++i) {
-			resultA[i] += lerp(filteredColorsA[0][i], filteredColorsA[1][i], selection[i]);
-			resultB[i] += lerp(filteredColorsB[0][i], filteredColorsB[1][i], selection[i]);
+			resultA[i] += mathfu::Lerp(filteredColorsA[0][i], filteredColorsA[1][i], selection[i]);
+			resultB[i] += mathfu::Lerp(filteredColorsB[0][i], filteredColorsB[1][i], selection[i]);
 		}
 		selection.Reset();
 		filteredColorsA.clear();

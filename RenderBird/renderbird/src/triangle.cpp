@@ -19,9 +19,9 @@ namespace RenderBird
 		return m_area;
 	}
 
-	void Triangle::Sample(const Vector2f& rand2d, LightSample* ls, Float* pdf)
+	void Triangle::Sample(Sampler* sampler, LightSample* ls, Float* pdf)
 	{
-		Vector2f uv = SampleUtils::UniformTriangle(rand2d);
+		Vector2f uv = SampleUtils::UniformTriangle(sampler->Next2D());
 		ls->m_pos = (*m_v0 * (1.0f - uv[0] - uv[1]) + *m_v1 * uv[0] + *m_v2 * uv[1]);
 		ls->m_n = Vector3f::CrossProduct(*m_v2 - *m_v0, *m_v1 - *m_v0).Normalized();
 		if (m_trimesh->GetMeshData()->HasFlag(TriangleMesh::VertexChannelFlag::VCT_Normal))
@@ -40,6 +40,11 @@ namespace RenderBird
 		{
 			*pdf = 1.0f / GetArea();
 		}
+	}
+
+	bool Triangle::CalcTangentSpace(RayHitInfo* hitInfo, Vector3f& T, Vector3f& B)const
+	{
+		return m_trimesh->CalcTangentSpace(hitInfo, T, B);
 	}
 
 	bool Triangle::Intersect(const Ray& ray, RayHitInfo* hitInfo)const

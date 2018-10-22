@@ -88,6 +88,7 @@ namespace RenderBird
 		}
 
 		bool IntersectTriangle(const Ray& ray, RayHitInfo* hitInfo, uint32 faceIndex)const;
+		bool CalcTangentSpace(RayHitInfo* hitInfo, Vector3f& T, Vector3f& B)const;
 
 		MeshData* m_triMeshData;
 		std::vector<Material*> m_materials;

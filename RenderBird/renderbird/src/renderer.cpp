@@ -60,9 +60,9 @@ namespace RenderBird
 		m_setting.m_useJob = true;
 		m_setting.m_maxBounce = 8;
 		m_setting.m_rrBounce = 4;
-		m_setting.m_numSamples = 8;
+		m_setting.m_numSamples = 16;
 		m_setting.m_denoising = true;
-		m_setting.m_enableClamp = true;
+		m_setting.m_enableClamp = false;
 		m_setting.m_clampValue = 1.0;
 		m_sampler.reset(new HaltonSampler(m_setting.m_numSamples));
 		m_scene->SetupSceneTest();

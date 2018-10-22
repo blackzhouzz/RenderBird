@@ -9,10 +9,11 @@ namespace RenderBird
 	public:
 		Triangle(TriangleMesh* trimesh, uint32 faceIndex);
 		virtual Float GetArea();
-		virtual void Sample(const Vector2f& rand2d, LightSample* ls, Float* pdf);
+		virtual void Sample(Sampler* sampler, LightSample* ls, Float* pdf);
 		virtual bool Intersect(const Ray& ray, RayHitInfo* hitInfo)const;
 		virtual BoundingBox GetBoundingBox(const Matrix4f& localToWorld)const;
 		virtual Vector2f GetDistanceNearFar(const Matrix4f& localToWorld, const Vector3f& normal);
+		virtual bool CalcTangentSpace(RayHitInfo* hitInfo, Vector3f& T, Vector3f& B)const;
 	private:
 		TriangleMesh * m_trimesh;
 		uint32 m_faceIndex;

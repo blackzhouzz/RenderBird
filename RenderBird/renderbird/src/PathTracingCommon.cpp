@@ -1,10 +1,12 @@
 #include "PathTracingCommon.h"
-#include "BSDF.h"
+#include "LambertDiffuse.h"
 #include "Material.h"
+#include "OrenNayarDiffuse.h"
+#include "SceneObject.h"
 
 namespace RenderBird
 {
-	SurfaceSample::SurfaceSample(const Ray& ray, const RayHitInfo& hitInfo)
+	SurfaceSample::SurfaceSample(const Ray& ray, RayHitInfo& hitInfo)
 	{
 		m_pos = hitInfo.m_pos;
 		m_n = hitInfo.m_n;
@@ -14,8 +16,39 @@ namespace RenderBird
 			m_n = m_ng;
 		}
 
-		m_wo = -ray.m_direction;
-		DiffuseBSDF* bsdf = new DiffuseBSDF(hitInfo.m_dpdu.Normalized(), hitInfo.m_dpdv.Normalized(), hitInfo.m_ns);
+		hitInfo.m_dpdu = hitInfo.m_dpdu.Normalized();
+		hitInfo.m_dpdv = hitInfo.m_dpdv.Normalized();
+
+		hitInfo.m_ns = hitInfo.m_ns.Normalized();
+		hitInfo.m_n = hitInfo.m_n.Normalized();
+
+		LambertDiffuse* bsdf = new LambertDiffuse();
+		//OrenNayarDiffuse* bsdf = new OrenNayarDiffuse(0.5f);
+		Vector3f T;
+		Vector3f B;
+		Vector3f N = hitInfo.m_n.Normalized();
+		if (hitInfo.m_obj->CalcTangentSpace(&hitInfo, T, B))
+		{
+			T = T.Normalized();
+			B = B.Normalized();
+			N = Vector3f::CrossProduct(T, B).Normalized();
+			bsdf->m_frame = TangentFrame(N, T, B);
+		}
+		else
+		{
+			bsdf->m_frame = TangentFrame(N.Normalized());
+		}
+		if (std::abs(hitInfo.m_ns.Length() - hitInfo.m_n.Length()) > 0.001)
+			T = T;
+		bool hitBackside = Vector3f::DotProduct(N, ray.m_direction) > 0.0f;
+		bool flipNormal = hitBackside && bsdf->m_doubleSide;
+		if (flipNormal)
+		{
+			bsdf->m_frame.normal = -bsdf->m_frame.normal;
+			bsdf->m_frame.tangent = -bsdf->m_frame.tangent;
+		}
+
+		m_localWo = bsdf->WorldToLocal(-ray.m_direction);
 		if (hitInfo.m_material != nullptr)
 		{
 			bsdf->m_color = RGB32(hitInfo.m_material->m_diffuseColor[0], hitInfo.m_material->m_diffuseColor[1], hitInfo.m_material->m_diffuseColor[2]);

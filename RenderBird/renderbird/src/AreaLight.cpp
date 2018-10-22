@@ -20,9 +20,9 @@ namespace RenderBird
 		return (!m_areaLight->m_isDoubleSide && !PathTracingUtils::IsSameHemisphere(w1, w2));
 	}
 
-	bool AreaLight::Sample(const Vector2f& rand2d, SurfaceSample* ss, LightSample* ls, Float* pdf)
+	bool AreaLight::Sample(Sampler* sampler, SurfaceSample* ss, LightSample* ls, Float* pdf)
 	{
-		m_shape->Sample(rand2d, ls, pdf);
+		m_shape->Sample(sampler, ls, pdf);
 		if (*pdf == 0.0f)
 			return false;
 		const Matrix4f localToWorld = TransformUtils::GetMatrix(m_transform);

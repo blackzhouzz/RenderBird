@@ -1,4 +1,4 @@
 #pragma once
 #include "CorePublic.h"
-#include "RenderbirdRegister.h"
+#include "RenderBirdRegister.h"
 using namespace Core;

@@ -15,6 +15,7 @@ namespace RenderBird
 		virtual Vector2f GetDistanceNearFar(const Vector3f& normal) { return Vector2f(C_FLOAT_MAX, -C_FLOAT_MAX); }
 		virtual void UpdateBoundingBox() {}
 		const BoundingBox& GetBoundingBox()const { return m_boundingBox; }
+		virtual bool CalcTangentSpace(RayHitInfo* hitInfo, Vector3f& T, Vector3f& B)const { return false; }
 	protected:
 		EntityId m_id;
 		Transform* m_transform;

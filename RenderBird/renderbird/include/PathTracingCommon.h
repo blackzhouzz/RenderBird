@@ -6,6 +6,44 @@ namespace RenderBird
 	class Material;
 	class BSDF;
 	class SceneObject;
+	class Shape;
+
+	struct TangentFrame
+	{
+		Vector3f normal, tangent, bitangent;
+
+		TangentFrame() = default;
+
+		TangentFrame(const Vector3f &n, const Vector3f &t, const Vector3f &b)
+			: normal(n), tangent(t), bitangent(b)
+		{
+		}
+
+		TangentFrame(const Vector3f &n)
+		{
+			// [Duff et al. 17] Building An Orthonormal Basis, Revisited. JCGT. 2017.
+			normal = n.Normalized();
+			float sign = copysignf(1.0f, (float)normal.z);
+			const Float a = -1.0f / (sign + normal.z);
+			const Float b = normal.x * normal.y*a;
+			tangent = Vector3f(1.0f + sign * normal.x*normal.x*a, sign*b, -sign * normal.x).Normalized();
+			bitangent = Vector3f(b, sign + normal.y*normal.y*a, -normal.y).Normalized();
+		}
+
+		Vector3f toLocal(const Vector3f &p) const
+		{
+			return Vector3f(
+				Vector3f::DotProduct(tangent, p),
+				Vector3f::DotProduct(bitangent, p),
+				Vector3f::DotProduct(normal, p)
+			);
+		}
+
+		Vector3f toGlobal(const Vector3f &p) const
+		{
+			return tangent * p.x + bitangent * p.y + normal * p.z;
+		}
+	};
 
 	struct RayHitInfo
 	{
@@ -19,6 +57,7 @@ namespace RenderBird
 			, m_t(C_FLOAT_MAX)
 			, m_flags(0)
 			, m_obj(nullptr)
+			, m_primId(-1)
 		{
 		}
 		void TransformBy(const Matrix4f& mat)
@@ -43,6 +82,7 @@ namespace RenderBird
 		Float m_t;
 		uint32 m_flags;
 		const SceneObject* m_obj;
+		int m_primId;
 	};
 
 	struct LightSpectrum
@@ -114,12 +154,12 @@ namespace RenderBird
 
 	struct SurfaceSample
 	{
-		explicit SurfaceSample(const Ray& ray, const RayHitInfo& hitInfo);
+		explicit SurfaceSample(const Ray& ray, RayHitInfo& hitInfo);
 		~SurfaceSample();
 		Vector3f m_pos;
 		Vector3f m_ng;
 		Vector3f m_n;
-		Vector3f m_wo;
+		Vector3f m_localWo;
 		void TransformBy(const Matrix4f& mat)
 		{
 			m_pos = mat * m_pos;
