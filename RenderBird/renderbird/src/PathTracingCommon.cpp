@@ -47,12 +47,11 @@ namespace RenderBird
 		{
 			bsdf->m_color = RGB32(hitInfo.m_material->m_diffuseColor[0], hitInfo.m_material->m_diffuseColor[1], hitInfo.m_material->m_diffuseColor[2]);
 		}
-		m_bsdf = bsdf;
+		m_bsdf.reset(bsdf);
 	}
 
 	SurfaceSample::~SurfaceSample()
 	{
-		delete m_bsdf;
 	}
 
 	bool PathTracingUtils::IsSameHemisphere(const Vector3f& w1, const Vector3f& w2)

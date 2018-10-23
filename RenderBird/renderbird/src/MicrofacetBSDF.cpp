@@ -125,6 +125,23 @@ namespace RenderBird
 		m_alpha = m_distribution->RoughnessToAlpha(roughness);
 	}
 
+	bool MicrofacetConductorReflection::EvalSpectrum(const Vector3f& localWi, const Vector3f& localWo, const Vector3f& wh, Float* pdf, LightSpectrum* lightSpectrum)
+	{
+		auto woDotwh = Vector3f::DotProduct(localWo, wh);
+
+		if (woDotwh <= 0.0f || localWi.z <= 0.0f || localWo.z <= 0.0)
+			return false;
+
+		Float cosThetaO = localWo.z;
+		auto F = Fresnel::Conductor(m_eta, m_k, Vector3f::DotProduct(localWi, wh));
+		auto G = m_distribution->G(m_alpha, localWi, localWo, wh);
+		auto D = m_distribution->D(m_alpha, wh);
+
+		lightSpectrum->m_diffuse = Albedo() * 0.25 * D * G * F / cosThetaO;;
+		*pdf = m_distribution->Pdf(m_alpha, wh) * 0.25 / woDotwh;
+		return true;
+	}
+
 	bool MicrofacetConductorReflection::Eval(SurfaceSample* ss, const Vector3f& wi, Float* pdf, LightSpectrum* lightSpectrum)
 	{
 		auto localWi = WorldToLocal(wi);
@@ -133,17 +150,8 @@ namespace RenderBird
 		{
 			return false;
 		}
-		Float cosThetaO = localWo.z;
 		Vector3f wh = (localWi + localWo).Normalized();
-		auto wiDotWh = Vector3f::DotProduct(localWi, wh);
-
-		RGB32 F = Fresnel::Conductor(m_eta, m_k, wiDotWh);
-		auto G = m_distribution->G(m_alpha, localWi, localWo, wh);
-		auto D = m_distribution->D(m_alpha, wh);
-
-		lightSpectrum->m_diffuse = Albedo() * 0.25 * D * G * F / cosThetaO;;
-
-		return true;
+		return EvalSpectrum(localWi, localWo, wh, pdf, lightSpectrum);
 	}
 
 	bool MicrofacetConductorReflection::Sample(SurfaceSample* ss, Sampler* sampler, Vector3f* wi, Float* pdf, LightSpectrum* lightSpectrum)
@@ -151,19 +159,12 @@ namespace RenderBird
 		auto localWo = ss->m_localWo;
 		if (localWo.z <= 0)
 			return false;
-		Float cosThetaO = localWo.z;
 		auto wh = m_distribution->Sample(sampler->Next2D(), m_alpha);
 		auto woDotwh = Vector3f::DotProduct(localWo, wh);
-		auto localWi = 2.0 * woDotwh * wh - localWo;
+		auto localWi = (2.0 * woDotwh * wh - localWo).Normalized();
 
-		if (woDotwh <= 0.0f || localWi.z <= 0.0f)
-			return false;
+		*wi = localWi;
 
-		Float G = m_distribution->G(m_alpha, localWi, localWo, wh);
-		Float D = m_distribution->D(m_alpha, wh);
-		*pdf = m_distribution->Pdf(m_alpha, wh) * 0.25 / woDotwh;
-		RGB32 F = Fresnel::Conductor(m_eta, m_k, Vector3f::DotProduct(localWi, wh));
-		lightSpectrum->m_diffuse = Albedo() * 0.25 * D * G * F / cosThetaO;
-		return true;
+		return EvalSpectrum(localWi, localWo, wh, pdf, lightSpectrum);
 	}
 }

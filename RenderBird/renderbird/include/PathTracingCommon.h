@@ -163,7 +163,7 @@ namespace RenderBird
 			m_ng = MathUtils::TransformDirection(mat, m_ng).Normalized();
 			m_n = MathUtils::TransformDirection(mat, m_n).Normalized();
 		}
-		BSDF* m_bsdf;
+		std::unique_ptr<BSDF> m_bsdf;
 	};
 
 	struct LightSample

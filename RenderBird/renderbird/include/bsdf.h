@@ -9,6 +9,7 @@ namespace RenderBird
 	{
 	public:
 		BSDF();
+		virtual ~BSDF(){}
 		virtual bool Eval(SurfaceSample* ss, const Vector3f& wi, Float* pdf, LightSpectrum* lightSpectrum) = 0;
 		virtual bool Sample(SurfaceSample* ss, Sampler* sampler, Vector3f* wi, Float* pdf, LightSpectrum* lightSpectrum) = 0;
 		virtual RGB32 Albedo() { return m_color; }
@@ -16,7 +17,6 @@ namespace RenderBird
 		Vector3f WorldToLocal(const Vector3f &v) const;
 	public:
 		RGB32 m_color;
-
 		TangentFrame m_frame;
 		bool m_doubleSide;
 	};
