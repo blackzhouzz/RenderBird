@@ -90,6 +90,11 @@ namespace Core
 		return a < b ? a : b;
 	}
 
+	inline Vector3f Reflect(const Vector3f &v, const Vector3f &n) 
+	{
+		return -v + 2 * Vector3f::DotProduct(v, n) * n;
+	}
+
 	template<typename T, typename... Ts>
 	T Min(const T &a, const T &b, const Ts &... ts)
 	{

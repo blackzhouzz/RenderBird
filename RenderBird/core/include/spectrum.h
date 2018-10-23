@@ -27,6 +27,7 @@ namespace Core
 		DT& operator [] (size_t i);
 		bool IsZero()const;
 		void SetZero();
+		T Sqrt();
 	protected:
 		DT m_bands[N];
 	};
@@ -209,6 +210,17 @@ namespace Core
 		{
 			m_bands[i] = 0;
 		}
+	}
+
+	template<typename T, typename DT, int N>
+	T TSpectrum<T, DT, N>::Sqrt()
+	{
+		T ret;
+		for (int i = 0; i < N; ++i)
+		{
+			ret.m_bands[i] = std::sqrt(this->m_bands[i]);
+		}
+		return ret;
 	}
 
 	class RGB32 : public TSpectrum<RGB32, Float, 3>

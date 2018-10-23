@@ -18,7 +18,7 @@ namespace RenderBird
 		Float cosPi = SampleUtils::CosHemispherePdf(localWi.z);
 		*pdf = cosPi;
 
-		lightSpectrum->m_diffuse = m_color * cosPi;
+		lightSpectrum->m_diffuse = Albedo() * cosPi;
 		return true;
 	}
 
@@ -28,7 +28,7 @@ namespace RenderBird
 		if (ss->m_localWo.z <= 0)
 			return false;
 
-		lightSpectrum->m_diffuse = m_color * (*pdf);
+		lightSpectrum->m_diffuse = Albedo() * (*pdf);
 		return true;
 	}
 }

@@ -42,7 +42,9 @@ namespace RenderBird
 	bool OrenNayarDiffuse::Eval(SurfaceSample* ss, const Vector3f& wi, Float* pdf, LightSpectrum* lightSpectrum)
 	{
 		auto localWi = WorldToLocal(wi);
-		if (ss->m_localWo.z <= 0 || localWi.z <= 0)
+		auto localWo = ss->m_localWo;
+
+		if (localWo.z <= 0 || localWi.z <= 0)
 		{
 			return false;
 		}
@@ -51,13 +53,15 @@ namespace RenderBird
 
 		*pdf = Lerp(SampleUtils::CosHemispherePdf(localWi.z), SampleUtils::UniformHemispherePdf(), ratio);
 
-		lightSpectrum->m_diffuse = EvalSpectrum(localWi, ss->m_localWo);
+		lightSpectrum->m_diffuse = EvalSpectrum(localWi, localWo);
 		return true;
 	}
 
 	bool OrenNayarDiffuse::Sample(SurfaceSample* ss, Sampler* sampler, Vector3f* wi, Float* pdf, LightSpectrum* lightSpectrum)
 	{
-		if (ss->m_localWo.z <= 0)
+		auto localWo = ss->m_localWo;
+
+		if (localWo.z <= 0)
 			return false;
 		Float ratio = Clamp(m_roughness, 0.01, 1.0);
 		if (sampler->Next1D() < ratio)
@@ -71,7 +75,7 @@ namespace RenderBird
 
 		*pdf = Lerp(SampleUtils::CosHemispherePdf(wi->z), SampleUtils::UniformHemispherePdf(), ratio);
 
-		lightSpectrum->m_diffuse = EvalSpectrum(*wi, ss->m_localWo);
+		lightSpectrum->m_diffuse = EvalSpectrum(*wi, localWo);
 
 		return true;
 	}

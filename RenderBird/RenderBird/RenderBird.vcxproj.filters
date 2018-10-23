@@ -126,6 +126,9 @@
     <ClCompile Include="src\RenderBirdRegister.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\MicrofacetBSDF.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\DistantLightComponent.h">
@@ -252,6 +255,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\RenderBirdRegister.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MicrofacetBSDF.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

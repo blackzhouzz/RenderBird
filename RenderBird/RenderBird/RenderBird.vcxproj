@@ -39,6 +39,7 @@
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\MeshComponent.cpp" />
     <ClCompile Include="src\MeshObject.cpp" />
+    <ClCompile Include="src\MicrofacetBSDF.cpp" />
     <ClCompile Include="src\OrenNayarDiffuse.cpp" />
     <ClCompile Include="src\PathTracing.cpp" />
     <ClCompile Include="src\PathTracingCommon.cpp" />
@@ -80,6 +81,7 @@
     <ClInclude Include="include\Material.h" />
     <ClInclude Include="include\MeshComponent.h" />
     <ClInclude Include="include\MeshObject.h" />
+    <ClInclude Include="include\MicrofacetBSDF.h" />
     <ClInclude Include="include\NlMeans.h" />
     <ClInclude Include="include\OutputBuffer.h" />
     <ClInclude Include="include\PathTracing.h" />

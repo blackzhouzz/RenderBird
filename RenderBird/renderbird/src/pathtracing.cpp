@@ -112,7 +112,7 @@ namespace RenderBird
 			{
 				break;
 			}
-			//hitLight = false;
+
 			if (hitLight)
 			{
 				const Light* light = static_cast<const Light*>(tempHitInfo.m_obj);
@@ -151,9 +151,9 @@ namespace RenderBird
 		}
 	}
 
-	//bool PathTracing::SampleBSDF(State* state, Light* light, Float sampleLightPdf, SurfaceSample* ss, Radiance* L)
+	//bool PathTracing::SampleBSDF(State* state, Light* light, Float sampleLightPdf, SurfaceSample* ss, Radiance* L, RayHitInfo& hitInfo)
 	//{
-
+	//	return true;
 	//}
 
 	Light* PathTracing::GetSampleLight(State* state, Float& sampleLightPdf)
