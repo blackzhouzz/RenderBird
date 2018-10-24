@@ -41,7 +41,15 @@ namespace RenderBird
 
 		switch (m_type)
 		{
-		case Type::GGX:
+		case Beckmann: {
+			float tanThetaSq = -alpha * alpha*std::log(1.0f - rand2d.x);
+			cosTheta = 1.0f / std::sqrt(1.0f + tanThetaSq);
+			break;
+		} 
+		case Phong:
+			cosTheta = float(std::pow(double(rand2d.x), 1.0 / (double(alpha) + 2.0)));
+			break;
+		case GGX:
 			Float tanThetaSq = alpha * alpha * rand2d.x / (1.0f - rand2d.x);
 			cosTheta = 1.0f / std::sqrt(1.0f + tanThetaSq);
 			break;
@@ -58,14 +66,21 @@ namespace RenderBird
 
 		switch (m_type)
 		{
-		case GGX:
-		{
+		case Beckmann: {
+			float alphaSq = alpha * alpha;
+			float cosThetaSq = wh.z * wh.z;
+			float tanThetaSq = Max(1.0 - cosThetaSq, 0.0) / cosThetaSq;
+			float cosThetaQu = cosThetaSq * cosThetaSq;
+			return C_1_INV_PI * std::exp(-tanThetaSq / alphaSq) / (alphaSq*cosThetaQu);
+		}
+		case Phong:
+			return (alpha + 2.0f)*0.5*C_1_INV_PI*Float(std::pow(double(wh.z), double(alpha)));
+		case GGX: {
 			Float alphaSq = alpha * alpha;
 			Float cosThetaSq = wh.z * wh.z;
 			Float tanThetaSq = Max(1.0 - cosThetaSq, 0.0) / cosThetaSq;
 			Float cosThetaQu = cosThetaSq * cosThetaSq;
 			return alphaSq * C_1_INV_PI / (cosThetaQu * Square(alphaSq + tanThetaSq));
-			break;
 		}
 		}
 
@@ -79,8 +94,24 @@ namespace RenderBird
 
 		switch (m_type)
 		{
-		case GGX: 
-		{
+		case Beckmann: {
+			float cosThetaSq = v.z*v.z;
+			float tanTheta = std::abs(std::sqrt(Max(1.0 - cosThetaSq, 0.0)) / v.z);
+			float a = 1.0f / (alpha*tanTheta);
+			if (a < 1.6f)
+				return (3.535f*a + 2.181f*a*a) / (1.0f + 2.276f*a + 2.577f*a*a);
+			else
+				return 1.0f;
+		} case Phong: {
+			float cosThetaSq = v.z*v.z;
+			float tanTheta = std::abs(std::sqrt(Max(1.0 - cosThetaSq, 0.0)) / v.z);
+			float a = std::sqrt(0.5f*alpha + 1.0f) / tanTheta;
+			if (a < 1.6f)
+				return (3.535f*a + 2.181f*a*a) / (1.0f + 2.276f*a + 2.577f*a*a);
+			else
+				return 1.0f;
+		}
+		case GGX: {
 			Float alphaSq = alpha * alpha;
 			Float cosThetaSq = v.z * v.z;
 			Float tanThetaSq = Max(1.0 - cosThetaSq, 0.0) / cosThetaSq;
@@ -137,7 +168,11 @@ namespace RenderBird
 		auto G = m_distribution->G(m_alpha, localWi, localWo, wh);
 		auto D = m_distribution->D(m_alpha, wh);
 
-		lightSpectrum->m_diffuse = Albedo() * 0.25 * D * G * F / cosThetaO;;
+		lightSpectrum->m_diffuse = Albedo() * 0.25 * D * G * F / cosThetaO;
+
+		Float sumIndirect = std::abs(lightSpectrum->m_diffuse[0]) + std::abs(lightSpectrum->m_diffuse[1]) + std::abs(lightSpectrum->m_diffuse[2]);
+		if (sumIndirect > 10)
+			sumIndirect = sumIndirect;
 		*pdf = m_distribution->Pdf(m_alpha, wh) * 0.25 / woDotwh;
 		return true;
 	}
@@ -147,10 +182,11 @@ namespace RenderBird
 		auto localWi = WorldToLocal(wi);
 		auto localWo = ss->m_localWo;
 		if (localWo.z <= 0 || localWi.z <= 0)
-		{
 			return false;
-		}
 		Vector3f wh = (localWi + localWo).Normalized();
+		auto woDotwh = Vector3f::DotProduct(localWo, wh);
+		if (woDotwh <= 0)
+			return false;
 		return EvalSpectrum(localWi, localWo, wh, pdf, lightSpectrum);
 	}
 
@@ -162,6 +198,8 @@ namespace RenderBird
 		auto wh = m_distribution->Sample(sampler->Next2D(), m_alpha);
 		auto woDotwh = Vector3f::DotProduct(localWo, wh);
 		auto localWi = (2.0 * woDotwh * wh - localWo).Normalized();
+		if (woDotwh <= 0 || localWi.z <= 0)
+			return false;
 
 		*wi = localWi;
 

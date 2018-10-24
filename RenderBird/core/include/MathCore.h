@@ -84,21 +84,32 @@ namespace Core
 		return val;
 	}
 
+	inline Vector3f Reflect(const Vector3f &v, const Vector3f &n)
+	{
+		return -v + 2 * Vector3f::DotProduct(v, n) * n;
+	}
+
 	template<typename T>
 	T Min(const T &a, const T &b)
 	{
 		return a < b ? a : b;
 	}
 
-	inline Vector3f Reflect(const Vector3f &v, const Vector3f &n) 
-	{
-		return -v + 2 * Vector3f::DotProduct(v, n) * n;
-	}
-
 	template<typename T, typename... Ts>
 	T Min(const T &a, const T &b, const Ts &... ts)
 	{
 		return Min(Min(a, b), ts...);
+	}
+
+	template<typename T, int d>
+	inline mathfu::Vector<T, d> Min(const mathfu::Vector<T, d>& v1, const mathfu::Vector<T, d>& v2)
+	{
+		mathfu::Vector<T, d> ret;
+		for (int i = 0; i < d; ++i)
+		{
+			ret[i] = std::min(v1[i], v2[i]);
+		}
+		return ret;
 	}
 
 	template<typename T>
@@ -111,17 +122,6 @@ namespace Core
 	T Cube(const T& a)
 	{
 		return a * a * a;
-	}
-
-	template<typename T, int d>
-	inline mathfu::Vector<T, d> Min(const mathfu::Vector<T, d>& v1, const mathfu::Vector<T, d>& v2)
-	{
-		mathfu::Vector<T, d> ret;
-		for (int i = 0; i < d; ++i)
-		{
-			ret[i] = std::min(v1[i], v2[i]);
-		}
-		return ret;
 	}
 
 	template<typename T>

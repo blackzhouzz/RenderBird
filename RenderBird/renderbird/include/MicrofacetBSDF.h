@@ -10,6 +10,7 @@ namespace RenderBird
 		static RGB32 Conductor(const RGB32 &eta, const RGB32 &k, Float cosThetaI);
 	};
 
+	//formula from <Microfacet Models for Refraction through Rough Surfaces>
 	class Distribution
 	{
 	public:
