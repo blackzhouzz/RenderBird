@@ -74,7 +74,7 @@ namespace RenderBird
 	int random(int i) { return std::rand() % i; }
 	Halton_sampler* HaltonSampler::sHalton_sampler = nullptr;
 	Halton_enum* HaltonSampler::sHalton_enum = nullptr;
-	bool HaltonSampler::m_useFaurePermutation = false;
+	bool HaltonSampler::m_useFaurePermutation = true;
 
 	Halton_sampler* HaltonSampler::GetHalton_sampler(uint32 resX, uint32 resY)
 	{

@@ -89,18 +89,13 @@ namespace RenderBird
 		{
 		}
 		RGB32 m_diffuse;
-		void Mul(Float value)
+		LightSpectrum operator * (RGB32 color)const
 		{
-			m_diffuse *= value;
+			LightSpectrum ret;
+			ret.m_diffuse = this->m_diffuse * color;
+			return ret;
 		}
-		void Mul(RGB32 value)
-		{
-			m_diffuse *= value;
-		}
-		void Add(RGB32 value)
-		{
-			m_diffuse += value;
-		}
+
 		RGB32 Resolve()const
 		{
 			return m_diffuse;
@@ -115,15 +110,15 @@ namespace RenderBird
 			, m_directEmission(RGB32::BLACK)
 		{
 		}
-		void Accum(LightSpectrum* bs, bool firstBounce)
+		void Accum(const LightSpectrum& ls, bool firstBounce)
 		{
 			if (firstBounce)
 			{
-				m_directDiffuse += bs->m_diffuse;
+				m_directDiffuse += ls.m_diffuse;
 			}
 			else
 			{
-				m_indirectDiffuse += bs->m_diffuse;
+				m_indirectDiffuse += ls.m_diffuse;
 			}
 		}
 		RGB32 Resolve()const

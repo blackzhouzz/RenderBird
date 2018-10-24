@@ -91,8 +91,6 @@ namespace RenderBird
 			if (!BacksideCheck(ss.m_ng, wi))
 				break;
 
-			state->m_throughput *= lightSpectrum.Resolve() / bsdfPdf;
-
 			ray.m_origin = ss.m_pos;
 			ray.m_direction = wi;
 
@@ -120,9 +118,12 @@ namespace RenderBird
 				auto li = light->Le(&ss, -ray.m_direction);
 				Float misWeight = SampleUtils::PowerHeuristic(bsdfPdf, lightPdf);
 
-				lightSpectrum.Mul(state->m_throughput * misWeight * li / (sampleLightPdf));
-				L->Accum(&lightSpectrum, state->m_currentBounce == 0);
+				auto weight = (state->m_throughput * misWeight * li / (bsdfPdf * sampleLightPdf));
+
+				L->Accum(lightSpectrum * weight, state->m_currentBounce == 0);
 			}
+
+			state->m_throughput *= lightSpectrum.Resolve() / bsdfPdf;
 
 			const Float eta = 1.0f;
 
@@ -192,8 +193,8 @@ namespace RenderBird
 				if (!shadowBlocked)
 				{
 					Float misWeight = SampleUtils::PowerHeuristic(lightPdf, bsdfPdf);
-					lightSpectrum.Mul(state->m_throughput * misWeight * ls.m_li / (lightPdf * sampleLightPdf));
-					L->Accum(&lightSpectrum, state->m_currentBounce == 0);
+					RGB32 weight = state->m_throughput * misWeight * ls.m_li / (lightPdf * sampleLightPdf);
+					L->Accum(lightSpectrum * weight, state->m_currentBounce == 0);
 					return true;
 				}
 			}
@@ -239,14 +240,9 @@ namespace RenderBird
 				}
 
 				color = L.Resolve();
-				if (m_renderer->m_buffers._colorBuffer != nullptr)
-					m_renderer->m_buffers._colorBuffer->addSample(Vector2u(pixelX, pixelY), Vector3f(color[0], color[1], color[2]));
 			}
-			else
-			{
-				if (m_renderer->m_buffers._colorBuffer != nullptr)
-					m_renderer->m_buffers._colorBuffer->addSample(Vector2u(pixelX, pixelY), Vector3f(color[0], color[1], color[2]));
-			}
+			if (m_renderer->m_buffers._colorBuffer != nullptr)
+				m_renderer->m_buffers._colorBuffer->addSample(Vector2u(pixelX, pixelY), Vector3f(color[0], color[1], color[2]));
 		}
 	}
 }
