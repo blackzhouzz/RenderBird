@@ -74,6 +74,31 @@ namespace Core
 		return std::fmod(a, 360.0f);
 	}
 
+	inline void SinCos(Float a, Float& sina, Float& cosa)
+	{
+		sina = std::sin(a);
+		cosa = std::cos(a);
+	}
+
+	inline Float TanTheta(const Vector3f &v) 
+	{
+		Float temp = 1 - v.z*v.z;
+		if (temp <= 0.0f)
+			return 0.0f;
+		return std::sqrt(temp) / v.z;
+	}
+
+	inline Float CosTheta(const Vector3f &v) 
+	{
+		return v.z;
+	}
+
+	template<typename T>
+	inline T SafeSqrt(const T& a)
+	{
+		return std::sqrt(Max(a, 0.0));
+	}
+
 	template<typename T>
 	inline T Clamp(T val, T min, T max)
 	{

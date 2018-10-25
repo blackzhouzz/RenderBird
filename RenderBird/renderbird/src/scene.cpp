@@ -222,7 +222,7 @@ namespace RenderBird
 			EntityId lightId = EntityManager::IntancePtr()->CreateEntity(archetype);
 
 			auto light = EntityManager::IntancePtr()->GetComponent<LightPropertyComponent>(lightId);
-			light->m_color = RGB32::WHITE * 10;
+			light->m_color = RGB32::WHITE * 50;
 			auto trans = EntityManager::IntancePtr()->GetComponent<Transform>(lightId);
 			trans->m_pos = pos;
 

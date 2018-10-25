@@ -19,7 +19,7 @@ namespace RenderBird
 
 		//LambertDiffuse* bsdf = new LambertDiffuse();
 		//OrenNayarDiffuse* bsdf = new OrenNayarDiffuse(0.5f);
-		MicrofacetConductorReflection* bsdf = new MicrofacetConductorReflection(0.1);
+		MicrofacetConductorReflection* bsdf = new MicrofacetConductorReflection(0.1, 0.1);
 		Vector3f T;
 		Vector3f B;
 		Vector3f N = m_n;
