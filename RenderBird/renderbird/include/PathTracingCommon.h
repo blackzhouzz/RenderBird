@@ -181,4 +181,12 @@ namespace RenderBird
 		static Float GammaCorrect(Float value);
 	};
 
+	enum LobeType
+	{
+		DiffuseReflection = 1 << 0,
+		DiffuseTransmission = 1 << 1,
+		Specular,
+		Glossy,
+		AllLobe
+	};
 }

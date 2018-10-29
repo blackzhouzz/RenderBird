@@ -7,7 +7,21 @@ namespace RenderBird
 	{
 	public:
 		static RGB32 Conductor(const RGB32 &eta, const RGB32 &k, Float cosThetaI);
+		static RGB32 Dielectric(const RGB32 &eta, Float cosThetaI, Float& cosThetaT);
+		static RGB32 ThinFilmInterference(const RGB32 & etaEx, const RGB32 & etaTh, const RGB32 & etaIn, const RGB32 & thickness, const RGB32& lambda, Float cosThetaO, Float &cosThetaT);
+		static Float Schlick(Float cosTheta);
 	};
+
+	inline void ConvertAnisotropyToRoughness(Float roughness, Float anisotropy, Float& roughnessU, Float& roughnessV)
+	{
+		// (0 <= anisotropy <= 1), therefore (0 <= anisoAspect <= 1)
+		// The 0.9 factor limits the aspect ratio to 10:1.
+		anisotropy = Clamp(anisotropy, 0.0, 1.0);
+		Float anisoAspect = std::sqrt(1.0 - 0.9 * anisotropy);
+
+		roughnessU = roughness / anisoAspect; // Distort along tangent (rougher)
+		roughnessV = roughness * anisoAspect; // Straighten along bitangent (smoother)
+	}
 
 	//reference:
 	//https://agraphicsguy.wordpress.com/2015/11/01/sampling-microfacet-brdf/

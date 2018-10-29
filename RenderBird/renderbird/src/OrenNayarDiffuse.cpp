@@ -10,19 +10,19 @@ namespace RenderBird
 		m_sigmaSq = sigma * sigma;
 	}
 
-	RGB32 OrenNayarDiffuse::EvalSpectrum(const Vector3f& localWo, const Vector3f& localWi)
+	RGB32 OrenNayarDiffuse::EvalSpectrum(const Vector3f& localWi, const Vector3f& localWo)
 	{
-		Float thetaR = std::acos(localWo.z);
-		Float thetaI = std::acos(localWi.z);
+		Float thetaR = std::acos(localWi.z);
+		Float thetaI = std::acos(localWo.z);
 		Float alpha = Max(thetaR, thetaI);
 		Float beta = Min(thetaR, thetaI);
 		Float sinAlpha = std::sin(alpha);
-		Float denom = (localWi.x * localWi.x + localWi.y * localWi.y) * (localWo.x * localWo.x + localWo.y * localWo.y);
+		Float denom = (localWo.x * localWo.x + localWo.y * localWo.y) * (localWi.x * localWi.x + localWi.y * localWi.y);
 		Float cosDeltaPhi;
 		if (denom == 0.0f)
 			cosDeltaPhi = 1.0f;
 		else
-			cosDeltaPhi = (localWi.x * localWo.x + localWi.y * localWo.y) / std::sqrt(denom);
+			cosDeltaPhi = (localWo.x * localWi.x + localWo.y * localWi.y) / std::sqrt(denom);
 
 		Float C1 = 1.0f - 0.5f * m_sigmaSq / (m_sigmaSq + 0.33f);
 		Float C2 = 0.45f * m_sigmaSq / (m_sigmaSq + 0.09f);
@@ -35,8 +35,8 @@ namespace RenderBird
 		Float fr1 = (C1 + cosDeltaPhi * C2 * std::tan(beta) + (1.0f - std::abs(cosDeltaPhi)) * C3 * std::tan(0.5f * (alpha + beta)));
 		Float fr2 = 0.17f * m_sigmaSq / (m_sigmaSq + 0.13f) * (1.0f - cosDeltaPhi * Square((2.0f * C_1_INV_PI) * beta));
 
-		auto diffuseAlbedo = Albedo();
-		return (diffuseAlbedo * fr1 + diffuseAlbedo * diffuseAlbedo * fr2) * localWo.z * C_1_INV_PI;
+		auto albedo = Albedo();
+		return (albedo * fr1 + albedo * albedo * fr2) * CosTheta(localWi) * C_1_INV_PI;
 	}
 
 	bool OrenNayarDiffuse::Eval(SurfaceSample* ss, const Vector3f& wi, Float* pdf, LightSpectrum* lightSpectrum)

@@ -241,6 +241,10 @@ namespace Core
 		{
 			return std::max(std::max(m_bands[0], m_bands[1]), m_bands[2]);
 		}
+		static RGB32 FromVec3(const Vector3f& v)
+		{
+			return RGB32(v[0], v[1], v[2]);
+		}
 		static const RGB32 RED;
 		static const RGB32 GREEN;
 		static const RGB32 BLUE;

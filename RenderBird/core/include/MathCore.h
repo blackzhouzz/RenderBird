@@ -93,6 +93,12 @@ namespace Core
 		return v.z;
 	}
 
+	inline Float Pow5(Float v)
+	{
+		Float v2 = v * v;
+		return v2 * v2 * v;
+	}
+
 	template<typename T>
 	inline T SafeSqrt(const T& a)
 	{

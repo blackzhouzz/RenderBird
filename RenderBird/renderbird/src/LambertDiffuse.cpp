@@ -24,9 +24,9 @@ namespace RenderBird
 
 	bool LambertDiffuse::Sample(SurfaceSample* ss, Sampler* sampler, Vector3f* wi, Float* pdf, LightSpectrum* lightSpectrum)
 	{
-		SampleUtils::CosHemisphere(sampler->Next2D(), wi, pdf);
 		if (ss->m_localWo.z <= 0)
 			return false;
+		SampleUtils::CosHemisphere(sampler->Next2D(), wi, pdf);
 
 		lightSpectrum->m_diffuse = Albedo() * (*pdf);
 		return true;

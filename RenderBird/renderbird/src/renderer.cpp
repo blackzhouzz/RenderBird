@@ -112,7 +112,6 @@ namespace RenderBird
 		Matrix4f cameraToRaster = projMatrix * screenToRaster;
 		Matrix4f rasterToScreen = screenToRaster.Inverse();
 		m_renderContext.m_camera.m_rasterToCamera = projMatrix.Inverse() * rasterToScreen;
-
 	}
 
 	void Renderer::GenerateCameraRay(Float pixelX, Float pixelY, Ray* ray)

@@ -29,6 +29,7 @@
     <ClCompile Include="src\Denoising.cpp" />
     <ClCompile Include="src\Disk.cpp" />
     <ClCompile Include="src\DiskComponent.cpp" />
+    <ClCompile Include="src\DisneyBSDF.cpp" />
     <ClCompile Include="src\DistantLight.cpp" />
     <ClCompile Include="src\DistantLightComponent.cpp" />
     <ClCompile Include="src\FBXImportUtils.cpp" />
@@ -70,6 +71,7 @@
     <ClInclude Include="include\Denoising.h" />
     <ClInclude Include="include\Disk.h" />
     <ClInclude Include="include\DiskComponent.h" />
+    <ClInclude Include="include\DisneyBSDF.h" />
     <ClInclude Include="include\DistantLight.h" />
     <ClInclude Include="include\DistantLightComponent.h" />
     <ClInclude Include="include\FBXImportUtils.h" />

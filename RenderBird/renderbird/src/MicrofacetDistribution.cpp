@@ -2,31 +2,166 @@
 
 namespace RenderBird
 {
-	static Float ConductorReflectance(Float eta, Float k, Float cosThetaI)
+	Float ConductorReflectance(const Float &etaI, const Float &etaT, const Float &k, Float cosThetaI)
 	{
-		Float cosThetaISq = cosThetaI * cosThetaI;
-		Float sinThetaISq = Max(1.0 - cosThetaISq, 0.0);
-		Float sinThetaIQu = sinThetaISq * sinThetaISq;
+		cosThetaI = Clamp(cosThetaI, -1.0, 1.0);
+		Float eta = etaT / etaI;
+		Float etak = k / etaI;
 
-		Float innerTerm = eta * eta - k * k - sinThetaISq;
-		Float aSqPlusBSq = std::sqrt(Max(innerTerm*innerTerm + 4.0*eta*eta*k*k, 0.0));
-		Float a = std::sqrt(Max((aSqPlusBSq + innerTerm)*0.5, 0.0));
+		Float cosThetaI2 = cosThetaI * cosThetaI;
+		Float sinThetaI2 = 1. - cosThetaI2;
+		Float eta2 = eta * eta;
+		Float etak2 = etak * etak;
 
-		Float Rs = ((aSqPlusBSq + cosThetaISq) - (2.0*a*cosThetaI)) /
-			((aSqPlusBSq + cosThetaISq) + (2.0*a*cosThetaI));
-		Float Rp = ((cosThetaISq*aSqPlusBSq + sinThetaIQu) - (2.0*a*cosThetaI*sinThetaISq)) /
-			((cosThetaISq*aSqPlusBSq + sinThetaIQu) + (2.0*a*cosThetaI*sinThetaISq));
+		Float t0 = eta2 - etak2 - sinThetaI2;
+		Float a2plusb2 = std::sqrt(t0 * t0 + 4 * eta2 * etak2);
+		Float t1 = a2plusb2 + cosThetaI2;
+		Float a = std::sqrt(0.5f * (a2plusb2 + t0));
+		Float t2 = (Float)2 * cosThetaI * a;
+		Float Rs = (t1 - t2) / (t1 + t2);
 
-		return 0.5f*(Rs + Rs * Rp);
+		Float t3 = cosThetaI2 * a2plusb2 + sinThetaI2 * sinThetaI2;
+		Float t4 = t2 * sinThetaI2;
+		Float Rp = Rs * (t3 - t4) / (t3 + t4);
+
+		return 0.5 * (Rp + Rs);
+	}
+
+	static Float DielectricReflectance(Float etaI, Float etaT, Float cosThetaI, Float& cosThetaT)
+	{
+		cosThetaI = Clamp(cosThetaI, -1.0, 1.0);
+		// Potentially swap indices of refraction
+		bool entering = cosThetaI > 0.f;
+		if (!entering) {
+			std::swap(etaI, etaT);
+			cosThetaI = -cosThetaI;
+		}
+
+		// Compute _cosThetaT_ using Snell's law
+		Float sinThetaI = std::sqrt(std::max((Float)0, 1 - cosThetaI * cosThetaI));
+		Float sinThetaT = etaI / etaT * sinThetaI;
+
+		// Handle total internal reflection
+		if (sinThetaT >= 1) return 1;
+		cosThetaT = std::sqrt(std::max((Float)0, 1 - sinThetaT * sinThetaT));
+		Float t1 = etaT * cosThetaI;
+		Float t2 = etaI * cosThetaT;
+		Float t3 = etaI * cosThetaI;
+		Float t4 = etaT * cosThetaT;
+		Float Rs = (t1 - t2) / (t1 + t2);
+		Float Rp = (t3 - t4) / (t3 + t4);
+		return (Rs * Rs + Rp * Rp) * 0.5;
+	}
+	
+	/* Amplitude reflection coefficient (s-polarized) */
+	Float Rs(Float n1, Float n2, Float cosI, Float cosT)
+	{
+		return (n1 * cosI - n2 * cosT) / (n1 * cosI + n2 * cosT);
+	}
+
+	/* Amplitude reflection coefficient (p-polarized) */
+	Float Rp(Float n1, Float n2, Float cosI, Float cosT)
+	{
+		return (n2 * cosI - n1 * cosT) / (n1 * cosT + n2 * cosI);
+	}
+
+	/* Amplitude transmission coefficient (s-polarized) */
+	Float Ts(Float n1, Float n2, Float cosI, Float cosT)
+	{
+		return 2 * n1 * cosI / (n1 * cosI + n2 * cosT);
+	}
+
+	/* Amplitude transmission coefficient (p-polarized) */
+	Float Tp(Float n1, Float n2, Float cosI, Float cosT)
+	{
+		return 2 * n1 * cosI / (n1 * cosT + n2 * cosI);
+	}
+
+	// See http://www.gamedev.net/page/resources/_/technical/graphics-programming-and-theory/thin-film-interference-for-computer-graphics-r2962
+	static Float ThinFilmInterferenceReflectance(Float etaEx, Float etaTh, Float etaIn, Float thickness, Float lambda, Float cosThetaO, Float &cosThetaT)
+	{
+		//const Vector3f invLambdas = Vector3f(1.0 / 650.0, 1.0 / 510.0, 1.0 / 475.0);
+		Float delta10 = (etaTh < etaEx) ? C_PI : 0.0f;
+		Float delta12 = (etaTh < etaIn) ? C_PI : 0.0f;
+		Float delta = delta10 + delta12;
+
+		// now, compute cos1, the cosine of the reflected angle
+		Float sin1 = Square(etaEx / etaTh) * (1 - Square(cosThetaO));
+		if (sin1 > 1) return 1.0f; // total internal reflection
+		Float cos1 = std::sqrt(1 - sin1);
+
+		// compute cos2, the cosine of the final transmitted angle, i.e. cos(theta_2)
+		// we need this angle for the Fresnel terms at the bottom interface
+		Float sin2 = Square(etaEx / etaIn) * (1 - Square(cosThetaO));
+		if (sin2 > 1) return 1.0f; // total internal reflection
+		Float cos2 = std::sqrt(1 - sin2);
+		cosThetaT = cos2;
+
+		// get the reflection transmission amplitude Fresnel coefficients
+		Float alpha_s = Rs(etaTh, etaEx, cos1, cosThetaO) * Rs(etaTh, etaIn, cos1, cos2); // rho_10 * rho_12 (s-polarized)
+		Float alpha_p = Rp(etaTh, etaEx, cos1, cosThetaO) * Rp(etaTh, etaIn, cos1, cos2); // rho_10 * rho_12 (p-polarized)
+
+		Float beta_s = Ts(etaEx, etaTh, cosThetaO, cos1) * Ts(etaTh, etaIn, cos1, cos2); // tau_01 * tau_12 (s-polarized)
+		Float beta_p = Tp(etaEx, etaTh, cosThetaO, cos1) * Tp(etaTh, etaIn, cos1, cos2); // tau_01 * tau_12 (p-polarized)
+
+		// compute the phase term (phi)
+		Float phi = (2 * C_PI / lambda) * (2 * etaTh * thickness * cos1) + delta;
+
+		// finally, evaluate the transmitted intensity for the two possible polarizations
+		Float ts = Square(beta_s) / (Square(alpha_s) - 2 * alpha_s * cos(phi) + 1);
+		Float tp = Square(beta_p) / (Square(alpha_p) - 2 * alpha_p * cos(phi) + 1);
+
+		// we need to take into account conservation of energy for transmission
+		Float beamRatio = (etaIn * cos2) / (etaEx * cosThetaO);
+
+		// calculate the average transmitted intensity (if you know the polarization distribution of your
+		// light source, you should specify it here. if you don't, a 50%/50% average is generally used)
+		Float t = beamRatio * (ts + tp) / 2;
+
+		// and finally, derive the reflected intensity
+		return 1 - t;
 	}
 
 	RGB32 Fresnel::Conductor(const RGB32 &eta, const RGB32 &k, Float cosThetaI)
 	{
 		return RGB32(
-			ConductorReflectance(eta[0], k[0], std::abs(cosThetaI)),
-			ConductorReflectance(eta[1], k[1], std::abs(cosThetaI)),
-			ConductorReflectance(eta[2], k[2], std::abs(cosThetaI))
+			ConductorReflectance(1.0, eta[0], k[0], std::abs(cosThetaI)),
+			ConductorReflectance(1.0, eta[1], k[1], std::abs(cosThetaI)),
+			ConductorReflectance(1.0, eta[2], k[2], std::abs(cosThetaI))
 		);
+	}
+
+	RGB32 Fresnel::Dielectric(const RGB32 &eta, Float cosThetaI, Float& cosThetaT)
+	{
+		cosThetaT = 0;
+		return RGB32(
+			DielectricReflectance(1.0, eta[0], cosThetaI, cosThetaT),
+			DielectricReflectance(1.0, eta[1], cosThetaI, cosThetaT),
+			DielectricReflectance(1.0, eta[2], cosThetaI, cosThetaT)
+		);
+	}
+
+	//	float thickness 0 3000 250	  # Thin film thickness(in nm)
+	//	float externalIOR 0.2 3 1     # External(air) refractive index
+	//	float thinfilmIOR 0.2 3 1.5   # Layer(thin film) refractive index
+	//	float internalIOR 0.2 3 1.25  # Internal(object) refractive index
+	//	float lambda			      # incident light wavelength 650, 510, 475
+
+	RGB32 Fresnel::ThinFilmInterference(const RGB32 & etaEx, const RGB32 & etaTh, const RGB32 & etaIn, const RGB32 & thickness, const RGB32& lambda, Float cosThetaO, Float &cosThetaT)
+	{
+		cosThetaT = 0;
+		return RGB32(
+			ThinFilmInterferenceReflectance(etaEx[0], etaTh[0], etaIn[0], thickness[0], lambda[0], cosThetaO, cosThetaT),
+			ThinFilmInterferenceReflectance(etaEx[1], etaTh[1], etaIn[1], thickness[1], lambda[1], cosThetaO, cosThetaT),
+			ThinFilmInterferenceReflectance(etaEx[2], etaTh[2], etaIn[2], thickness[2], lambda[2], cosThetaO, cosThetaT)
+		);
+	}
+
+	Float Fresnel::Schlick(Float cosTheta)
+	{
+		Float m = Clamp(1 - cosTheta, 0.0, 1.0);
+		Float m2 = m * m;
+		return m2 * m2 * m; 
 	}
 
 	MicrofacetDistribution::MicrofacetDistribution(Type type, Float roughnessU, Float roughnessV)
