@@ -5,6 +5,7 @@ namespace RenderBird
 {
 	LambertDiffuse::LambertDiffuse()
 	{
+		m_flags = DiffuseReflection;
 	}
 
 	bool LambertDiffuse::Eval(SurfaceSample* ss, const Vector3f& wi, Float* pdf, LightSpectrum* lightSpectrum)

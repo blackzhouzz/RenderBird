@@ -15,6 +15,7 @@ namespace RenderBird
 		virtual RGB32 Le(SurfaceSample* ss, const Vector3f& w)const;
 		virtual Float Pdf(const RayHitInfo& hitInfo, SurfaceSample* ss, const Vector3f& wi)const = 0;
 		virtual bool IsLight()const { return true; }
+		virtual Shape* GetShape()const { return nullptr; }
 	protected:
 		LightPropertyComponent* m_lightProp;
 	public:

@@ -28,7 +28,8 @@ namespace RenderBird
 		void Integrate(State* state, Radiance* L);
 		bool SampleLight(State* state, Light* light, Float sampleLightPdf, SurfaceSample* ss, Radiance* L);
 		bool SampleBSDF(State* state, Light* light, Float sampleLightPdf, SurfaceSample* ss, Radiance* L, RayHitInfo& hitInfo);
-		bool BacksideCheck(const Vector3f& ng, const Vector3f& w);
+		bool SampleLightEx();
+		RGB32 EvalDirect(State* state, Light* light);
 		Light* GetSampleLight(State* state, Float& sampleLightPdf);
 	private:
 		Renderer* m_renderer;

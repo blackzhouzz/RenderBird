@@ -9,6 +9,32 @@ namespace RenderBird
 		, m_eta(0.200438f, 0.924033f, 1.10221f)
 		, m_k(3.91295f, 2.45285f, 2.14219f)
 	{
+		m_flags = GlossyReflection;
+	}
+
+
+	Float FrDielectric(Float cosThetaI, Float etaI, Float etaT)
+	{
+		cosThetaI = Clamp(cosThetaI, -1.0, 1.0);
+		// Potentially swap indices of refraction
+		bool entering = cosThetaI > 0.f;
+		if (!entering) {
+			std::swap(etaI, etaT);
+			cosThetaI = std::abs(cosThetaI);
+		}
+
+		// Compute _cosThetaT_ using Snell's law
+		Float sinThetaI = std::sqrt(std::max((Float)0, 1 - cosThetaI * cosThetaI));
+		Float sinThetaT = etaI / etaT * sinThetaI;
+
+		// Handle total internal reflection
+		if (sinThetaT >= 1) return 1;
+		Float cosThetaT = std::sqrt(std::max((Float)0, 1 - sinThetaT * sinThetaT));
+		Float Rparl = ((etaT * cosThetaI) - (etaI * cosThetaT)) /
+			((etaT * cosThetaI) + (etaI * cosThetaT));
+		Float Rperp = ((etaI * cosThetaI) - (etaT * cosThetaT)) /
+			((etaI * cosThetaI) + (etaT * cosThetaT));
+		return (Rparl * Rparl + Rperp * Rperp) / 2;
 	}
 
 	bool MicrofacetConductorReflection::EvalSpectrum(const Vector3f& localWi, const Vector3f& localWo, const Vector3f& wh, Float* pdf, LightSpectrum* lightSpectrum)

@@ -52,7 +52,6 @@ namespace RenderBird
 		Float Rp = (t3 - t4) / (t3 + t4);
 		return (Rs * Rs + Rp * Rp) * 0.5;
 	}
-	
 	/* Amplitude reflection coefficient (s-polarized) */
 	Float Rs(Float n1, Float n2, Float cosI, Float cosT)
 	{
@@ -131,14 +130,20 @@ namespace RenderBird
 		);
 	}
 
-	RGB32 Fresnel::Dielectric(const RGB32 &eta, Float cosThetaI, Float& cosThetaT)
+	RGB32 Fresnel::Dielectric(const RGB32 &etaI, const RGB32 &etaT, Float cosThetaI, Float& cosThetaT)
 	{
 		cosThetaT = 0;
 		return RGB32(
-			DielectricReflectance(1.0, eta[0], cosThetaI, cosThetaT),
-			DielectricReflectance(1.0, eta[1], cosThetaI, cosThetaT),
-			DielectricReflectance(1.0, eta[2], cosThetaI, cosThetaT)
+			DielectricReflectance(etaI[0], etaT[0], cosThetaI, cosThetaT),
+			DielectricReflectance(etaI[1], etaT[1], cosThetaI, cosThetaT),
+			DielectricReflectance(etaI[2], etaT[2], cosThetaI, cosThetaT)
 		);
+	}
+
+	Float Fresnel::Dielectric(Float etaI, Float etaT, Float cosThetaI, Float& cosThetaT)
+	{
+		cosThetaT = 0;
+		return DielectricReflectance(etaI, etaT, cosThetaI, cosThetaT);
 	}
 
 	//	float thickness 0 3000 250	  # Thin film thickness(in nm)
@@ -157,11 +162,26 @@ namespace RenderBird
 		);
 	}
 
-	Float Fresnel::Schlick(Float cosTheta)
+	Float Fresnel::SchlickWeight(Float cosTheta)
 	{
 		Float m = Clamp(1 - cosTheta, 0.0, 1.0);
 		Float m2 = m * m;
 		return m2 * m2 * m; 
+	}
+
+	Float Fresnel::Schlick(Float f0, Float cosTheta)
+	{
+		return f0 + (1 - f0) * SchlickWeight(cosTheta);
+	}
+
+	RGB32 Fresnel::Schlick(const RGB32& f0, Float cosTheta)
+	{
+		return f0 + (RGB32::WHITE - f0) * SchlickWeight(cosTheta);
+	}
+
+	Float Fresnel::SchlickR0FromRelativeIOR(Float relativeIOR)
+	{
+		return Square((1.0 - relativeIOR) / (1 + relativeIOR));
 	}
 
 	MicrofacetDistribution::MicrofacetDistribution(Type type, Float roughnessU, Float roughnessV)
@@ -234,7 +254,7 @@ namespace RenderBird
 
 		Float cosTheta2 = cosTheta * cosTheta;
 		Float sinTheta2 = 1 - cosTheta2;
-		Float beckmannExponent = ((wh.x*wh.x) / (m_alphaU * m_alphaU) + (wh.y * wh.y) / (m_alphaV * m_alphaV)) / cosTheta2;
+		Float beckmannExponent = ((wh.x * wh.x) / (m_alphaU * m_alphaU) + (wh.y * wh.y) / (m_alphaV * m_alphaV)) / cosTheta2;
 
 		switch (m_type)
 		{
@@ -296,14 +316,16 @@ namespace RenderBird
 		{
 		case Beckmann: {
 			Float a = 1.0f / (alpha * tanTheta);
+			Float a2 = a * a;
 			if (a < 1.6f)
-				return (3.535f * a + 2.181f * a * a) / (1.0f + 2.276f*a + 2.577f*a*a);
+				return (3.535f * a + 2.181f * a2) / (1.0f + 2.276f * a + 2.577f * a2);
 			else
 				return 1.0f;
 		} case Phong: {
 			Float a = std::sqrt(0.5f * alpha + 1.0f) / tanTheta;
+			Float a2 = a * a;
 			if (a < 1.6f)
-				return (3.535f*a + 2.181f*a*a) / (1.0f + 2.276f*a + 2.577f*a*a);
+				return (3.535f * a + 2.181f * a2) / (1.0f + 2.276f * a + 2.577f * a2);
 			else
 				return 1.0f;
 		}

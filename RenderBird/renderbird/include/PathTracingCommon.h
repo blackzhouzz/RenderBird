@@ -181,12 +181,17 @@ namespace RenderBird
 		static Float GammaCorrect(Float value);
 	};
 
-	enum LobeType
+	enum BSDFLobeType
 	{
-		DiffuseReflection = 1 << 0,
-		DiffuseTransmission = 1 << 1,
-		Specular,
-		Glossy,
-		AllLobe
+		DiffuseReflection		= 1 << 0,
+		DiffuseTransmission		= 1 << 1,
+		SpecularReflection		= 1 << 2,
+		SpecularTransmission	= 1 << 3,
+		GlossyReflection		= 1 << 4,
+		GlossyTransmission		= 1 << 5,
+		DiffuseLobe = DiffuseReflection | DiffuseTransmission,
+		SpecularLobe = SpecularReflection | SpecularTransmission,
+		GlossyLobe = GlossyReflection | GlossyTransmission,
+		AllLobe					= 0xffff
 	};
 }

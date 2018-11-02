@@ -54,6 +54,16 @@ namespace Core
 	static const Float C_2_PI = (Float)6.28318530717958647692f;
 	static const Float C_Gray_Scale[3] = { 0.212671f, 0.715160f, 0.072169f };
 
+	template<typename T>
+	inline T Clamp(T val, T min, T max)
+	{
+		if (val < min)
+			val = min;
+		if (val > max)
+			val = max;
+		return val;
+	}
+
 	inline Float DegToRad(Float val)
 	{
 		return  val * (Float)(C_PI / 180.0f);
@@ -93,26 +103,68 @@ namespace Core
 		return v.z;
 	}
 
+	inline Float Cos2Theta(const Vector3f &v)
+	{
+		return v.z * v.z;
+	}
+
+	inline Float Sin2Theta(const Vector3f &w)
+	{
+		return std::max((Float)0, (Float)1 - Cos2Theta(w));
+	}
+
+	inline Float SinTheta(const Vector3f &w)
+	{
+		return std::sqrt(Sin2Theta(w));
+	}
+
+	inline Float Saturate(Float v)
+	{
+		return Clamp(v, 0.0, 1.0);
+	}
+
+	inline Float CosPhi(const Vector3f &w)
+	{
+		Float sinTheta = SinTheta(w);
+		return (sinTheta == 0) ? 1 : Clamp(w.x / sinTheta, -1.0, 1.0);
+	}
+
+	inline Float Cos2Phi(const Vector3f &w)
+	{
+		return CosPhi(w) * CosPhi(w);
+	}
+
+	inline Float SinPhi(const Vector3f &w)
+	{
+		Float sinTheta = SinTheta(w);
+		return (sinTheta == 0) ? 0 : Clamp(w.y / sinTheta, -1.0, 1.0);
+	}
+
+	inline Float Sin2Phi(const Vector3f &w)
+	{
+		return SinPhi(w) * SinPhi(w);
+	}
+
+	inline Float AbsCosTheta(const Vector3f &v)
+	{
+		return std::abs(v.z); 
+	}
+
 	inline Float Pow5(Float v)
 	{
 		Float v2 = v * v;
 		return v2 * v2 * v;
 	}
 
+	inline Float AbsDotProduct(const Vector3f& v1, const Vector3f& v2)
+	{
+		return std::abs(Vector3f::DotProduct(v1, v2));
+	}
+
 	template<typename T>
 	inline T SafeSqrt(const T& a)
 	{
 		return std::sqrt(Max(a, 0.0));
-	}
-
-	template<typename T>
-	inline T Clamp(T val, T min, T max)
-	{
-		if (val < min)
-			val = min;
-		if (val > max)
-			val = max;
-		return val;
 	}
 
 	inline Vector3f Reflect(const Vector3f &v, const Vector3f &n)
@@ -183,7 +235,7 @@ namespace Core
 	{
 		return a * (T(1) - ratio) + b * ratio;
 	}
-
+	
 	template<typename T>
 	bool IsNaN(const T& t)
 	{

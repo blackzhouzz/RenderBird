@@ -18,18 +18,19 @@ namespace RenderBird
 			m_n = m_ng;
 		}
 
-		//LambertDiffuse* bsdf = new LambertDiffuse();
+		LambertDiffuse* bsdf = new LambertDiffuse();
 		//OrenNayarDiffuse* bsdf = new OrenNayarDiffuse(0.5f);
 		//MicrofacetConductorReflection* bsdf = new MicrofacetConductorReflection(0.1, 0.1);
-		DisneyDiffuse* bsdf = new DisneyDiffuse(1.0f);
+		//DisneyBSDF* bsdf = new DisneyBSDF();
+		bsdf->m_color = RGB32(0.82, 0.67, 0.15);
 		Vector3f T;
 		Vector3f B;
 		Vector3f N = m_n;
 		if (hitInfo.m_obj->CalcTangentSpace(&hitInfo, T, B))
 		{
+			T = (T - N * Vector3f::DotProduct(N, T));
 			T = T.Normalized();
-			B = B.Normalized();
-			N = Vector3f::CrossProduct(T, B).Normalized();
+			B = Vector3f::CrossProduct(N, T);
 			bsdf->m_frame = TangentFrame(N, T, B);
 		}
 		else

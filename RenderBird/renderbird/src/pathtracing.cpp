@@ -11,19 +11,13 @@ namespace RenderBird
 	PathTracing::PathTracing(Renderer* renderer)
 		: m_renderer(renderer)
 	{
-
-	}
-
-	bool PathTracing::BacksideCheck(const Vector3f& ng, const Vector3f& w)
-	{
-		return PathTracingUtils::IsSameHemisphere(ng, w);
 	}
 
 	void PathTracing::Integrate(State* state, Radiance* L)
 	{
 		auto pixel = Vector2u(state->m_pixelX, state->m_pixelY);
-		//if (pixel.x == 125 && pixel.y == 139)
-		//	pixel = pixel;
+		if (pixel.x == 160 && pixel.y == 180)
+			pixel = pixel;
 		Ray ray;
 		m_renderer->GenerateCameraRay(state->m_cameraSample.m_pixel.x, state->m_cameraSample.m_pixel.y, &ray);
 		const int maxBounce = m_renderer->GetRendererSetting().m_maxBounce;
@@ -88,7 +82,7 @@ namespace RenderBird
 				break;
 
 			wi = ss.m_bsdf->LocalToWorld(wi);
-			if (!BacksideCheck(ss.m_ng, wi))
+			if (!PathTracingUtils::IsSameHemisphere(ss.m_ng, wi))
 				break;
 
 			ray.m_origin = ss.m_pos;
@@ -106,6 +100,10 @@ namespace RenderBird
 					hitLight = true;
 				}
 			}
+			//else if (sampleLight->GetShape() == nullptr)
+			//{
+			//	hitLight = true;
+			//}
 			else
 			{
 				break;
@@ -113,9 +111,8 @@ namespace RenderBird
 
 			if (hitLight)
 			{
-				const Light* light = static_cast<const Light*>(tempHitInfo.m_obj);
-				Float lightPdf = light->Pdf(tempHitInfo, &ss, wi);
-				auto li = light->Le(&ss, -ray.m_direction);
+				Float lightPdf = sampleLight->Pdf(tempHitInfo, &ss, wi);
+				auto li = sampleLight->Le(&ss, -ray.m_direction);
 				Float misWeight = SampleUtils::PowerHeuristic(bsdfPdf, lightPdf);
 
 				auto weight = (state->m_throughput * misWeight * li / (bsdfPdf * sampleLightPdf));
@@ -135,7 +132,7 @@ namespace RenderBird
 				state->m_throughput /= q;
 			}
 			hitInfo = tempHitInfo;
-			//break;
+			break;
 		}
 		if (!recordedOutputValues)
 		{
@@ -150,6 +147,22 @@ namespace RenderBird
 			//if (m_renderer->m_buffers._albedoBuffer && info.primitive && info.primitive->isInfinite())
 			//	m_renderer->m_buffers._albedoBuffer->addSample(pixel, info.primitive->evalDirect(data, info));
 		}
+	}
+
+	RGB32 PathTracing::EvalDirect(State* state, Light* light)
+	{
+		Float sampleLightPdf = 0;
+		Light* sampleLight = GetSampleLight(state, sampleLightPdf);
+		if (sampleLight == nullptr)
+			return RGB32::BLACK;
+
+		RGB32 L = RGB32::BLACK;
+
+	}
+
+	bool PathTracing::SampleLightEx()
+	{
+		return false;
 	}
 
 	//bool PathTracing::SampleBSDF(State* state, Light* light, Float sampleLightPdf, SurfaceSample* ss, Radiance* L, RayHitInfo& hitInfo)
@@ -176,7 +189,7 @@ namespace RenderBird
 			{
 				LightSpectrum lightSpectrum;
 				Float bsdfPdf = 0.0;
-				if (!ss->m_bsdf->Eval(ss, ls.m_wi, &bsdfPdf, &lightSpectrum) || !BacksideCheck(ss->m_ng, ls.m_wi))
+				if (!ss->m_bsdf->Eval(ss, ls.m_wi, &bsdfPdf, &lightSpectrum) /*|| !PathTracingUtils::IsSameHemisphere(ss->m_ng, ls.m_wi)*/)
 					return false;
 
 				bool shadowBlocked = false;
@@ -184,7 +197,7 @@ namespace RenderBird
 				RayHitInfo lightHitInfo;
 				if (m_renderer->m_scene->Intersect(lightRay, &lightHitInfo))
 				{
-					if (lightHitInfo.m_obj != light)
+					if (lightHitInfo.m_obj != light && light->GetShape() != nullptr)
 					{
 						shadowBlocked = true;
 					}

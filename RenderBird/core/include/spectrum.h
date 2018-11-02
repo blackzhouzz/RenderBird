@@ -28,7 +28,7 @@ namespace Core
 		bool IsZero()const;
 		void SetZero();
 		T Sqrt();
-	protected:
+	public:
 		DT m_bands[N];
 	};
 
@@ -223,6 +223,18 @@ namespace Core
 		return ret;
 	}
 
+	template<typename T, typename DT, int N>
+	inline T operator * (const DT& s, const TSpectrum<T, DT, N>& val)
+	{
+		T ret;
+		for (int i = 0; i < N; ++i)
+		{
+			ret.m_bands[i] = val.m_bands[i] * s;
+		}
+		return ret;
+	}
+
+
 	class RGB32 : public TSpectrum<RGB32, Float, 3>
 	{
 	public:
@@ -252,6 +264,11 @@ namespace Core
 		static const RGB32 WHITE;
 		static const RGB32 YELLOW;
 	};
+
+	inline RGB32 Lerp(RGB32 a, RGB32 b, Float ratio)
+	{
+		return a * (1.0 - ratio) + b * ratio;
+	}
 
 	class RGB8 : public TSpectrum<RGB8, uint8, 3>
 	{

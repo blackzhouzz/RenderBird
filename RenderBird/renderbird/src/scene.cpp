@@ -16,6 +16,7 @@
 #include "TriangleComponent.h"
 #include "Triangle.h"
 #include "RenderStatistic.h"
+#include "DistantLight.h"
 
 namespace RenderBird
 {
@@ -101,7 +102,7 @@ namespace RenderBird
 	{
 		//CreateShapeTest();
 		CreateMeshTest();
-		//CreateLightTest();
+		AddTestDistantLight();
 		//AddTestDiskLight(Vector3f(0, 0, 1.98), 0.5);
 		//AddTestSphereLight(Vector3f(0, 0, 0.6), 0.2);
 		CreateCameraTest();
@@ -131,7 +132,7 @@ namespace RenderBird
 		//m_sphereEntitiesGroup = new ComponentGroup(archetype);
 	}
 
-	void Scene::CreateLightTest()
+	void Scene::AddTestDistantLight()
 	{
 		auto archetype = EntityManager::IntancePtr()->CreateArchetype(
 			3,
@@ -144,19 +145,19 @@ namespace RenderBird
 
 		m_entities.insert(id);
 
+		auto lightProp = EntityManager::IntancePtr()->GetComponent<LightPropertyComponent>(id);
+		lightProp->m_color = RGB32::WHITE;
 		auto trans = EntityManager::IntancePtr()->GetComponent<Transform>(id);
-		Vector3f pos = Vector3f(40, 0, 40);
-
-
+		Vector3f pos = Vector3f(-40, 50, 40);
 		TransformUtils::LookAt(trans, pos, C_Zero_v3f, C_AxisZ_v3f);
-		auto mat = trans->m_rotation.ToMatrix().GetColumn(2);
-		auto dir = MathUtils::GetForward(trans->m_rotation);
-		dir = dir;
+		DistantLight* light = CreateSceneObject<DistantLight>(id);
+
+		m_lights.push_back(light);
 	}
 
 	void Scene::CreateMeshTest()
 	{
-		FBXImportUtils::LoadFBX("c:/1234.fbx", this);
+		FBXImportUtils::LoadFBX("c:/12345.fbx", this);
 
 		//auto plane1 = GeometryGenerator::GeneratePlane(Vector2f(2.0f, 2.0f));
 		//m_meshResources.push_back(plane1);
@@ -222,7 +223,7 @@ namespace RenderBird
 			EntityId lightId = EntityManager::IntancePtr()->CreateEntity(archetype);
 
 			auto light = EntityManager::IntancePtr()->GetComponent<LightPropertyComponent>(lightId);
-			light->m_color = RGB32::WHITE * 50;
+			light->m_color = RGB32::WHITE * 20;
 			auto trans = EntityManager::IntancePtr()->GetComponent<Transform>(lightId);
 			trans->m_pos = pos;
 

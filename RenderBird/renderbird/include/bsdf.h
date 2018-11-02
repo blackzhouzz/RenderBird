@@ -19,5 +19,6 @@ namespace RenderBird
 		RGB32 m_color;
 		TangentFrame m_frame;
 		bool m_doubleSide;
+		unsigned int m_flags;
 	};
 }

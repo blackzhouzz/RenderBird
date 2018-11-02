@@ -21,7 +21,7 @@ namespace RenderBird
 			m_shape = std::move(shape);
 			UpdateBoundingBox();
 		}
-		Shape* GetShape()const
+		virtual Shape* GetShape()const
 		{
 			return m_shape.get();
 		}

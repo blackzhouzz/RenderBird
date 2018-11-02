@@ -21,14 +21,15 @@ namespace RenderBird
 
 	void Triangle::Sample(Sampler* sampler, LightSample* ls, Float* pdf)
 	{
+		auto meshData = m_trimesh->GetMeshData();
 		Vector2f uv = SampleUtils::UniformTriangle(sampler->Next2D());
 		ls->m_pos = (*m_v0 * (1.0f - uv[0] - uv[1]) + *m_v1 * uv[0] + *m_v2 * uv[1]);
 		ls->m_n = Vector3f::CrossProduct(*m_v2 - *m_v0, *m_v1 - *m_v0).Normalized();
-		if (m_trimesh->GetMeshData()->HasFlag(TriangleMesh::VertexChannelFlag::VCT_Normal))
+		if (meshData->HasFlag(TriangleMesh::VertexChannelFlag::VCT_Normal))
 		{
-			const Vector3f& n0 = m_trimesh->GetMeshData()->m_vertexData[m_face->m_v0].m_n;
-			const Vector3f& n1 = m_trimesh->GetMeshData()->m_vertexData[m_face->m_v1].m_n;
-			const Vector3f& n2 = m_trimesh->GetMeshData()->m_vertexData[m_face->m_v2].m_n;
+			const Vector3f& n0 = meshData->m_vertexData[m_face->m_v0].m_n;
+			const Vector3f& n1 = meshData->m_vertexData[m_face->m_v1].m_n;
+			const Vector3f& n2 = meshData->m_vertexData[m_face->m_v2].m_n;
 			ls->m_n = (n0 * (1.0f - uv[0] - uv[1]) + n1 * uv[0] + n2 * uv[1]).Normalized();
 		}
 

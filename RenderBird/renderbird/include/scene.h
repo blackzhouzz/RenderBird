@@ -13,7 +13,7 @@ namespace RenderBird
 		Scene();
 		bool Intersect(const Ray& ray, RayHitInfo* hitInfo)const;
 		void SetupSceneTest();
-		void CreateLightTest();
+		void AddTestDistantLight();
 		void CreateMeshTest();
 		void CreateCameraTest();
 		void CreateShapeTest();

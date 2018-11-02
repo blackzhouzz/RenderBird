@@ -5,6 +5,7 @@ namespace RenderBird
 	BSDF::BSDF()
 		: m_color(RGB32::WHITE * 0.5)
 		, m_doubleSide(true)
+		, m_flags(0)
 	{
 	}
 

@@ -7,9 +7,13 @@ namespace RenderBird
 	{
 	public:
 		static RGB32 Conductor(const RGB32 &eta, const RGB32 &k, Float cosThetaI);
-		static RGB32 Dielectric(const RGB32 &eta, Float cosThetaI, Float& cosThetaT);
+		static RGB32 Dielectric(const RGB32 &etaI, const RGB32 &etaT, Float cosThetaI, Float& cosThetaT);
+		static Float Dielectric(Float etaI, Float etaT, Float cosThetaI, Float& cosThetaT);
 		static RGB32 ThinFilmInterference(const RGB32 & etaEx, const RGB32 & etaTh, const RGB32 & etaIn, const RGB32 & thickness, const RGB32& lambda, Float cosThetaO, Float &cosThetaT);
-		static Float Schlick(Float cosTheta);
+		static Float SchlickWeight(Float cosTheta);
+		static Float Schlick(Float f0, Float cosTheta);
+		static RGB32 Schlick(const RGB32& f0, Float cosTheta);
+		static Float SchlickR0FromRelativeIOR(Float relativeIOR);
 	};
 
 	inline void ConvertAnisotropyToRoughness(Float roughness, Float anisotropy, Float& roughnessU, Float& roughnessV)

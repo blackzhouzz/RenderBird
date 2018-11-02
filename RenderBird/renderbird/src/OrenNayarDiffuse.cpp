@@ -8,6 +8,7 @@ namespace RenderBird
 	{
 		const Float sigma = 1.0f / std::sqrt(2.0f) * m_roughness;
 		m_sigmaSq = sigma * sigma;
+		m_flags = DiffuseReflection;
 	}
 
 	RGB32 OrenNayarDiffuse::EvalSpectrum(const Vector3f& localWi, const Vector3f& localWo)
