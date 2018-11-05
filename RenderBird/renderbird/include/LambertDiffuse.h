@@ -7,7 +7,7 @@ namespace RenderBird
 	{
 	public:
 		LambertDiffuse();
-		virtual bool Eval(SurfaceSample* ss, const Vector3f& wi, Float* pdf, LightSpectrum* lightSpectrum);
-		virtual bool Sample(SurfaceSample* ss, Sampler* sampler, Vector3f* wi, Float* pdf, LightSpectrum* lightSpectrum);
+		virtual bool Eval(SurfaceSample* ss, LightSpectrum* lightSpectrum);
+		virtual bool Sample(SurfaceSample* ss, Sampler* sampler, LightSpectrum* lightSpectrum);
 	};
 }

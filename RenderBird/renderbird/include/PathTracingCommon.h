@@ -151,7 +151,9 @@ namespace RenderBird
 		Vector3f m_pos;
 		Vector3f m_ng;
 		Vector3f m_n;
-		Vector3f m_localWo;
+		Vector3f m_wo;
+		Vector3f m_wi;
+		Float m_pdf;
 		void TransformBy(const Matrix4f& mat)
 		{
 			m_pos = mat * m_pos;
@@ -165,7 +167,6 @@ namespace RenderBird
 	{
 		Vector3f m_pos;
 		Vector3f m_n;
-		Vector3f m_wi;
 		void TransformBy(const Matrix4f& mat)
 		{
 			m_pos = mat * m_pos;

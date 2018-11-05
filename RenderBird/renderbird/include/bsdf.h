@@ -10,8 +10,8 @@ namespace RenderBird
 	public:
 		BSDF();
 		virtual ~BSDF(){}
-		virtual bool Eval(SurfaceSample* ss, const Vector3f& wi, Float* pdf, LightSpectrum* lightSpectrum) = 0;
-		virtual bool Sample(SurfaceSample* ss, Sampler* sampler, Vector3f* wi, Float* pdf, LightSpectrum* lightSpectrum) = 0;
+		virtual bool Eval(SurfaceSample* ss, LightSpectrum* lightSpectrum) = 0;
+		virtual bool Sample(SurfaceSample* ss, Sampler* sampler, LightSpectrum* lightSpectrum) = 0;
 		virtual RGB32 Albedo() { return m_color; }
 		Vector3f LocalToWorld(const Vector3f &v) const;
 		Vector3f WorldToLocal(const Vector3f &v) const;

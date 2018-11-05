@@ -36,9 +36,9 @@ namespace RenderBird
 		}
 		else
 		{
-			ls->m_wi = vecLight / ls->m_distance;
+			ss->m_wi = vecLight / ls->m_distance;
 			// dw = dA * cos(theta) / (r*r)
-			*pdf *= ls->m_distance * ls->m_distance / std::abs(Vector3f::DotProduct(ls->m_n, -ls->m_wi));
+			*pdf *= ls->m_distance * ls->m_distance / std::abs(Vector3f::DotProduct(ls->m_n, -ss->m_wi));
 		}
 
 		ls->m_li = m_lightProp->m_color;

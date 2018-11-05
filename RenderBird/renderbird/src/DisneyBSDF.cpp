@@ -354,18 +354,18 @@ namespace RenderBird
 		return C_1_INV_PI * (retro + subsurfaceApprox * (1.0f - 0.5f * fl) * (1.0f - 0.5f * fv));
 	}
 
-	bool DisneyBSDF::Eval(SurfaceSample* ss, const Vector3f& wi, Float* pdf, LightSpectrum* lightSpectrum)
+	bool DisneyBSDF::Eval(SurfaceSample* ss, LightSpectrum* lightSpectrum)
 	{
-		auto localWi = WorldToLocal(wi);
-		auto localWo = ss->m_localWo;
+		auto localWi = ss->m_wi;
+		auto localWo = ss->m_wo;
 
-		lightSpectrum->m_diffuse = EvaluateDisney(localWi, localWo, false, *pdf);
-		return *pdf > 0;
+		lightSpectrum->m_diffuse = EvaluateDisney(localWi, localWo, false, ss->m_pdf);
+		return ss->m_pdf > 0;
 	}
 
 	bool DisneyBSDF::SampleDisneySpecTransmission(SurfaceSample* ss, Sampler* sampler, Vector3f* outWi, Float* outPdf, LightSpectrum* lightSpectrum, bool thin)
 	{
-		Vector3f wo = ss->m_localWo;
+		Vector3f wo = ss->m_wo;
 		if (CosTheta(wo) == 0.0) 
 		{
 			*outPdf = 0;
@@ -474,7 +474,7 @@ namespace RenderBird
 
 	bool DisneyBSDF::SampleDisneyClearcoat(SurfaceSample* ss, Sampler* sampler, Vector3f* outWi, Float* outPdf, LightSpectrum* lightSpectrum)
 	{
-		Vector3f wo = ss->m_localWo;
+		Vector3f wo = ss->m_wo;
 
 		Float a = 0.25f;
 		Float a2 = a * a;
@@ -519,7 +519,7 @@ namespace RenderBird
 
 	bool DisneyBSDF::SampleDisneyDiffuse(SurfaceSample* ss, Sampler* sampler, Vector3f* outWi, Float* outPdf, LightSpectrum* lightSpectrum, bool thin)
 	{
-		Vector3f wo = ss->m_localWo;
+		Vector3f wo = ss->m_wo;
 
 		Vector3f wi;
 		SampleUtils::CosHemisphere(sampler->Next2D(), &wi, outPdf);
@@ -569,36 +569,36 @@ namespace RenderBird
 		return true;
 	}
 
-	bool DisneyBSDF::Sample(SurfaceSample* ss, Sampler* sampler, Vector3f* wi, Float* pdf, LightSpectrum* lightSpectrum)
+	bool DisneyBSDF::Sample(SurfaceSample* ss, Sampler* sampler, LightSpectrum* lightSpectrum)
 	{
-		auto localWo = ss->m_localWo;
-		*pdf = 0;
+		auto localWo = ss->m_wo;
+		ss->m_pdf = 0;
 		Float pBRDF, pDiffuse, pClearcoat, pSpecTrans;
 		CalculateLobePdfs(pBRDF, pDiffuse, pClearcoat, pSpecTrans);
 		if (pDiffuse > 0)
 		{
 			Float diffPdf = 0;
-			if (SampleDisneyDiffuse(ss, sampler, wi, &diffPdf, lightSpectrum, false))
+			if (SampleDisneyDiffuse(ss, sampler, &ss->m_wi, &diffPdf, lightSpectrum, false))
 			{
-				*pdf += pDiffuse * diffPdf;
+				ss->m_pdf += pDiffuse * diffPdf;
 			}
 		}
 
 		if (pClearcoat > 0)
 		{
 			Float clearCoatPdf = 0;
-			if (SampleDisneyClearcoat(ss, sampler, wi, &clearCoatPdf, lightSpectrum))
+			if (SampleDisneyClearcoat(ss, sampler, &ss->m_wi, &clearCoatPdf, lightSpectrum))
 			{
-				*pdf += pClearcoat * clearCoatPdf;
+				ss->m_pdf += pClearcoat * clearCoatPdf;
 			}
 		}
 
 		Float transPdf = 0;
-		if (SampleDisneySpecTransmission(ss, sampler, wi, &transPdf, lightSpectrum, false))
+		if (SampleDisneySpecTransmission(ss, sampler, &ss->m_wi, &transPdf, lightSpectrum, false))
 		{
-			*pdf += transPdf;
+			ss->m_pdf += transPdf;
 		}
 
-		return *pdf > 0;
+		return ss->m_pdf > 0;
 	}
 }

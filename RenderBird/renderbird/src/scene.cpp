@@ -102,7 +102,7 @@ namespace RenderBird
 	{
 		//CreateShapeTest();
 		CreateMeshTest();
-		AddTestDistantLight();
+		//AddTestDistantLight();
 		//AddTestDiskLight(Vector3f(0, 0, 1.98), 0.5);
 		//AddTestSphereLight(Vector3f(0, 0, 0.6), 0.2);
 		CreateCameraTest();
@@ -157,7 +157,7 @@ namespace RenderBird
 
 	void Scene::CreateMeshTest()
 	{
-		FBXImportUtils::LoadFBX("c:/12345.fbx", this);
+		FBXImportUtils::LoadFBX("c:/1234.fbx", this);
 
 		//auto plane1 = GeometryGenerator::GeneratePlane(Vector2f(2.0f, 2.0f));
 		//m_meshResources.push_back(plane1);

@@ -13,9 +13,9 @@ namespace RenderBird
 		Vector3f lightDir = MathUtils::GetForward(m_transform->m_rotation);
 		ls->m_n = lightDir;
 		ls->m_pos = lightDir;
-		ls->m_wi = -lightDir;
 		ls->m_distance = FLT_MAX;
 		ls->m_li = m_lightProp->m_color;
+		ss->m_wi = -lightDir;
 		*pdf = 1.0f;
 		return true;
 	}

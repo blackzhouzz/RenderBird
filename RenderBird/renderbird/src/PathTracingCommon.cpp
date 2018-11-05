@@ -10,6 +10,7 @@ namespace RenderBird
 {
 	SurfaceSample::SurfaceSample(const Ray& ray, RayHitInfo& hitInfo)
 	{
+		m_pdf = 0;
 		m_pos = hitInfo.m_pos;
 		m_n = hitInfo.m_n.Normalized();
 		m_ng = hitInfo.m_ng.Normalized();
@@ -45,7 +46,7 @@ namespace RenderBird
 			bsdf->m_frame.tangent = -bsdf->m_frame.tangent;
 		}
 
-		m_localWo = bsdf->WorldToLocal(-ray.m_direction);
+		m_wo = bsdf->WorldToLocal(-ray.m_direction);
 		if (hitInfo.m_material != nullptr)
 		{
 			bsdf->m_color = RGB32(hitInfo.m_material->m_diffuseColor[0], hitInfo.m_material->m_diffuseColor[1], hitInfo.m_material->m_diffuseColor[2]);

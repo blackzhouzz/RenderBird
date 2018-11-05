@@ -8,8 +8,8 @@ namespace RenderBird
 	{
 	public:
 		OrenNayarDiffuse(Float roughness);
-		virtual bool Eval(SurfaceSample* ss, const Vector3f& wi, Float* pdf, LightSpectrum* lightSpectrum);
-		virtual bool Sample(SurfaceSample* ss, Sampler* sampler, Vector3f* wi, Float* pdf, LightSpectrum* lightSpectrum);
+		virtual bool Eval(SurfaceSample* ss, LightSpectrum* lightSpectrum);
+		virtual bool Sample(SurfaceSample* ss, Sampler* sampler, LightSpectrum* lightSpectrum);
 		RGB32 EvalSpectrum(const Vector3f& localWi, const Vector3f& localWo);
 	private:
 		Float m_sigmaSq;

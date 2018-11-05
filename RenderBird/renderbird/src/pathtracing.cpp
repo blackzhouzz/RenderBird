@@ -39,6 +39,9 @@ namespace RenderBird
 				break;
 			}
 
+			RenderStatistic::m_numSampleProcessed++;
+			SurfaceSample ss(ray, hitInfo);
+
 			if (!recordedOutputValues)
 			{
 				if (m_renderer->m_buffers._depthBuffer != nullptr)
@@ -48,8 +51,6 @@ namespace RenderBird
 				if (m_renderer->m_buffers._albedoBuffer != nullptr)
 				{
 					Vector3f albedo = C_Zero_v3f;
-					SurfaceSample ss(ray, hitInfo);
-
 					if (ss.m_bsdf != nullptr)
 					{
 						RGB32 color = ss.m_bsdf->Albedo();
@@ -60,9 +61,6 @@ namespace RenderBird
 				}
 				recordedOutputValues = true;
 			}
-
-			RenderStatistic::m_numSampleProcessed++;
-			SurfaceSample ss(ray, hitInfo);
 
 			if (hitInfo.m_obj->IsLight() && state->m_currentBounce == 0)
 			{
@@ -75,13 +73,11 @@ namespace RenderBird
 			SampleLight(state, sampleLight, sampleLightPdf, &ss, L);
 
 			LightSpectrum lightSpectrum;
-			Vector3f wi;
-			Float bsdfPdf = 0.0;
 
-			if (!ss.m_bsdf->Sample(&ss, state->m_sampler, &wi, &bsdfPdf, &lightSpectrum))
+			if (!ss.m_bsdf->Sample(&ss, state->m_sampler, &lightSpectrum))
 				break;
 
-			wi = ss.m_bsdf->LocalToWorld(wi);
+			Vector3f wi = ss.m_bsdf->LocalToWorld(ss.m_wi);
 			if (!PathTracingUtils::IsSameHemisphere(ss.m_ng, wi))
 				break;
 
@@ -113,14 +109,14 @@ namespace RenderBird
 			{
 				Float lightPdf = sampleLight->Pdf(tempHitInfo, &ss, wi);
 				auto li = sampleLight->Le(&ss, -ray.m_direction);
-				Float misWeight = SampleUtils::PowerHeuristic(bsdfPdf, lightPdf);
+				Float misWeight = SampleUtils::PowerHeuristic(ss.m_pdf, lightPdf);
 
-				auto weight = (state->m_throughput * misWeight * li / (bsdfPdf * sampleLightPdf));
+				auto weight = (state->m_throughput * misWeight * li / (ss.m_pdf * sampleLightPdf));
 
 				L->Accum(lightSpectrum * weight, state->m_currentBounce == 0);
 			}
 
-			state->m_throughput *= lightSpectrum.Resolve() / bsdfPdf;
+			state->m_throughput *= lightSpectrum.Resolve() / ss.m_pdf;
 
 			const Float eta = 1.0f;
 
@@ -132,7 +128,7 @@ namespace RenderBird
 				state->m_throughput /= q;
 			}
 			hitInfo = tempHitInfo;
-			break;
+			//break;
 		}
 		if (!recordedOutputValues)
 		{
@@ -188,12 +184,13 @@ namespace RenderBird
 			if (lightPdf > 0)
 			{
 				LightSpectrum lightSpectrum;
-				Float bsdfPdf = 0.0;
-				if (!ss->m_bsdf->Eval(ss, ls.m_wi, &bsdfPdf, &lightSpectrum) /*|| !PathTracingUtils::IsSameHemisphere(ss->m_ng, ls.m_wi)*/)
+				Ray lightRay(ss->m_pos, ss->m_wi);
+
+				ss->m_wi = ss->m_bsdf->WorldToLocal(ss->m_wi);
+				if (!ss->m_bsdf->Eval(ss, &lightSpectrum) /*|| !PathTracingUtils::IsSameHemisphere(ss->m_ng, ss->m_wi)*/)
 					return false;
 
 				bool shadowBlocked = false;
-				Ray lightRay(ss->m_pos, ls.m_wi);
 				RayHitInfo lightHitInfo;
 				if (m_renderer->m_scene->Intersect(lightRay, &lightHitInfo))
 				{
@@ -205,7 +202,7 @@ namespace RenderBird
 
 				if (!shadowBlocked)
 				{
-					Float misWeight = SampleUtils::PowerHeuristic(lightPdf, bsdfPdf);
+					Float misWeight = SampleUtils::PowerHeuristic(lightPdf, ss->m_pdf);
 					RGB32 weight = state->m_throughput * misWeight * ls.m_li / (lightPdf * sampleLightPdf);
 					L->Accum(lightSpectrum * weight, state->m_currentBounce == 0);
 					return true;

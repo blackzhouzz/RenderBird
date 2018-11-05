@@ -164,7 +164,7 @@ namespace Core
 		bool ret = true;
 		for (int i = 0; i < N; ++i)
 		{
-			ret |= (m_bands[i] == val.m_bands[i]);
+			ret &= (m_bands[i] == val.m_bands[i]);
 		}
 		return ret;
 	}
@@ -172,12 +172,7 @@ namespace Core
 	template<typename T, typename DT, int N>
 	inline bool TSpectrum<T, DT, N>::operator != (const TSpectrum<T, DT, N>& val)const
 	{
-		bool ret = true;
-		for (int i = 0; i < N; ++i)
-		{
-			ret |= (m_bands[i] == val.m_bands[i]);
-		}
-		return !ret;
+		return !operator == (val);
 	}
 
 	template<typename T, typename DT, int N>

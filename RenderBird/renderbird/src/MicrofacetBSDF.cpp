@@ -55,19 +55,19 @@ namespace RenderBird
 		return true;
 	}
 
-	bool MicrofacetConductorReflection::Eval(SurfaceSample* ss, const Vector3f& wi, Float* pdf, LightSpectrum* lightSpectrum)
+	bool MicrofacetConductorReflection::Eval(SurfaceSample* ss, LightSpectrum* lightSpectrum)
 	{
-		auto localWi = WorldToLocal(wi);
-		auto localWo = ss->m_localWo;
+		auto localWi = ss->m_wi;
+		auto localWo = ss->m_wo;
 		if (localWo.z <= 0 || localWi.z <= 0)
 			return false;
 		Vector3f wh = (localWi + localWo).Normalized();
-		return EvalSpectrum(localWi, localWo, wh, pdf, lightSpectrum);
+		return EvalSpectrum(localWi, localWo, wh, &ss->m_pdf, lightSpectrum);
 	}
 
 	bool MicrofacetConductorReflection::Sample(SurfaceSample* ss, Sampler* sampler, Vector3f* wi, Float* pdf, LightSpectrum* lightSpectrum)
 	{
-		auto localWo = ss->m_localWo;
+		auto localWo = ss->m_wo;
 		if (localWo.z <= 0)
 			return false;
 		auto wh = m_distribution->Sample(sampler->Next2D());

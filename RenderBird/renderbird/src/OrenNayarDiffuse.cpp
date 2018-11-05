@@ -40,10 +40,10 @@ namespace RenderBird
 		return (albedo * fr1 + albedo * albedo * fr2) * CosTheta(localWi) * C_1_INV_PI;
 	}
 
-	bool OrenNayarDiffuse::Eval(SurfaceSample* ss, const Vector3f& wi, Float* pdf, LightSpectrum* lightSpectrum)
+	bool OrenNayarDiffuse::Eval(SurfaceSample* ss, LightSpectrum* lightSpectrum)
 	{
-		auto localWi = WorldToLocal(wi);
-		auto localWo = ss->m_localWo;
+		auto localWi = ss->m_wi;
+		auto localWo = ss->m_wo;
 
 		if (localWo.z <= 0 || localWi.z <= 0)
 		{
@@ -52,31 +52,31 @@ namespace RenderBird
 
 		Float ratio = Clamp(m_roughness, 0.01, 1.0);
 
-		*pdf = Lerp(SampleUtils::CosHemispherePdf(localWi.z), SampleUtils::UniformHemispherePdf(), ratio);
+		ss->m_pdf = Lerp(SampleUtils::CosHemispherePdf(localWi.z), SampleUtils::UniformHemispherePdf(), ratio);
 
 		lightSpectrum->m_diffuse = EvalSpectrum(localWi, localWo);
 		return true;
 	}
 
-	bool OrenNayarDiffuse::Sample(SurfaceSample* ss, Sampler* sampler, Vector3f* wi, Float* pdf, LightSpectrum* lightSpectrum)
+	bool OrenNayarDiffuse::Sample(SurfaceSample* ss, Sampler* sampler, LightSpectrum* lightSpectrum)
 	{
-		auto localWo = ss->m_localWo;
+		auto localWo = ss->m_wo;
 
 		if (localWo.z <= 0)
 			return false;
 		Float ratio = Clamp(m_roughness, 0.01, 1.0);
 		if (sampler->Next1D() < ratio)
 		{
-			SampleUtils::UniformHemisphere(sampler->Next2D(), wi, pdf);
+			SampleUtils::UniformHemisphere(sampler->Next2D(), &ss->m_wi, &ss->m_pdf);
 		}
 		else
 		{
-			SampleUtils::CosHemisphere(sampler->Next2D(), wi, pdf);
+			SampleUtils::CosHemisphere(sampler->Next2D(), &ss->m_wi, &ss->m_pdf);
 		}
 
-		*pdf = Lerp(SampleUtils::CosHemispherePdf(wi->z), SampleUtils::UniformHemispherePdf(), ratio);
+		ss->m_pdf = Lerp(SampleUtils::CosHemispherePdf(ss->m_wi.z), SampleUtils::UniformHemispherePdf(), ratio);
 
-		lightSpectrum->m_diffuse = EvalSpectrum(*wi, localWo);
+		lightSpectrum->m_diffuse = EvalSpectrum(ss->m_wi, localWo);
 
 		return true;
 	}

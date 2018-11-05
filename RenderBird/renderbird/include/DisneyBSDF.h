@@ -8,8 +8,8 @@ namespace RenderBird
 	{
 	public:
 		DisneyBSDF();
-		virtual bool Eval(SurfaceSample* ss, const Vector3f& wi, Float* pdf, LightSpectrum* lightSpectrum);
-		virtual bool Sample(SurfaceSample* ss, Sampler* sampler, Vector3f* wi, Float* pdf, LightSpectrum* lightSpectrum);
+		virtual bool Eval(SurfaceSample* ss, LightSpectrum* lightSpectrum);
+		virtual bool Sample(SurfaceSample* ss, Sampler* sampler, LightSpectrum* lightSpectrum);
 		void CalculateLobePdfs(Float& pSpecular, Float& pDiffuse, Float& pClearcoat, Float& pSpecTrans);
 		RGB32 EvaluateSheen(const Vector3f& wo, const Vector3f& wm, const Vector3f& wi);
 		RGB32 EvaluateDisneyBRDF(const Vector3f& wo, const Vector3f& wm, const Vector3f& wi, Float& fPdf);
