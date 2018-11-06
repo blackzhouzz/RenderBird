@@ -20,8 +20,8 @@ namespace RenderBird
 			m_n = m_ng;
 		}
 
-		LambertDiffuse* bsdf = new LambertDiffuse();
-		//OrenNayarDiffuse* bsdf = new OrenNayarDiffuse(0.5f);
+		//LambertDiffuse* bsdf = new LambertDiffuse();
+		OrenNayarDiffuse* bsdf = new OrenNayarDiffuse(0.5f);
 		//MicrofacetConductorReflection* bsdf = new MicrofacetConductorReflection(0.1, 0.1);
 		//DisneyBSDF* bsdf = new DisneyBSDF();
 		bsdf->m_color = RGB32(0.82, 0.67, 0.15);

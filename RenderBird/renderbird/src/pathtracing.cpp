@@ -76,8 +76,8 @@ namespace RenderBird
 				break;
 
 			Vector3f wi = ss.m_bsdf->LocalToWorld(ss.m_wi);
-			if (!PathTracingUtils::IsSameHemisphere(ss.m_ng, wi))
-				break;
+			//if (!PathTracingUtils::IsSameHemisphere(ss.m_ng, wi))
+			//	break;
 
 			ray.m_origin = ss.m_pos;
 			ray.m_direction = wi;
@@ -134,9 +134,9 @@ namespace RenderBird
 	{
 		Float sampleLightPdf = 0;
 		Light* sampleLight = GetSampleLight(state, sampleLightPdf);
-		if (sampleLight == nullptr)
+		if (sampleLight == nullptr || sampleLightPdf == 0)
 			return RGB32::BLACK;
-		return EvalSample(state, sampleLight, ss);
+		return EvalSample(state, sampleLight, ss) / sampleLightPdf;
 	}
 
 	RGB32 PathTracing::SampleLight(State* state, Light* light, SurfaceSample* ss)
@@ -149,9 +149,11 @@ namespace RenderBird
 			{
 				Ray lightRay(ss->m_pos, ss->m_wi);
 
+				//if (!PathTracingUtils::IsSameHemisphere(ss->m_ng, ss->m_wi))
+				//	return RGB32::BLACK;
+
 				ss->m_wi = ss->m_bsdf->WorldToLocal(ss->m_wi);
-				//if (!ss->m_bsdf->Eval(ss, &lightSpectrum) /*|| !PathTracingUtils::IsSameHemisphere(ss->m_ng, ss->m_wi)*/)
-				//	return false;
+
 				auto bsdfWeight = ss->m_bsdf->Eval(ss);
 				if (bsdfWeight == RGB32::BLACK)
 					return RGB32::BLACK;
@@ -184,8 +186,8 @@ namespace RenderBird
 			return RGB32::BLACK;
 
 		Vector3f wi = ss->m_bsdf->LocalToWorld(ss->m_wi);
-		if (!PathTracingUtils::IsSameHemisphere(ss->m_ng, wi))
-			return RGB32::BLACK;
+		//if (!PathTracingUtils::IsSameHemisphere(ss->m_ng, wi))
+		//	return RGB32::BLACK;
 
 		bool hitLight = false;
 		Ray ray(ss->m_pos, wi);

@@ -135,12 +135,6 @@ namespace RenderBird
 		Vector3f m_wi;
 		Float m_pdf;
 		RGB32 m_weight;
-		void TransformBy(const Matrix4f& mat)
-		{
-			m_pos = mat * m_pos;
-			m_ng = MathUtils::TransformDirection(mat, m_ng).Normalized();
-			m_n = MathUtils::TransformDirection(mat, m_n).Normalized();
-		}
 		std::unique_ptr<BSDF> m_bsdf;
 	};
 
