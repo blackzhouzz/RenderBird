@@ -41,7 +41,6 @@ namespace RenderBird
 			*pdf *= ls->m_distance * ls->m_distance / std::abs(Vector3f::DotProduct(ls->m_n, -ss->m_wi));
 		}
 
-		ls->m_li = m_lightProp->m_color;
 		return true;
 	}
 

@@ -354,16 +354,15 @@ namespace RenderBird
 		return C_1_INV_PI * (retro + subsurfaceApprox * (1.0f - 0.5f * fl) * (1.0f - 0.5f * fv));
 	}
 
-	bool DisneyBSDF::Eval(SurfaceSample* ss, LightSpectrum* lightSpectrum)
+	RGB32 DisneyBSDF::Eval(SurfaceSample* ss)
 	{
 		auto localWi = ss->m_wi;
 		auto localWo = ss->m_wo;
 
-		lightSpectrum->m_diffuse = EvaluateDisney(localWi, localWo, false, ss->m_pdf);
-		return ss->m_pdf > 0;
+		return EvaluateDisney(localWi, localWo, false, ss->m_pdf);
 	}
 
-	bool DisneyBSDF::SampleDisneySpecTransmission(SurfaceSample* ss, Sampler* sampler, Vector3f* outWi, Float* outPdf, LightSpectrum* lightSpectrum, bool thin)
+	bool DisneyBSDF::SampleDisneySpecTransmission(SurfaceSample* ss, Sampler* sampler, Vector3f* outWi, Float* outPdf, bool thin, RGB32& weight)
 	{
 		Vector3f wo = ss->m_wo;
 		if (CosTheta(wo) == 0.0) 
@@ -411,7 +410,7 @@ namespace RenderBird
 
 			//sample.flags = SurfaceEventFlags::eScatterEvent;
 			//sample.reflectance = G1v * baseColor;
-			lightSpectrum->m_diffuse = G1v * baseColor;
+			weight += G1v * baseColor;
 
 			Float jacobian = (4 * AbsDotProduct(wo, wm));
 			pdf = F / jacobian;
@@ -424,7 +423,7 @@ namespace RenderBird
 				// -- So the ray is just reflected then flipped and we use the sqrt of the surface color.
 				wi = Reflect(wm, wo);
 				wi.y = -wi.y;
-				lightSpectrum->m_diffuse = G1v * baseColor.Sqrt();
+				weight += G1v * baseColor.Sqrt();
 
 				// -- Since this is a thin surface we are not ending up inside of a volume so we treat this as a scatter event.
 				//sample.flags = SurfaceEventFlags::eScatterEvent;
@@ -443,7 +442,7 @@ namespace RenderBird
 					wi = Reflect(wm, wo);
 				}
 
-				lightSpectrum->m_diffuse = G1v * baseColor;
+				weight += G1v * baseColor;
 			}
 
 			wi = wi.Normalized();
@@ -472,7 +471,7 @@ namespace RenderBird
 		return true;
 	}
 
-	bool DisneyBSDF::SampleDisneyClearcoat(SurfaceSample* ss, Sampler* sampler, Vector3f* outWi, Float* outPdf, LightSpectrum* lightSpectrum)
+	bool DisneyBSDF::SampleDisneyClearcoat(SurfaceSample* ss, Sampler* sampler, Vector3f* outWi, Float* outPdf, RGB32& weight)
 	{
 		Vector3f wo = ss->m_wo;
 
@@ -510,14 +509,14 @@ namespace RenderBird
 
 		Float fPdf = d / (4.0f * Vector3f::DotProduct(wo, wm));
 		Float clearCoat = 0.25f * clearcoatWeight * g * f * d / fPdf;
-		lightSpectrum->m_diffuse = RGB32(clearCoat, clearCoat, clearCoat);
+		weight += RGB32(clearCoat, clearCoat, clearCoat);
 		*outWi = wi;
 		*outPdf = fPdf;
 
 		return true;
 	}
 
-	bool DisneyBSDF::SampleDisneyDiffuse(SurfaceSample* ss, Sampler* sampler, Vector3f* outWi, Float* outPdf, LightSpectrum* lightSpectrum, bool thin)
+	bool DisneyBSDF::SampleDisneyDiffuse(SurfaceSample* ss, Sampler* sampler, Vector3f* outWi, Float* outPdf, bool thin, RGB32& weight)
 	{
 		Vector3f wo = ss->m_wo;
 
@@ -563,13 +562,13 @@ namespace RenderBird
 		RGB32 sheen = EvaluateSheen(wo, wm, wi);
 
 		Float diffuse = EvaluateDisneyDiffuse(wo, wm, wi, thin);
-		lightSpectrum->m_diffuse = sheen + color * (diffuse / pdf);
+		weight += sheen + color * (diffuse / pdf);
 		*outWi = wi;
 		*outPdf = std::abs(dotNL) * pdf;
 		return true;
 	}
 
-	bool DisneyBSDF::Sample(SurfaceSample* ss, Sampler* sampler, LightSpectrum* lightSpectrum)
+	bool DisneyBSDF::Sample(SurfaceSample* ss, Sampler* sampler, RGB32& weight)
 	{
 		auto localWo = ss->m_wo;
 		ss->m_pdf = 0;
@@ -578,7 +577,7 @@ namespace RenderBird
 		if (pDiffuse > 0)
 		{
 			Float diffPdf = 0;
-			if (SampleDisneyDiffuse(ss, sampler, &ss->m_wi, &diffPdf, lightSpectrum, false))
+			if (SampleDisneyDiffuse(ss, sampler, &ss->m_wi, &diffPdf, false, weight))
 			{
 				ss->m_pdf += pDiffuse * diffPdf;
 			}
@@ -587,14 +586,14 @@ namespace RenderBird
 		if (pClearcoat > 0)
 		{
 			Float clearCoatPdf = 0;
-			if (SampleDisneyClearcoat(ss, sampler, &ss->m_wi, &clearCoatPdf, lightSpectrum))
+			if (SampleDisneyClearcoat(ss, sampler, &ss->m_wi, &clearCoatPdf, weight))
 			{
 				ss->m_pdf += pClearcoat * clearCoatPdf;
 			}
 		}
 
 		Float transPdf = 0;
-		if (SampleDisneySpecTransmission(ss, sampler, &ss->m_wi, &transPdf, lightSpectrum, false))
+		if (SampleDisneySpecTransmission(ss, sampler, &ss->m_wi, &transPdf, false, weight))
 		{
 			ss->m_pdf += transPdf;
 		}

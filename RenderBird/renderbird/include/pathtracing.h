@@ -26,10 +26,11 @@ namespace RenderBird
 		void Render(int pixelX, int pixelY, TileRenderer* tile);
 	private:
 		void Integrate(State* state, Radiance* L);
-		bool SampleLight(State* state, Light* light, Float sampleLightPdf, SurfaceSample* ss, Radiance* L);
-		bool SampleBSDF(State* state, Light* light, Float sampleLightPdf, SurfaceSample* ss, Radiance* L, RayHitInfo& hitInfo);
-		bool SampleLightEx();
-		RGB32 EvalDirect(State* state, Light* light);
+		RGB32 EvalDirect(State* state, SurfaceSample* ss);
+		RGB32 SampleLight(State* state, Light* light, SurfaceSample* ss);
+		RGB32 SampleBSDF(State* state, Light* light, SurfaceSample* ss);
+		RGB32 EvalSample(State* state, Light* light, SurfaceSample* ss);
+		RGB32 EvalLightAtten(State* state, Light* light);
 		Light* GetSampleLight(State* state, Float& sampleLightPdf);
 	private:
 		Renderer* m_renderer;

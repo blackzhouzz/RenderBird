@@ -82,26 +82,6 @@ namespace RenderBird
 		int m_primId;
 	};
 
-	struct LightSpectrum
-	{
-		LightSpectrum()
-			: m_diffuse(RGB32::BLACK)
-		{
-		}
-		RGB32 m_diffuse;
-		LightSpectrum operator * (RGB32 color)const
-		{
-			LightSpectrum ret;
-			ret.m_diffuse = this->m_diffuse * color;
-			return ret;
-		}
-
-		RGB32 Resolve()const
-		{
-			return m_diffuse;
-		}
-	};
-
 	struct Radiance
 	{
 		Radiance()
@@ -110,15 +90,15 @@ namespace RenderBird
 			, m_directEmission(RGB32::BLACK)
 		{
 		}
-		void Accum(const LightSpectrum& ls, bool firstBounce)
+		void Accum(const RGB32& ls, bool firstBounce)
 		{
 			if (firstBounce)
 			{
-				m_directDiffuse += ls.m_diffuse;
+				m_directDiffuse += ls;
 			}
 			else
 			{
-				m_indirectDiffuse += ls.m_diffuse;
+				m_indirectDiffuse += ls;
 			}
 		}
 		RGB32 Resolve()const
@@ -154,6 +134,7 @@ namespace RenderBird
 		Vector3f m_wo;
 		Vector3f m_wi;
 		Float m_pdf;
+		RGB32 m_weight;
 		void TransformBy(const Matrix4f& mat)
 		{
 			m_pos = mat * m_pos;
@@ -173,7 +154,6 @@ namespace RenderBird
 			m_n = MathUtils::TransformDirection(mat, m_n).Normalized();
 		}
 		Float m_distance;
-		RGB32 m_li;
 	};
 
 	struct PathTracingUtils

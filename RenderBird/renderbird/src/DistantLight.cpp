@@ -14,7 +14,6 @@ namespace RenderBird
 		ls->m_n = lightDir;
 		ls->m_pos = lightDir;
 		ls->m_distance = FLT_MAX;
-		ls->m_li = m_lightProp->m_color;
 		ss->m_wi = -lightDir;
 		*pdf = 1.0f;
 		return true;

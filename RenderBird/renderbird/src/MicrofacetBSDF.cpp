@@ -37,35 +37,33 @@ namespace RenderBird
 		return (Rparl * Rparl + Rperp * Rperp) / 2;
 	}
 
-	bool MicrofacetConductorReflection::EvalSpectrum(const Vector3f& localWi, const Vector3f& localWo, const Vector3f& wh, Float* pdf, LightSpectrum* lightSpectrum)
+	RGB32 MicrofacetConductorReflection::EvalSpectrum(const Vector3f& localWi, const Vector3f& localWo, const Vector3f& wh, Float* pdf)
 	{
 		auto woDotwh = Vector3f::DotProduct(localWo, wh);
-
-		if (woDotwh <= 0.0f || localWi.z <= 0.0f || localWo.z <= 0.0)
-			return false;
 
 		Float cosThetaO = localWo.z;
 		auto F = Fresnel::Conductor(m_eta, m_k, Vector3f::DotProduct(localWi, wh));
 		auto G = m_distribution->G(localWi, localWo, wh);
 		auto D = m_distribution->D(wh);
 
-		lightSpectrum->m_diffuse = Albedo() * 0.25 * D * G * F / cosThetaO;
+		auto C = Albedo() * 0.25 * D * G * F / cosThetaO;
 
 		*pdf = m_distribution->Pdf(wh) * 0.25 / woDotwh;
-		return true;
+		return C;
 	}
 
-	bool MicrofacetConductorReflection::Eval(SurfaceSample* ss, LightSpectrum* lightSpectrum)
+	RGB32 MicrofacetConductorReflection::Eval(SurfaceSample* ss)
 	{
 		auto localWi = ss->m_wi;
 		auto localWo = ss->m_wo;
-		if (localWo.z <= 0 || localWi.z <= 0)
-			return false;
 		Vector3f wh = (localWi + localWo).Normalized();
-		return EvalSpectrum(localWi, localWo, wh, &ss->m_pdf, lightSpectrum);
+		auto woDotwh = Vector3f::DotProduct(localWo, wh);
+		if (woDotwh <= 0.0f || localWi.z <= 0.0f || localWo.z <= 0.0)
+			return RGB32::BLACK;
+		return EvalSpectrum(localWi, localWo, wh, &ss->m_pdf);
 	}
 
-	bool MicrofacetConductorReflection::Sample(SurfaceSample* ss, Sampler* sampler, Vector3f* wi, Float* pdf, LightSpectrum* lightSpectrum)
+	bool MicrofacetConductorReflection::Sample(SurfaceSample* ss, Sampler* sampler, RGB32& weight)
 	{
 		auto localWo = ss->m_wo;
 		if (localWo.z <= 0)
@@ -74,8 +72,12 @@ namespace RenderBird
 		auto woDotwh = Vector3f::DotProduct(localWo, wh);
 		auto localWi = (2.0 * woDotwh * wh - localWo).Normalized();
 
-		*wi = localWi;
+		if (woDotwh <= 0.0f || localWi.z <= 0.0f)
+			return false;
 
-		return EvalSpectrum(localWi, localWo, wh, pdf, lightSpectrum);
+		ss->m_wi = localWi;
+
+		weight = EvalSpectrum(localWi, localWo, wh, &ss->m_pdf);
+		return true;
 	}
 }

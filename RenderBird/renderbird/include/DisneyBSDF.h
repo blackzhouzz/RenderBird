@@ -8,8 +8,8 @@ namespace RenderBird
 	{
 	public:
 		DisneyBSDF();
-		virtual bool Eval(SurfaceSample* ss, LightSpectrum* lightSpectrum);
-		virtual bool Sample(SurfaceSample* ss, Sampler* sampler, LightSpectrum* lightSpectrum);
+		virtual RGB32 Eval(SurfaceSample* ss);
+		virtual bool Sample(SurfaceSample* ss, Sampler* sampler, RGB32& weight);
 		void CalculateLobePdfs(Float& pSpecular, Float& pDiffuse, Float& pClearcoat, Float& pSpecTrans);
 		RGB32 EvaluateSheen(const Vector3f& wo, const Vector3f& wm, const Vector3f& wi);
 		RGB32 EvaluateDisneyBRDF(const Vector3f& wo, const Vector3f& wm, const Vector3f& wi, Float& fPdf);
@@ -17,9 +17,9 @@ namespace RenderBird
 		RGB32 EvaluateDisney(const Vector3f& localWi, const Vector3f& localWo, bool thin, Float& forwardPdf);
 		Float EvaluateDisneyDiffuse(const Vector3f& wo, const Vector3f& wm, const Vector3f& wi, bool thin);
 		RGB32 EvaluateDisneySpecTransmission(const Vector3f& wo, const Vector3f& wm, const Vector3f& wi, Float ax, Float ay, bool thin);
-		bool SampleDisneySpecTransmission(SurfaceSample* ss, Sampler* sampler, Vector3f* outWi, Float* outPdf, LightSpectrum* lightSpectrum, bool thin);
-		bool SampleDisneyDiffuse(SurfaceSample* ss, Sampler* sampler, Vector3f* outWi, Float* outPdf, LightSpectrum* lightSpectrumbool, bool thin);
-		bool SampleDisneyClearcoat(SurfaceSample* ss, Sampler* sampler, Vector3f* outWi, Float* outPdf, LightSpectrum* lightSpectrum);
+		bool SampleDisneySpecTransmission(SurfaceSample* ss, Sampler* sampler, Vector3f* outWi, Float* outPdf, bool thin, RGB32& weight);
+		bool SampleDisneyDiffuse(SurfaceSample* ss, Sampler* sampler, Vector3f* outWi, Float* outPdf, bool thin, RGB32& weight);
+		bool SampleDisneyClearcoat(SurfaceSample* ss, Sampler* sampler, Vector3f* outWi, Float* outPdf, RGB32& weight);
 	private:
 		Float m_roughness;
 		Float m_sheen;

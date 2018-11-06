@@ -10,6 +10,7 @@ namespace RenderBird
 {
 	SurfaceSample::SurfaceSample(const Ray& ray, RayHitInfo& hitInfo)
 	{
+		m_weight = RGB32::BLACK;
 		m_pdf = 0;
 		m_pos = hitInfo.m_pos;
 		m_n = hitInfo.m_n.Normalized();
