@@ -148,7 +148,8 @@ namespace RenderBird
 		auto lightProp = EntityManager::IntancePtr()->GetComponent<LightPropertyComponent>(id);
 		lightProp->m_color = RGB32::WHITE;
 		auto trans = EntityManager::IntancePtr()->GetComponent<Transform>(id);
-		Vector3f pos = Vector3f(-20, 30, 40);
+		//Vector3f pos = Vector3f(-20, 30, 40);
+		Vector3f pos = Vector3f(-0, 40, 40);
 		TransformUtils::LookAt(trans, pos, C_Zero_v3f, C_AxisZ_v3f);
 		DistantLight* light = CreateSceneObject<DistantLight>(id);
 
@@ -157,10 +158,10 @@ namespace RenderBird
 
 	void Scene::CreateMeshTest()
 	{
-		//FBXImportUtils::LoadFBX("c:/1234.fbx", this);
+		FBXImportUtils::LoadFBX("c:/1234.fbx", this);
 
-		FBXImportUtils::LoadFBX("c:/12345.fbx", this);
-		AddTestDistantLight();
+		//FBXImportUtils::LoadFBX("c:/12345.fbx", this);
+		//AddTestDistantLight();
 
 		//auto plane1 = GeometryGenerator::GeneratePlane(Vector2f(2.0f, 2.0f));
 		//m_meshResources.push_back(plane1);

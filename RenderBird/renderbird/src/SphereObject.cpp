@@ -29,14 +29,14 @@ namespace RenderBird
 		return 0.5f * C_1_INV_PI / (1.0f - cosThetaMax);
 	}
 
-	void SphereObject::Sample(Sampler* sampler, LightSample* ls, Float* pdf)
+	void SphereObject::Sample(Sampler* sampler, LightSample* ls)
 	{
 		Vector3f wi;
-		SampleUtils::UniformSphere(sampler->Next2D(), &wi, pdf);
+		SampleUtils::UniformSphere(sampler->Next2D(), &wi, &ls->m_pdf);
 		Vector3f pos = m_sphere->m_radius * 
 		ls->m_n = Vector3f(pos.x, pos.y, pos.z).Normalized();
 		pos *= m_sphere->m_radius / Vector3f::Distance(pos, C_Zero_v3f);
-		*pdf = 1.0 / GetArea();
+		ls->m_pdf = 1.0 / GetArea();
 	}
 
 	bool SphereObject::Intersect(const Ray& ray, RayHitInfo* hitInfo)const

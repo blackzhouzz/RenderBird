@@ -30,7 +30,7 @@ namespace RenderBird
 		RGB32 SampleLight(State* state, Light* light, SurfaceSample* ss);
 		RGB32 SampleBSDF(State* state, Light* light, SurfaceSample* ss);
 		RGB32 EvalSample(State* state, Light* light, SurfaceSample* ss);
-		RGB32 EvalLightAtten(State* state, Light* light);
+		RGB32 EvalLightAtten(State* state, Light* light, SurfaceSample* ss, const Ray& ray, RayHitInfo& hitInfo);
 		Light* GetSampleLight(State* state, Float& sampleLightPdf);
 	private:
 		Renderer* m_renderer;

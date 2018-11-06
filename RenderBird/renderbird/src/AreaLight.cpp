@@ -20,10 +20,10 @@ namespace RenderBird
 		return (!m_areaLight->m_isDoubleSide && !PathTracingUtils::IsSameHemisphere(w1, w2));
 	}
 
-	bool AreaLight::Sample(Sampler* sampler, SurfaceSample* ss, LightSample* ls, Float* pdf)
+	bool AreaLight::Sample(Sampler* sampler, SurfaceSample* ss, LightSample* ls)
 	{
-		m_shape->Sample(sampler, ls, pdf);
-		if (*pdf == 0.0f)
+		m_shape->Sample(sampler, ls);
+		if (ls->m_pdf == 0.0f)
 			return false;
 		const Matrix4f localToWorld = TransformUtils::GetMatrix(m_transform);
 		ls->TransformBy(localToWorld);
@@ -32,13 +32,13 @@ namespace RenderBird
 		ls->m_distance = vecLight.Length();
 		if (ls->m_distance == 0 || IsSameHemisphere(-vecLight, ls->m_n))
 		{
-			*pdf = 0.0;
+			ls->m_pdf = 0.0;
 		}
 		else
 		{
 			ss->m_wi = vecLight / ls->m_distance;
 			// dw = dA * cos(theta) / (r*r)
-			*pdf *= ls->m_distance * ls->m_distance / std::abs(Vector3f::DotProduct(ls->m_n, -ss->m_wi));
+			ls->m_pdf *= ls->m_distance * ls->m_distance / std::abs(Vector3f::DotProduct(ls->m_n, -ss->m_wi));
 		}
 
 		return true;

@@ -19,7 +19,7 @@ namespace RenderBird
 		return m_area;
 	}
 
-	void Triangle::Sample(Sampler* sampler, LightSample* ls, Float* pdf)
+	void Triangle::Sample(Sampler* sampler, LightSample* ls)
 	{
 		auto meshData = m_trimesh->GetMeshData();
 		Vector2f uv = SampleUtils::UniformTriangle(sampler->Next2D());
@@ -35,11 +35,11 @@ namespace RenderBird
 
 		if (GetArea() == 0.0f)
 		{
-			*pdf = 0.0f;
+			ls->m_pdf = 0.0f;
 		}
 		else
 		{
-			*pdf = 1.0f / GetArea();
+			ls->m_pdf = 1.0f / GetArea();
 		}
 	}
 

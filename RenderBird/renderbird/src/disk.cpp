@@ -12,18 +12,18 @@ namespace RenderBird
 		return m_disk->m_phiMax * 0.5f * (m_disk->m_radius * m_disk->m_radius - m_disk->m_innerRadius * m_disk->m_innerRadius);
 	}
 
-	void Disk::Sample(Sampler* sampler, LightSample* ls, Float* pdf)
+	void Disk::Sample(Sampler* sampler, LightSample* ls)
 	{
 		Vector2f pd = SampleUtils::ToUnitDisk(sampler->Next2D());
 		ls->m_pos = Vector3f(pd.x * m_disk->m_radius, pd.y * m_disk->m_radius, 0);;
 		ls->m_n = C_AxisZ_v3f;
 		if (GetArea() == 0.0f)
 		{
-			*pdf = 0.0f;
+			ls->m_pdf = 0.0f;
 		}
 		else
 		{
-			*pdf = 1.0f / GetArea();
+			ls->m_pdf = 1.0f / GetArea();
 		}
 	}
 

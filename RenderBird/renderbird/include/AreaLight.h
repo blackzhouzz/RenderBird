@@ -10,7 +10,7 @@ namespace RenderBird
 	public:
 		AreaLight();
 		virtual void OnCreate(EntityId id);
-		virtual bool Sample(Sampler* sampler, SurfaceSample* ss, LightSample* ls, Float* pdf);
+		virtual bool Sample(Sampler* sampler, SurfaceSample* ss, LightSample* ls);
 		virtual RGB32 Le(SurfaceSample* ss, const Vector3f& w)const;
 		virtual Float Pdf(const RayHitInfo& hitInfo, SurfaceSample* ss, const Vector3f& wi)const;
 		virtual bool Intersect(const Ray& worldRay, RayHitInfo* hitInfo)const;

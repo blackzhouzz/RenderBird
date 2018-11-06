@@ -140,8 +140,13 @@ namespace RenderBird
 
 	struct LightSample
 	{
+		LightSample()
+			: m_pdf(0)
+		{
+		}
 		Vector3f m_pos;
 		Vector3f m_n;
+		Float m_pdf;
 		void TransformBy(const Matrix4f& mat)
 		{
 			m_pos = mat * m_pos;

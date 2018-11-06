@@ -16,7 +16,7 @@ namespace RenderBird
 	void PathTracing::Integrate(State* state, Radiance* L)
 	{
 		auto pixel = Vector2u(state->m_pixelX, state->m_pixelY);
-		if (pixel.x == 160 && pixel.y == 180)
+		if (pixel.x == 170 && pixel.y == 170)
 			pixel = pixel;
 		Ray ray;
 		m_renderer->GenerateCameraRay(state->m_cameraSample.m_pixel.x, state->m_cameraSample.m_pixel.y, &ray);
@@ -68,7 +68,7 @@ namespace RenderBird
 				L->m_directEmission += state->m_throughput * light->Le(&ss, -ray.m_direction);
 			}
 
-			RGB32 C = EvalDirect(state, &ss);
+			RGB32 C = state->m_throughput * EvalDirect(state, &ss);
 			L->Accum(C, state->m_currentBounce == 0);
 
 			RGB32 bsdfWeight = RGB32::BLACK;
@@ -76,6 +76,7 @@ namespace RenderBird
 				break;
 
 			Vector3f wi = ss.m_bsdf->LocalToWorld(ss.m_wi);
+
 			//if (!PathTracingUtils::IsSameHemisphere(ss.m_ng, wi))
 			//	break;
 
@@ -127,6 +128,7 @@ namespace RenderBird
 	{
 		RGB32 C = SampleLight(state, light, ss);
 		C += SampleBSDF(state, light, ss);
+
 		return C;
 	}
 
@@ -142,36 +144,28 @@ namespace RenderBird
 	RGB32 PathTracing::SampleLight(State* state, Light* light, SurfaceSample* ss)
 	{
 		LightSample ls;
-		Float lightPdf = 0;
-		if (light->Sample(state->m_sampler, ss, &ls, &lightPdf))
+		if (light->Sample(state->m_sampler, ss, &ls))
 		{
-			if (lightPdf > 0)
+			if (ls.m_pdf > 0)
 			{
 				Ray lightRay(ss->m_pos, ss->m_wi);
 
 				//if (!PathTracingUtils::IsSameHemisphere(ss->m_ng, ss->m_wi))
 				//	return RGB32::BLACK;
-
-				ss->m_wi = ss->m_bsdf->WorldToLocal(ss->m_wi);
+				auto worldWi = ss->m_wi;
+				ss->m_wi = ss->m_bsdf->WorldToLocal(worldWi);
 
 				auto bsdfWeight = ss->m_bsdf->Eval(ss);
 				if (bsdfWeight == RGB32::BLACK)
 					return RGB32::BLACK;
 
-				bool shadowBlocked = false;
-				RayHitInfo lightHitInfo;
-				if (m_renderer->m_scene->Intersect(lightRay, &lightHitInfo))
-				{
-					if (lightHitInfo.m_obj != light && light->GetShape() != nullptr)
-					{
-						shadowBlocked = true;
-					}
-				}
+				RayHitInfo hitInfo;
+				RGB32 le = EvalLightAtten(state, light, ss, lightRay, hitInfo);
 
-				if (!shadowBlocked)
+				if (le != RGB32::BLACK)
 				{
-					Float misWeight = SampleUtils::PowerHeuristic(lightPdf, ss->m_pdf);
-					RGB32 C = state->m_throughput * misWeight * bsdfWeight * light->Le(ss, ss->m_wi) / (lightPdf);
+					Float misWeight = SampleUtils::PowerHeuristic(ls.m_pdf, ss->m_pdf);
+					RGB32 C = misWeight * bsdfWeight * le / ls.m_pdf;
 					return C;
 				}
 			}
@@ -189,43 +183,39 @@ namespace RenderBird
 		//if (!PathTracingUtils::IsSameHemisphere(ss->m_ng, wi))
 		//	return RGB32::BLACK;
 
-		bool hitLight = false;
 		Ray ray(ss->m_pos, wi);
-		RayHitInfo tempHitInfo;
 
-		if (m_renderer->m_scene->Intersect(ray, &tempHitInfo))
+		RayHitInfo hitInfo;
+		RGB32 le = EvalLightAtten(state, light, ss, ray, hitInfo);
+
+		if (le != RGB32::BLACK)
 		{
-			if (tempHitInfo.m_obj->IsLight()
-				&& light == tempHitInfo.m_obj
-				)
-			{
-				hitLight = true;
-			}
-		}
-		//else if (light->GetShape() == nullptr)
-		//{
-		//	hitLight = true;
-		//}
-		else
-		{
-			return RGB32::BLACK;
-		}
-		RGB32 C = RGB32::BLACK;
-		if (hitLight)
-		{
-			Float lightPdf = light->Pdf(tempHitInfo, ss, wi);
-			auto li = light->Le(ss, -wi);
+			Float lightPdf = light->Pdf(hitInfo, ss, wi);
 			Float misWeight = SampleUtils::PowerHeuristic(ss->m_pdf, lightPdf);
-
-			C = (bsdfWeight * state->m_throughput * misWeight * li / (ss->m_pdf));
-			//L->Accum(bsdfWeight * weight, state->m_currentBounce == 0);
+			RGB32 C = (bsdfWeight * misWeight * le / ss->m_pdf);
+			return C;
 		}
-		return C;
+		return RGB32::BLACK;
 	}
 
-	RGB32 PathTracing::EvalLightAtten(State* state, Light* light)
+	RGB32 PathTracing::EvalLightAtten(State* state, Light* light, SurfaceSample* ss, const Ray& ray, RayHitInfo& hitInfo)
 	{
-		return RGB32::BLACK;
+		RGB32 C = RGB32::BLACK;
+		bool shadowBlocked = false;
+		if (m_renderer->m_scene->Intersect(ray, &hitInfo))
+		{
+			if (hitInfo.m_obj != light)
+			{
+				shadowBlocked = true;
+			}
+		}
+
+		if (!shadowBlocked)
+		{
+			C = light->Le(ss, -ray.m_direction);
+		}
+
+		return C;
 	}
 
 	void PathTracing::Render(int pixelX, int pixelY, TileRenderer* tile)

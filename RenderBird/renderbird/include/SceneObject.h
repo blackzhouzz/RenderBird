@@ -16,6 +16,7 @@ namespace RenderBird
 		virtual void UpdateBoundingBox() {}
 		const BoundingBox& GetBoundingBox()const { return m_boundingBox; }
 		virtual bool CalcTangentSpace(RayHitInfo* hitInfo, Vector3f& T, Vector3f& B)const { return false; }
+		Transform* GetTransform()const { return m_transform; }
 	protected:
 		EntityId m_id;
 		Transform* m_transform;

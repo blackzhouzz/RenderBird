@@ -12,7 +12,7 @@ namespace RenderBird
 		{
 		}
 		virtual void OnCreate(EntityId id);
-		virtual bool Sample(Sampler* sampler, SurfaceSample* ss, LightSample* ls, Float* pdf);
+		virtual bool Sample(Sampler* sampler, SurfaceSample* ss, LightSample* ls);
 		virtual Float Pdf(const RayHitInfo& hitInfo, SurfaceSample* ss, const Vector3f& wi)const { return 0.0; }
 		virtual bool Intersect(const Ray& worldRay, RayHitInfo* hitInfo)const { return true; }
 	protected:
